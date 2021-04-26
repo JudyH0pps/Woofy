@@ -1,8 +1,6 @@
 <template>
   <section>
     <header>
-      <h2 class="login_title">Welcome</h2>
-      <h2 class="login_title2">Back!</h2>
       <p class="login_intro">로그인시 사용할 비밀번호를 입력해주세요</p>
     </header>
     <article>

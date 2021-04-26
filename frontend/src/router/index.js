@@ -1,21 +1,25 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Login from "@/views/auth/Login.vue";
+import { authRouters } from "@/router/auth";
 
 Vue.use(VueRouter);
+
+const authCheck = () => (to, from, next) => {
+    // if (1 == 1) {
+    //     next("/");
+    // }
+    next("/login");
+};
 
 const routes = [
     {
         path: "/",
         name: "Home",
         component: Home,
+        beforeEnter: authCheck(),
     },
-    {
-        path: "/login",
-        name: "Login",
-        component: Login,
-    },
+    ...authRouters,
 ];
 
 const router = new VueRouter({
