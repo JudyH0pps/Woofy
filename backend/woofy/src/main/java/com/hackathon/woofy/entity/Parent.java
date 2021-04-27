@@ -37,6 +37,7 @@ public class Parent {
 	private String lastName;
 	private String email;
 	private String phoneNumber;
+	private int birth;
 	private int account;
 	
 //	@OneToMany(mappedBy = "parent")
@@ -50,20 +51,9 @@ public class Parent {
 		this.lastName = userRequest.getLastName();
 		this.email = userRequest.getEmail();
 		this.phoneNumber = userRequest.getPhoneNumber();
+		this.birth = userRequest.getBirth();
 	}
 
-	public Parent(String username, String password, String firstName, String lastName, String email, String phoneNumber,
-			int account) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-		this.account = account;
-	}
-	
 //	public void addChild(Child child) {
 //		child.setParent(this);
 //		childs.add(child);

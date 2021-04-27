@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.request.UserRequest;
+import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.ParentService;
-import com.hackathon.woofy.util.BasicResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,21 +38,10 @@ public class ChildController {
 			
 			// 일단 테스트용 부모
 			Parent parent = parentService.findParent("01012341234");
-			System.out.println("parent: " + parent.getId());
 			
-			Child child = new Child();
-			child.setUsername(userRequest.getUsername());
-			child.setPassword(userRequest.getPassword());
-			child.setFirstName(userRequest.getFirstName());
-			child.setLastName(userRequest.getLastName());
-			child.setPhoneNumber(userRequest.getPhoneNumber());
-			child.setParent(parent);
-			
+			Child child = new Child(userRequest, parent);
 			Child result = childService.saveChild(child);
-			System.out.println("result: " + result);
 			
-			System.out.println("CHILD: "+child.getParent());
-
 			map.put("child", result);
 			basicResponse.dataBody = map;
 			basicResponse.data = "success";
