@@ -36,16 +36,11 @@ public class Parent {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String phoneNumber;
 	private int account;
 	
-	@OneToMany(mappedBy = "parent")
-	private List<Child> childs = new ArrayList<>();
-
-	public Parent(String username, String password) {
-		super();
-		this.username = username;
-		this.password = password;
-	}
+//	@OneToMany(mappedBy = "parent")
+//	private List<Child> childs = new ArrayList<>(); // 읽기만 가능
 
 	public Parent(UserRequest userRequest) {
 		super();
@@ -54,6 +49,24 @@ public class Parent {
 		this.firstName = userRequest.getFirstName();
 		this.lastName = userRequest.getLastName();
 		this.email = userRequest.getEmail();
+		this.phoneNumber = userRequest.getPhoneNumber();
 	}
+
+	public Parent(String username, String password, String firstName, String lastName, String email, String phoneNumber,
+			int account) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.account = account;
+	}
+	
+//	public void addChild(Child child) {
+//		child.setParent(this);
+//		childs.add(child);
+//	}
 
 }

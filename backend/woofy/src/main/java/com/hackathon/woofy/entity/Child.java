@@ -1,7 +1,9 @@
 package com.hackathon.woofy.entity;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,13 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.hackathon.woofy.request.UserRequest;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -23,7 +24,6 @@ import lombok.ToString;
 @Table(name = "child")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = { "id", "username", "password" })
 public class Child {
 
@@ -36,25 +36,44 @@ public class Child {
 	private String password;
 	private String firstName;
 	private String lastName;
+	private String phoneNumber;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
 	private Parent parent;
 	
-	// 생성 메서드
-	public Child(String username, String password, Parent parent) {
-		this.username = username;
-		this.password = password;
-		this.parent = parent;
-		parent.getChilds().add(this);
-	}
+//	@OneToMany(mappedBy = "child")
+//	private List<Suspicious> suspicious = new ArrayList<>();
 	
-	public Child(UserRequest userRequest) {
+//	@OneToMany(mappedBy = "child")
+//	private List<Mission> missions = new ArrayList<>();
+	
+	// 생성 메서드
+	public Child() {}
+	
+	
+	
+	public Child(UserRequest userRequest, Parent parent) {
 		super();
 		this.username = userRequest.getUsername();
 		this.password = userRequest.getPassword();
 		this.firstName = userRequest.getFirstName();
 		this.lastName = userRequest.getLastName();
+		this.phoneNumber = userRequest.getPhoneNumber();
+		this.parent = parent;
+	}
+
+
+
+	public Child(String username, String password, String firstName, String lastName, String phoneNumber,
+			Parent parent) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+		this.parent = parent;
 	}
 
 }

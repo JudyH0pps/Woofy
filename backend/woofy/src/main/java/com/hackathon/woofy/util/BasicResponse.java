@@ -4,5 +4,6 @@ public class BasicResponse {
 
 	public boolean status;
 	public String data;
-	public Object object;
+	public Object dataHeader;
+	public Object dataBody;
 }

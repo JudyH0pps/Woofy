@@ -20,8 +20,8 @@ public class ParentService {
 	}
 	
 	@Transactional
-	public Parent findParent(Long id){
-		return parentRepo.findOne(id);
+	public Parent findParent(String phoneNumber){
+		return parentRepo.findByPhoneNumber(phoneNumber);
 	}
 	
 }
