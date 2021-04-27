@@ -3,41 +3,43 @@ package com.hackathon.woofy.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.hackathon.woofy.entity.Parent;
-import com.hackathon.woofy.request.UserRequest;
-import com.hackathon.woofy.service.ParentService;
+import com.hackathon.woofy.entity.Suspicious;
+import com.hackathon.woofy.request.SuspiciousRequest;
+import com.hackathon.woofy.service.SuspiciousService;
 import com.hackathon.woofy.util.BasicResponse;
 
-@RestController
-@RequestMapping("/api/v1/parent")
-public class ParentController {
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/suspicious")
+public class SuspiciousController {
+
+	private final SuspiciousService suspiciousService;
 	
-	@Autowired ParentService parentService;
-
-	@PostMapping("/signup")
-	public Object signup(@RequestBody UserRequest userRequest) {
-
+	@PostMapping("/add")
+	public Object add(@RequestBody SuspiciousRequest suspiciousRequest) {
 		final BasicResponse basicResponse = new BasicResponse();
 		
 		try {
 			Map<String, Object> map = new HashMap<>();
-			Parent parent = new Parent(userRequest);
-			Parent result = parentService.saveParent(parent);
 			
-			map.put("parent", result);
+			Suspicious result = new Suspicious(suspiciousRequest);
+			suspiciousService.addSuspicious(result);
+			
+			map.put("suspicious", result);
 			basicResponse.dataBody = map;
 			basicResponse.data = "success";
 			basicResponse.status = true;
 			
-		} catch(Exception e) {
+		} catch (Exception e) {
 			basicResponse.data = "error";
 			basicResponse.status = false;
 			e.printStackTrace();
