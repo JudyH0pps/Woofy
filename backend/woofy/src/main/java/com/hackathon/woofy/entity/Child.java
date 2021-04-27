@@ -36,6 +36,8 @@ public class Child {
 	private String password;
 	private String firstName;
 	private String lastName;
+	private String email;
+	private int birth;
 	private String phoneNumber;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -59,20 +61,9 @@ public class Child {
 		this.password = userRequest.getPassword();
 		this.firstName = userRequest.getFirstName();
 		this.lastName = userRequest.getLastName();
+		this.email = userRequest.getEmail();
 		this.phoneNumber = userRequest.getPhoneNumber();
-		this.parent = parent;
-	}
-
-
-
-	public Child(String username, String password, String firstName, String lastName, String phoneNumber,
-			Parent parent) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phoneNumber = phoneNumber;
+		this.birth = userRequest.getBirth();
 		this.parent = parent;
 	}
 

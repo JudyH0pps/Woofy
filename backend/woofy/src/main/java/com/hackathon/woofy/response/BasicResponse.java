@@ -1,4 +1,4 @@
-package com.hackathon.woofy.util;
+package com.hackathon.woofy.response;
 
 public class BasicResponse {
 

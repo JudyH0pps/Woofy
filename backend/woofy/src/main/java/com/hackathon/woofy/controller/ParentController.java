@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.request.UserRequest;
+import com.hackathon.woofy.response.ApiResponse;
+import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ParentService;
-import com.hackathon.woofy.util.BasicResponse;
 
 @RestController
 @RequestMapping("/api/v1/parent")
@@ -29,6 +30,7 @@ public class ParentController {
 		
 		try {
 			Map<String, Object> map = new HashMap<>();
+			
 			Parent parent = new Parent(userRequest);
 			Parent result = parentService.saveParent(parent);
 			
@@ -45,4 +47,6 @@ public class ParentController {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
 	}
+	
+	
 }
