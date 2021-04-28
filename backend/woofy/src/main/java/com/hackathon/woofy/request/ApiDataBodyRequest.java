@@ -15,8 +15,7 @@ public class ApiDataBodyRequest {
 	private String ENCY_RRNO_LSNM;
 
 	// 휴대폰 인증을 위한 생성자
-	public ApiDataBodyRequest(String COMC_DIS, String HP_NO, String HP_CRTF_AGR_YN, String FNM, String RRNO_BFNB,
-			String ENCY_RRNO_LSNM) {
+	public ApiDataBodyRequest(String COMC_DIS, String HP_NO, String HP_CRTF_AGR_YN, String FNM, String RRNO_BFNB, String ENCY_RRNO_LSNM) {
 		this.COMC_DIS = COMC_DIS;
 		this.HP_NO = HP_NO;
 		this.HP_CRTF_AGR_YN = HP_CRTF_AGR_YN;

@@ -32,6 +32,9 @@ public class ParentController {
 			Map<String, Object> map = new HashMap<>();
 			
 			Parent parent = new Parent(userRequest);
+			
+			parent.setAccount("123325421542353245324");
+			
 			Parent result = parentService.saveParent(parent);
 			
 			map.put("parent", result);
