@@ -22,7 +22,7 @@ public class ChildService {
 		return childRepo.save(child);
 	}
 	
-	public Child findChild(String phoneNumber) {
-		return childRepo.findByPhoneNumber(phoneNumber);
+	public Child findChild(String username) {
+		return childRepo.findByUsername(username);
 	}
 }

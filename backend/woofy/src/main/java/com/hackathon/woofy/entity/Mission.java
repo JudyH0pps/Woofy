@@ -1,11 +1,14 @@
 package com.hackathon.woofy.entity;
 
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,16 +28,16 @@ import lombok.Setter;
 public class Mission {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "mission_id")
 	private Long id;
 	
 	private String title;
 	private String content;
-	private int price;
+	private int prize;
 	
 	@Enumerated(EnumType.STRING)
-	private MissionStatus missionStatus;
+	private MissionStatus missionStatus = MissionStatus.ONGOING;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "child_id")
@@ -44,14 +47,13 @@ public class Mission {
 	@JoinColumn(name = "parent_id")
 	private Parent parent;
 
-	public Mission(MissionRequest missionRequest) {
+	public Mission(Map<String, Object> missionRequestObject, Parent parent, Child child) {
 		super();
-		this.title = missionRequest.getTitle();
-		this.content = missionRequest.getContent();
-		this.price = missionRequest.getPrice();
-		this.missionStatus = missionRequest.getMissionStatus();
-		this.parent = missionRequest.getParent();
-		this.child = missionRequest.getChild();
+		this.title = (String)missionRequestObject.get("title");
+		this.content = (String)missionRequestObject.get("content");
+		this.prize = (int)missionRequestObject.get("prize");
+		this.child = child;
+		this.parent = parent;
 	}
 	
 	

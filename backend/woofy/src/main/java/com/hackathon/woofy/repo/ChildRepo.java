@@ -7,5 +7,5 @@ import com.hackathon.woofy.entity.Child;
 public interface ChildRepo extends CrudRepository<Child, Long>{
 
 	Child findByPhoneNumber(String phoneNumber);
-	
+	Child findByUsername(String username);
 }
