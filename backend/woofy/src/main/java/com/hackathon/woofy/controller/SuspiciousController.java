@@ -5,14 +5,22 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hackathon.woofy.entity.Child;
+import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.entity.Suspicious;
 import com.hackathon.woofy.request.SuspiciousRequest;
 import com.hackathon.woofy.response.BasicResponse;
+import com.hackathon.woofy.service.ChildService;
+import com.hackathon.woofy.service.ParentService;
 import com.hackathon.woofy.service.SuspiciousService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,15 +31,21 @@ import lombok.RequiredArgsConstructor;
 public class SuspiciousController {
 
 	private final SuspiciousService suspiciousService;
+	private final ParentService parentService;
+	private final ChildService childService;
 	
-	@PostMapping("/add")
-	public Object add(@RequestBody SuspiciousRequest suspiciousRequest) {
+	@PostMapping("")
+	public Object add(@RequestBody Map<String, Object> jsonRequest) {
 		final BasicResponse basicResponse = new BasicResponse();
+
+		Map<String, Object> suspiciousRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		Parent parent = parentService.findParent("01012341234");	// implement here when spring security ready
+		Child child = childService.findChild((String)suspiciousRequestObject.get("childUsername"));
 		
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			Suspicious result = new Suspicious(suspiciousRequest);
+			Suspicious result = new Suspicious(suspiciousRequestObject, parent, child);
 			suspiciousService.addSuspicious(result);
 			
 			map.put("suspicious", result);
@@ -46,5 +60,25 @@ public class SuspiciousController {
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
+	}
+
+	@GetMapping(value = "/{suspiciousId}")
+	public String getMissionInfo(@PathVariable(value="suspiciousId") Long suspiciousId) {
+		System.out.println(suspiciousId);
+		return "DEBUG";
+	}
+
+	@PutMapping(value = "/{suspiciousId}", produces = "application/json; charset=utf8")
+	public String putMissionInfo(@PathVariable(value="suspiciousId") Long suspiciousId, @RequestBody Map<String, Object> jsonRequest) {
+		Map<String, Object> missionRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		System.out.println(suspiciousId);
+		System.out.println(missionRequestObject);
+		return "DEBUG";
+	}
+	
+	@DeleteMapping(value = "/{suspiciousId}")
+	public String deleteMissionInfo(@PathVariable(value="suspiciousId") Long suspiciousId) {
+		System.out.println(suspiciousId);
+		return "DEBUG";
 	}
 }
