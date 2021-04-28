@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -58,11 +60,34 @@ public class ParentController {
 	
 	@PutMapping(value = "/{parentUsername}", produces = "application/json; charset=utf8")
 	public String modifyParentInfo(@PathVariable(value="parentUsername") String parentUserName, @RequestBody Map<String, Object> jsonRequest) {
-//		JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
+		// JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
 		Map<String, Object> parentObject = (Map<String, Object>) jsonRequest.get("dataBody");
 		System.out.println(parentObject);
 		
 		return "DEBUG";
 	}
+
+	@DeleteMapping(value = "/{parentUsername}")
+	public String deleteParentInfo(@PathVariable(value="parentUsername") String parentUserName) {
+		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
+		System.out.println(parentUserName);
+		
+		return "DEBUG";
+	}
 	
+	@PostMapping(value = "/code", produces = "application/json; charset=utf8")
+	public String createAndSendChildJoin(@RequestBody Map<String, Object> jsonRequest) {
+		Map<String, Object> joinRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		System.out.println(joinRequestObject);
+		
+		return "DEBUG";
+	}
+	
+	@GetMapping(value = "/{parentUsername}/child")
+	public String getParentChildList(@PathVariable(value="parentUsername") String parentUserName) {
+		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
+		System.out.println(parentUserName);
+		
+		return "DEBUG";
+	}
 }
