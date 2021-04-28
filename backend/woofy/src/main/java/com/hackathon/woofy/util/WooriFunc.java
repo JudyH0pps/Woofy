@@ -1,4 +1,4 @@
-package com.hackathon.woofy.controller;
+package com.hackathon.woofy.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,25 +21,24 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.hackathon.woofy.config.Keys;
 import com.hackathon.woofy.request.ApiDataBodyRequest;
 import com.hackathon.woofy.request.ApiDataHeaderRequest;
 import com.hackathon.woofy.response.ApiResponse;
 
-@RestController
-@RequestMapping("/api/v1/woori")
-public class ApiController {
+
+public class WooriFunc {
+	
+	private Keys keys;
 
 	// 주민등록번호 암호화
-	public static String getAES256EncStr(String BFNB) { // 왜 Request DTo에서 하면 안될가... 크흠..
+	public String getAES256EncStr(String BFNB) {
 
 		try {
 			String str = BFNB; // 암호화 대상 주민등록번호
-			String key = ""; // 시크릿 키
+			String key = keys.getWooriSecretkey(); // 시크릿 키
 			String iv = "0000000000000000";
 
 			Key keySpec;
@@ -67,7 +66,6 @@ public class ApiController {
 		}
 	}
 
-	@PostMapping("/auth")
 	public String getCellCerti() throws IOException, InvalidKeyException, NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 		StringBuilder urlBuilder = new StringBuilder("https://openapi.wooribank.com:444/oai/wb/v1/login/getCellCerti");
@@ -75,14 +73,13 @@ public class ApiController {
 
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty("appKey", "");
+		conn.setRequestProperty("appKey", keys.getWooriAppKey());
 		conn.setRequestProperty("Content-Type", "application/json");
 
 		// === Map -> JSON
 		Map<String, Object> map = new HashMap<>();
 
-		ApiDataHeaderRequest apiDataHeaderRequest = new ApiDataHeaderRequest(null, null, null, null, null, null, null,
-				null);
+		ApiDataHeaderRequest apiDataHeaderRequest = new ApiDataHeaderRequest(null, null, null, null, null, null, null, null);
 		map.put("dataHeader", apiDataHeaderRequest);
 
 		String enc = getAES256EncStr("123456"); // 주민등록번호 암호화
