@@ -39,7 +39,7 @@ public class ApiController {
 
 		try {
 			String str = BFNB; // 암호화 대상 주민등록번호
-			String key = "b2VlEuAbn3JvDKQtx97luj8Q11VZ7bRk"; // 시크릿 키
+			String key = ""; // 시크릿 키
 			String iv = "0000000000000000";
 
 			Key keySpec;
@@ -75,7 +75,7 @@ public class ApiController {
 
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("POST");
-		conn.setRequestProperty("appKey", "l7xxJlfHBlb9CA54LNh3tOBuDTDM12dG1N5T");
+		conn.setRequestProperty("appKey", "");
 		conn.setRequestProperty("Content-Type", "application/json");
 
 		// === Map -> JSON
