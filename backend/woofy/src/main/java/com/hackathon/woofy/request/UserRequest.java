@@ -13,5 +13,10 @@ public class UserRequest {
 	private String email;
 	private int birth;
 	private String phoneNumber;
+	
+	@Override
+	public String toString() {
+		return this.getPassword() + " " + this.getEmail() + " ";
+	}
 
 }
