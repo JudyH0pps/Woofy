@@ -38,7 +38,13 @@ public class Parent {
 	private String email;
 	private String phoneNumber;
 	private int birth;
-	private int account;
+	private String account;
+	
+	private String authNum; // 인증번호
+	private boolean isAuth; // 인증 했는지 확인
+	
+	
+	
 	
 //	@OneToMany(mappedBy = "parent")
 //	private List<Child> childs = new ArrayList<>(); // 읽기만 가능
