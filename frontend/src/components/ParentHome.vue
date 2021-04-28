@@ -10,6 +10,7 @@
       <p style="text-align: left">Woori 아들</p>
       <p style="text-align: right; font-size: 25px">40,000 원</p>
     </div>
+    <button class="plusButton">+</button>
   </div>
 </template>
 
@@ -30,12 +31,13 @@ export default {
 
 <style scoped>
 .parentHome {
-  width: 100%;
+  width: 95%;
   height: 100%;
+  margin: 0 auto;
 }
 
 .ParentAccountSummary {
-  width: 95%;
+  width: 100%;
   height: 25%;
   margin: 10px auto;
   box-shadow: 2px 2px 2px gray;
@@ -51,9 +53,9 @@ export default {
 }
 
 .ChildAccountSummary {
-  width: 95%;
+  width: 100%;
   height: 15%;
-  margin: 0 auto;
+  margin: 10px auto;
   box-shadow: 2px 2px 2px gray;
   background-color: rgb(232, 239, 255);
   display: flex;
@@ -64,5 +66,15 @@ export default {
   margin: 8px;
   color: rgb(63, 62, 62);
   font-size: bold;
+}
+
+.plusButton {
+  width: 100%;
+  height: 5%;
+  border: 0;
+  border-radius: 0 0 10px 10px;
+  font-size: 30px;
+  color: white;
+  background-color: gray;
 }
 </style>
