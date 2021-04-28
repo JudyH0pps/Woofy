@@ -2,6 +2,7 @@ package com.hackathon.woofy.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,9 +37,10 @@ public class Child {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private String email;
-	private int birth;
 	private String phoneNumber;
+	private String birthDay;	// format ì²˜ë¦¬ ê³¼ì •ì€ ê°œë°œ ë‹¨ê³„ì—ì„œ TBD
+	private String authNum; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
+	private boolean isAuth; // ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
@@ -50,20 +52,14 @@ public class Child {
 //	@OneToMany(mappedBy = "child")
 //	private List<Mission> missions = new ArrayList<>();
 	
-	// »ı¼º ¸Ş¼­µå
-	public Child() {}
-	
-	
-	
-	public Child(UserRequest userRequest, Parent parent) {
+	public Child(Map<String, Object> childObject, Parent parent) {
 		super();
-		this.username = userRequest.getUsername();
-		this.password = userRequest.getPassword();
-		this.firstName = userRequest.getFirstName();
-		this.lastName = userRequest.getLastName();
-		this.email = userRequest.getEmail();
-		this.phoneNumber = userRequest.getPhoneNumber();
-		this.birth = userRequest.getBirth();
+		this.username = (String)childObject.get("username");
+		this.password = (String)childObject.get("password");
+		this.firstName = (String)childObject.get("firstName");
+		this.lastName = (String)childObject.get("lastName");
+		this.phoneNumber = (String)childObject.get("phoneNumber");
+		this.birthDay = (String)childObject.get("birthDay");
 		this.parent = parent;
 	}
 
