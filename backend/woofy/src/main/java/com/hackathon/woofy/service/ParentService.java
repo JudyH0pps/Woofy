@@ -1,9 +1,12 @@
 package com.hackathon.woofy.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.repo.ParentRepo;
 
@@ -18,8 +21,9 @@ public class ParentService {
 	}
 	
 	@Transactional
-	public Parent findParent(String phoneNumber){
-		return parentRepo.findByPhoneNumber(phoneNumber);
+	public Parent findParent(String userName){
+		return parentRepo.findByUsername(userName);
 	}
+	
 	
 }

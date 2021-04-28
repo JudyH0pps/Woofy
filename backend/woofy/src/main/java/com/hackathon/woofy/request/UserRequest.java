@@ -1,5 +1,8 @@
 package com.hackathon.woofy.request;
 
+import com.hackathon.woofy.entity.Child;
+import com.hackathon.woofy.entity.Parent;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,13 +13,10 @@ public class UserRequest {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private String email;
-	private int birth;
+	private String birthDay;
 	private String phoneNumber;
+	private String email;
 	
-	@Override
-	public String toString() {
-		return this.getPassword() + " " + this.getEmail() + " ";
-	}
-
+	private Parent parent;
+	private Child child;
 }

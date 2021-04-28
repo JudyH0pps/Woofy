@@ -41,7 +41,7 @@ public class ChildController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			Parent parent = parentService.findParent("01012341234");	// 현단계에서는 디버그 전화번호를 사용한다.
+			Parent parent = parentService.findParent("username");	// 현단계에서는 디버그 전화번호를 사용한다. -> 조회할 때는 username으로 조회하기로 통일합시다
 			
 			Child child = new Child(childObject, parent);
 			Child result = childService.saveChild(child);

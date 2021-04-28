@@ -40,7 +40,7 @@ public class SuspiciousController {
 
 		Map<String, Object> suspiciousRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
 		Parent parent = parentService.findParent("01012341234");	// implement here when spring security ready
-		Child child = childService.findChild((String)suspiciousRequestObject.get("childUsername"));
+		Child child = childService.findByUsername((String)suspiciousRequestObject.get("childUsername"));
 		
 		try {
 			Map<String, Object> map = new HashMap<>();

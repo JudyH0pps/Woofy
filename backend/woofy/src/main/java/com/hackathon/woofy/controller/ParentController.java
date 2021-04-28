@@ -1,6 +1,7 @@
 package com.hackathon.woofy.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hackathon.woofy.entity.Child;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.request.UserRequest;
-import com.hackathon.woofy.response.ApiResponse;
 import com.hackathon.woofy.response.BasicResponse;
+import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.ParentService;
 
 @RestController
@@ -30,6 +32,7 @@ import com.hackathon.woofy.service.ParentService;
 public class ParentController {
 	
 	@Autowired ParentService parentService;
+	@Autowired ChildService childService;
 
 	@PostMapping(value = "", produces = "application/json; charset=utf8")
 	public Object signup(@RequestBody Map<String, Object> jsonRequest) {
@@ -58,6 +61,32 @@ public class ParentController {
 		}
 	}
 	
+	/*
+	@GetMapping("{username}/child")
+	public Object findChildByParent(@PathVariable(name = "username") String username) {
+		
+		final BasicResponse basicResponse = new BasicResponse();
+		
+		try {
+			Map<String, Object> map = new HashMap<>();
+
+			Parent parent = parentService.findParent(username);
+			List<Child> result = childService.findChild(parent.getId());
+			
+			map.put("parent", result);
+			basicResponse.dataBody = map;
+			basicResponse.data = "success";
+			basicResponse.status = true;
+			
+		} catch(Exception e) {
+			basicResponse.data = "error";
+			basicResponse.status = false;
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
+	}
+	*/
 	@PutMapping(value = "/{parentUsername}", produces = "application/json; charset=utf8")
 	public String modifyParentInfo(@PathVariable(value="parentUsername") String parentUserName, @RequestBody Map<String, Object> jsonRequest) {
 		// JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();

@@ -20,11 +20,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter @Setter
 @Table(name = "mission")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = { "id", "title", "parent", "child" })
 public class Mission {
 	
 	@Id
@@ -46,6 +47,19 @@ public class Mission {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
 	private Parent parent;
+	
+	public Mission() {}
+	
+	public Mission(MissionRequest missionRequest) {
+		super();
+		this.title = missionRequest.getTitle();
+		this.content = missionRequest.getContent();
+		this.prize = missionRequest.getPrize();
+		this.missionStatus = missionRequest.getMissionStatus();
+		this.parent = missionRequest.getParent();
+		this.child = missionRequest.getChild();
+	}	
+
 
 	public Mission(Map<String, Object> missionRequestObject, Parent parent, Child child) {
 		super();

@@ -25,8 +25,8 @@ import lombok.ToString;
 
 @Entity
 @Table(name = "parent")
-@Getter @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
 @ToString(of = { "id", "username", "password" })
 public class Parent {
 
@@ -45,6 +45,22 @@ public class Parent {
 	private String account;
 	private String authNum; // ������ȣ
 	private boolean isAuth; // ���� �ߴ��� Ȯ��
+	
+//	@OneToMany(mappedBy = "parent")
+//	private List<Child> childs = new ArrayList<>(); // �б⸸ ����
+	
+	public Parent() {};
+	
+	public Parent(UserRequest userRequest) {
+		super();
+		this.username = userRequest.getUsername();
+		this.password = userRequest.getPassword();
+		this.firstName = userRequest.getFirstName();
+		this.lastName = userRequest.getLastName();
+		this.email = userRequest.getEmail();
+		this.phoneNumber = userRequest.getPhoneNumber();
+		this.birthDay = userRequest.getBirthDay();
+	}
 
 	public Parent(Map<String, Object> parentObject) {
 		super();

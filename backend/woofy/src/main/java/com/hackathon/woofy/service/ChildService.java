@@ -1,12 +1,14 @@
 package com.hackathon.woofy.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.repo.ChildRepo;
-import com.hackathon.woofy.repo.ParentRepo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +24,8 @@ public class ChildService {
 		return childRepo.save(child);
 	}
 	
-	public Child findChild(String username) {
+	public Child findByUsername(String username) {
 		return childRepo.findByUsername(username);
 	}
+
 }
