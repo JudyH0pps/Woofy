@@ -1,5 +1,8 @@
 package com.hackathon.woofy.request;
 
+import com.hackathon.woofy.entity.Child;
+import com.hackathon.woofy.entity.Parent;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +17,6 @@ public class UserRequest {
 	private int birth;
 	private String phoneNumber;
 
+	private Parent parent;
+	private Child child;
 }

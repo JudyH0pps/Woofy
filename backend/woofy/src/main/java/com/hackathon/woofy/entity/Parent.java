@@ -22,7 +22,6 @@ import lombok.ToString;
 @Table(name = "parent")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = { "id", "username", "password" })
 public class Parent {
 
@@ -48,6 +47,8 @@ public class Parent {
 	
 //	@OneToMany(mappedBy = "parent")
 //	private List<Child> childs = new ArrayList<>(); // 읽기만 가능
+	
+	public Parent() {};
 
 	public Parent(UserRequest userRequest) {
 		super();

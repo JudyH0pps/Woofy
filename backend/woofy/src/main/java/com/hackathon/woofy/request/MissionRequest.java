@@ -17,4 +17,12 @@ public class MissionRequest {
 	
 	private Parent parent;
 	private Child child;
+	
+	@Override
+	public String toString() {
+		return "MissionRequest [title=" + title + ", content=" + content + ", price=" + price + ", missionStatus="
+				+ missionStatus + ", parent=" + parent + ", child=" + child + "]";
+	}
+	
+	
 }

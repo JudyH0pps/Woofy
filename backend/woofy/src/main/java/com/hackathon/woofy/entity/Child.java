@@ -24,7 +24,7 @@ import lombok.ToString;
 @Table(name = "child")
 @Getter
 @Setter
-@ToString(of = { "id", "username", "password" })
+@ToString(of = { "id", "username", "password", "parent" })
 public class Child {
 
 	@Id
@@ -53,8 +53,6 @@ public class Child {
 	// 생성 메서드
 	public Child() {}
 	
-	
-	
 	public Child(UserRequest userRequest, Parent parent) {
 		super();
 		this.username = userRequest.getUsername();
@@ -66,5 +64,7 @@ public class Child {
 		this.birth = userRequest.getBirth();
 		this.parent = parent;
 	}
+	
+	
 
 }

@@ -36,10 +36,8 @@ public class ChildController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			// 일단 테스트용 부모
-			Parent parent = parentService.findParent("01012341234");
 			
-			Child child = new Child(userRequest, parent);
+			Child child = new Child(userRequest, userRequest.getParent());
 			Child result = childService.saveChild(child);
 			
 			map.put("child", result);

@@ -6,4 +6,10 @@ public class BasicResponse {
 	public String data;
 	public Object dataHeader;
 	public Object dataBody;
+	
+	@Override
+	public String toString() {
+		return "BasicResponse [status=" + status + ", data=" + data + ", dataHeader=" + dataHeader + ", dataBody="
+				+ dataBody + "]";
+	}
 }
