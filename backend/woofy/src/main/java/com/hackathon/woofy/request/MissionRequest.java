@@ -12,7 +12,7 @@ public class MissionRequest {
 	
 	private String title;
 	private String content;
-	private int price;
+	private int prize;
 	private MissionStatus missionStatus;
 	
 	private Parent parent;
@@ -20,9 +20,8 @@ public class MissionRequest {
 	
 	@Override
 	public String toString() {
-		return "MissionRequest [title=" + title + ", content=" + content + ", price=" + price + ", missionStatus="
+		return "MissionRequest [title=" + title + ", content=" + content + ", prize=" + prize + ", missionStatus="
 				+ missionStatus + ", parent=" + parent + ", child=" + child + "]";
 	}
-	
 	
 }

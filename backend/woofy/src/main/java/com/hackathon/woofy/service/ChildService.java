@@ -27,11 +27,5 @@ public class ChildService {
 	public Child findByUsername(String username) {
 		return childRepo.findByUsername(username);
 	}
-	
-	/*
-	@Transactional
-	public List<Child> findChild(Long parentId){
-		return childRepo.findByParent(parentId);
-	}
-	*/
+
 }

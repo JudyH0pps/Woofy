@@ -13,10 +13,10 @@ public class UserRequest {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private String email;
-	private int birth;
+	private String birthDay;
 	private String phoneNumber;
-
+	private String email;
+	
 	private Parent parent;
 	private Child child;
 }

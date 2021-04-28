@@ -1,14 +1,19 @@
 package com.hackathon.woofy.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.hackathon.woofy.request.UserRequest;
 
@@ -26,7 +31,7 @@ import lombok.ToString;
 public class Parent {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "parent_id")
 	private Long id;
 
@@ -36,20 +41,16 @@ public class Parent {
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	private int birth;
+	private String birthDay;	// format ì²˜ë¦¬ ê³¼ì •ì€ ê°œë°œ ë‹¨ê³„ì—ì„œ TBD
 	private String account;
-	
-	private String authNum; // ÀÎÁõ¹øÈ£
-	private boolean isAuth; // ÀÎÁõ Çß´ÂÁö È®ÀÎ
-	
-	
-	
+	private String authNum; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
+	private boolean isAuth; // ï¿½ï¿½ï¿½ï¿½ ï¿½ß´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
 	
 //	@OneToMany(mappedBy = "parent")
-//	private List<Child> childs = new ArrayList<>(); // ÀĞ±â¸¸ °¡´É
+//	private List<Child> childs = new ArrayList<>(); // ï¿½Ğ±â¸¸ ï¿½ï¿½ï¿½ï¿½
 	
 	public Parent() {};
-
+	
 	public Parent(UserRequest userRequest) {
 		super();
 		this.username = userRequest.getUsername();
@@ -58,7 +59,19 @@ public class Parent {
 		this.lastName = userRequest.getLastName();
 		this.email = userRequest.getEmail();
 		this.phoneNumber = userRequest.getPhoneNumber();
-		this.birth = userRequest.getBirth();
+		this.birthDay = userRequest.getBirthDay();
+	}
+
+	public Parent(Map<String, Object> parentObject) {
+		super();
+		this.username = (String)parentObject.get("username");
+		this.password = (String)parentObject.get("password");
+		this.firstName = (String)parentObject.get("firstName");
+		this.lastName = (String)parentObject.get("lastName");
+		this.email = (String)parentObject.get("email");
+		this.phoneNumber = (String)parentObject.get("phoneNumber");
+		this.birthDay = (String)parentObject.get("birthDay");
+		this.account = (String)parentObject.get("accountNumber");
 	}
 
 //	public void addChild(Child child) {
@@ -66,4 +79,7 @@ public class Parent {
 //		childs.add(child);
 //	}
 
+//	@OneToMany(mappedBy = "parent")
+//	private List<Child> childs = new ArrayList<>(); // ï¿½Ğ±â¸¸ ï¿½ï¿½ï¿½ï¿½
+	
 }

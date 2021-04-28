@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,12 +29,11 @@ import com.hackathon.woofy.request.SuspiciousRequest;
 public class Suspicious {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "suspicious_id")
 	private Long id;
 
 	private String location;
-
 	private String startTime;
 	private String endTime;
 
@@ -44,13 +45,13 @@ public class Suspicious {
 	@JoinColumn(name = "parent_id")
 	private Parent parent;
 
-	public Suspicious(SuspiciousRequest suspiciousRequest) {
+	public Suspicious(Map<String, Object> suspiciousRequestObject, Parent parent, Child child) {
 		super();
-		this.location = suspiciousRequest.getLocation();
-		this.startTime = suspiciousRequest.getStartTime();
-		this.endTime = suspiciousRequest.getEndTime();
-		this.child = suspiciousRequest.getChild();
-		this.parent = suspiciousRequest.getParent();
+		this.location = (String)suspiciousRequestObject.get("location");
+		this.startTime = (String)suspiciousRequestObject.get("startTime");
+		this.endTime = (String)suspiciousRequestObject.get("endTime");
+		this.child = child;
+		this.parent = parent;
 	}
 
 }

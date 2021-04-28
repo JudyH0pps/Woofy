@@ -29,4 +29,16 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+}
 </style>

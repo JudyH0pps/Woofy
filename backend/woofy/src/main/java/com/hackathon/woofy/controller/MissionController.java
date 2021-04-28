@@ -38,7 +38,7 @@ public class MissionController {
 
 
 	/**
-	 * ºÎ¸ğ°¡ ¸ğµç ÀÚ½ÄÀÇ ¹Ì¼Ç »óÈ²À» Á¶È¸
+	 * ë¶€ëª¨ê°€ ëª¨ë“  ìì‹ì˜ ë¯¸ì…˜ ìƒí™©ì„ ì¡°íšŒ
 	 * @param missionRequest
 	 * @return
 	 */
@@ -77,7 +77,7 @@ public class MissionController {
 	}
 	
 	/**
-	 * ºÎ¸ğ°¡ ÇÑ ÀÚ½ÄÀÇ ¹Ì¼Ç »óÈ²À» Á¶È¸
+	 * ë¶€ëª¨ê°€ í•œ ìì‹ì˜ ë¯¸ì…˜ ìƒí™©ì„ ì¡°íšŒ
 	 * @param parent
 	 * @param child
 	 * @return
@@ -112,7 +112,7 @@ public class MissionController {
 	}
 	
 	/**
-	 * ºÎ¸ğ°¡ ÀÚ½ÄÀÇ ¹Ì¼ÇÀ» ÀúÀå
+	 * ë¶€ëª¨ê°€ ìì‹ì˜ ë¯¸ì…˜ì„ ì €ì¥
 	 * @param missionRequest
 	 * @return
 	 */
@@ -141,7 +141,7 @@ public class MissionController {
 	}
 	
 	/**
-	 * ºÎ¸ğ°¡ ÀÚ½ÄÀÇ ¹Ì¼Ç ¼öÁ¤
+	 * ë¶€ëª¨ê°€ ìì‹ì˜ ë¯¸ì…˜ ìˆ˜ì •
 	 * @param missionRequest
 	 * @return
 	 */
@@ -156,7 +156,7 @@ public class MissionController {
 			Mission result = missionService.findById(mission_id);
 			result.setTitle(missionRequest.getTitle());
 			result.setContent(missionRequest.getContent());
-			result.setPrice(missionRequest.getPrice());
+			result.setPrize(missionRequest.getPrize());
 			result.setMissionStatus(missionRequest.getMissionStatus());
 
 			missionService.saveMission(result);
@@ -195,5 +195,35 @@ public class MissionController {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
 	}
+	
+	/*
+	 @GetMapping(value = "/{missionId}")
+	public String getMissionInfo(@PathVariable(value="missionId") Long missionId) {
+		System.out.println(missionId);
+		return "DEBUG";
+	}
+	
+	@PostMapping(value = "/{missionId}", produces = "application/json; charset=utf8")
+	public String updateMissionStatus(@PathVariable(value="missionId") Long missionId, @RequestBody Map<String, Object> jsonRequest) {
+		Map<String, Object> missionRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		System.out.println(missionId);
+		System.out.println(missionRequestObject);
+		return "DEBUG";
+	}
+	
+	@PutMapping(value = "/{missionId}", produces = "application/json; charset=utf8")
+	public String putMissionInfo(@PathVariable(value="missionId") Long missionId, @RequestBody Map<String, Object> jsonRequest) {
+		Map<String, Object> missionRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		System.out.println(missionId);
+		System.out.println(missionRequestObject);
+		return "DEBUG";
+	}
+	
+	@DeleteMapping(value = "/{missionId}")
+	public String deleteMissionInfo(@PathVariable(value="missionId") Long missionId) {
+		System.out.println(missionId);
+		return "DEBUG";
+	}
+	 */
 
 }
