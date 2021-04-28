@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ParentHome from "@/components/ParentHome.vue";
+import ParentChildDetail from "@/components/ParentChildDetail.vue";
 import { authRouters } from "@/router/auth";
 
 Vue.use(VueRouter);
@@ -24,6 +25,11 @@ const routes = [
         path: "/ParentHome",
         name: "ParentHome",
         component: ParentHome,
+    },
+    {
+        path: "/ParentChildDetail",
+        name: "ParentChildDetail",
+        component: ParentChildDetail,
     },
     ...authRouters,
 ];

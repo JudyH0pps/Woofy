@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <p>parentchild</p>
-    <router-link :to="{ name: 'ParentChildDetail' }">asdasdsad</router-link>
-  </div>
+  <div><p>gogogogo</p></div>
 </template>
 
 <script>
