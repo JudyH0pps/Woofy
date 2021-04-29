@@ -34,18 +34,10 @@ import com.hackathon.woofy.request.wooriApi.ExecuteWooriAcctToWooriAcctiRequestB
 import com.hackathon.woofy.request.wooriApi.GetAccBasicInfoRequestBody;
 import com.hackathon.woofy.request.wooriApi.GetCellCertiRequestBody;
 import com.hackathon.woofy.request.wooriApi.WooriApiRequestHeader;
-import com.hackathon.woofy.response.ApiResponse;
-import com.hackathon.woofy.service.ApiService;
 
 public class WooriFunc {
 
    private Keys keys = new Keys();
-   private ApiService<Map<String, Object>> apiService;
-
-   @Autowired
-   public WooriFunc() {
-      this.apiService = new ApiService<>(new RestTemplate());
-   }
 
    private String getAES256EncStr(String BFNB) {
 
