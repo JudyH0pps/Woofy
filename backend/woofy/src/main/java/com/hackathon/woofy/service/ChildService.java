@@ -34,4 +34,9 @@ public class ChildService {
 		return childRepo.findById(id).get();
 	}
 	
+	@Transactional
+	public void deleteChild(Long id) {
+		childRepo.deleteById(id);
+	}
+	
 }

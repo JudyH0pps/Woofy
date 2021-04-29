@@ -12,9 +12,12 @@ import com.hackathon.woofy.entity.Suspicious;
 
 public interface SuspiciousRepo extends JpaRepository<Suspicious, Long>{
 
-	@Query("select s from Suspicious s where s.parent = :parent_id ")
+	@Query("select s from Suspicious s where s.child.parent = :parent_id ")
 	List<Suspicious> findByParent(@Param("parent_id") Parent parent);
 	
-	@Query("select s from Suspicious s where s.parent = :parent_id and s.child = :child_id")
+//	@Query("select s from Suspicious s where s.parent = :parent_id and s.child = :child_id")
+//	List<Suspicious> findByParentAndChild(@Param("parent_id") Parent parent, @Param("child_id") Child child);
+	
+	@Query("select s from Suspicious s where s.child = :child_id and s.child.parent = :parent_id")
 	List<Suspicious> findByParentAndChild(@Param("parent_id") Parent parent, @Param("child_id") Child child);
 }

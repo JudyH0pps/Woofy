@@ -52,11 +52,9 @@ public class SuspiciousController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			Parent p = parentService.findById(suspiciousRequest.getParent().getId());
 			Child c = childService.findById(suspiciousRequest.getChild().getId());
 			
 			Suspicious result = new Suspicious(suspiciousRequest);
-			result.setParent(p);
 			result.setChild(c);
 			
 			suspiciousService.saveSuspicious(result);
@@ -191,6 +189,7 @@ public class SuspiciousController {
 		}
 	}
 	
+	
 	/**
 	 * 부모가 한 자식의 의심 데이터 조회
 	 * @param c_username
@@ -204,8 +203,9 @@ public class SuspiciousController {
 			Map<String, Object> map = new HashMap<>();
 			
 			Child c = childService.findByUsername(c_username);
+			Parent p = c.getParent();
 			
-			List<Suspicious> result = suspiciousService.findByParentAndChild(c.getParent(), c);
+			List<Suspicious> result = suspiciousService.findByParentAndChild(p, c);
 
 			map.put("suspicious", result);
 			basicResponse.dataBody = map;
