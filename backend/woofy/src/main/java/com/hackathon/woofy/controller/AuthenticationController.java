@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
-	WooriFunc wooriFunc;
+	WooriFunc wooriFunc = new WooriFunc();
 	
 	@PostMapping("/getCellCerti")
 	public String getCellCerti(@RequestBody Map<String, Object> jsonRequest) {
@@ -46,14 +46,6 @@ public class AuthenticationController {
 		System.out.println(cellCretiRequestBody);
 		
 		String result = "";
-		
-		try {
-			result = wooriFunc.executeCellCerti("901121", "245354", "112100", "MG97792233387924034995");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			result = "DEBUG";
-		}
 		
 		return result;
 	}
