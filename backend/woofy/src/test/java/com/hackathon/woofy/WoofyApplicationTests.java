@@ -15,11 +15,10 @@ import com.hackathon.woofy.util.WooriFunc;
 
 @SpringBootTest
 class WoofyApplicationTests {
-	private final WooriFunc wooriFunc = new WooriFunc(); 
-	
+
 	@Test
-	void wooriApiTest01() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {
-		System.out.println(wooriFunc.getCellCerti());
+	void dummyTest() {
+		System.out.println("HELLO WORLD!");
 	}
 
 }
