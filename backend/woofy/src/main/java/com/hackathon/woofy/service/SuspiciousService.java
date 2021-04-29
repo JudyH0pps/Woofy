@@ -15,7 +15,7 @@ public class SuspiciousService {
 	private final SuspiciousRepo suspiciousRepo;
 	
 	@Transactional
-	public void addSuspicious(Suspicious suspicious) {
+	public void saveSuspicious(Suspicious suspicious) {
 		suspiciousRepo.save(suspicious);
 	}
 	

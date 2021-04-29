@@ -3,6 +3,7 @@ package com.hackathon.woofy.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,19 +35,20 @@ public class SuspiciousController {
 	private final ParentService parentService;
 	private final ChildService childService;
 	
-	@PostMapping("")
+	@PostMapping(value = "", produces = "application/json; charset=utf8")
 	public Object add(@RequestBody Map<String, Object> jsonRequest) {
 		final BasicResponse basicResponse = new BasicResponse();
-
+		
 		Map<String, Object> suspiciousRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
-		Parent parent = parentService.findParent("01012341234");	// implement here when spring security ready
-		Child child = childService.findByUsername((String)suspiciousRequestObject.get("childUsername"));
+		
+		Parent parent = parentService.findParent("p_username");	// implement here when spring security ready
+		Child child = childService.findByUsername("c_username");
 		
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
 			Suspicious result = new Suspicious(suspiciousRequestObject, parent, child);
-			suspiciousService.addSuspicious(result);
+			suspiciousService.saveSuspicious(result);
 			
 			map.put("suspicious", result);
 			basicResponse.dataBody = map;
@@ -62,8 +64,14 @@ public class SuspiciousController {
 		}
 	}
 
+	/**
+	 * 자식의 의심정보 조회
+	 * @param suspiciousId
+	 * @return
+	 */
 	@GetMapping(value = "/{suspiciousId}")
 	public String getMissionInfo(@PathVariable(value="suspiciousId") Long suspiciousId) {
+		
 		System.out.println(suspiciousId);
 		return "DEBUG";
 	}

@@ -22,7 +22,16 @@ public class WooriAPITest {
 	void getCellCertiTest() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {
 		wooriFunc.getCellCerti("1", "01012345667", "Y", "홍길동", "111121", "1234567");
 	}
-
+	
+	/*
+	@Test
+	void WooriTest() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {
+		System.out.println(wooriFunc.Test());
+	}
+	
+	*/
+/*
+	
 	@Test
 	void executeCellCertiTest() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {
 		wooriFunc.executeCellCerti("901121", "245354", "112100", "MG97792233387924034995");
@@ -30,7 +39,7 @@ public class WooriAPITest {
 
 	@Test
 	void getAccBasicInfoTest() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {
-		wooriFunc.getAccBasicInfo("1002123456789", "20210220", "P", "KRW");
+		wooriFunc.getAccBasicInfo("1002123456789", "20210220", "KRW", "P");
 	}
 
 	@Test
@@ -42,6 +51,6 @@ public class WooriAPITest {
 	void executeWooriAcctToOtherAcctTest() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {
 		wooriFunc.executeWooriAcctToWooriAcct("1002123456789", "500000", "081", "110123456789", "월급여");
 	}
-
+	 */
 	
 }
