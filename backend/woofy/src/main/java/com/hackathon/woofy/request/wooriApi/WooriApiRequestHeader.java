@@ -1,27 +1,11 @@
-package com.hackathon.woofy.request;
-
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.tomcat.util.codec.binary.Base64;
+package com.hackathon.woofy.request.wooriApi;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter
-@Setter
-public class ApiDataHeaderRequest {
+@Getter @Setter @ToString
+public class WooriApiRequestHeader {
 
 	private String UTZPE_CNCT_IPAD;
 	private String UTZPE_CNCT_MCHR_UNQ_ID;
@@ -32,7 +16,7 @@ public class ApiDataHeaderRequest {
 	private String UTZ_MCHR_MDL_NM;
 	private String UTZ_MCHR_APP_VER_NM;
 	
-	public ApiDataHeaderRequest(String uTZPE_CNCT_IPAD, String uTZPE_CNCT_MCHR_UNQ_ID, String uTZPE_CNCT_TEL_NO_TXT,
+	public WooriApiRequestHeader(String uTZPE_CNCT_IPAD, String uTZPE_CNCT_MCHR_UNQ_ID, String uTZPE_CNCT_TEL_NO_TXT,
 			String uTZPE_CNCT_MCHR_IDF_SRNO, String uTZ_MCHR_OS_DSCD, String uTZ_MCHR_OS_VER_NM, String uTZ_MCHR_MDL_NM,
 			String uTZ_MCHR_APP_VER_NM) {
 		super();
