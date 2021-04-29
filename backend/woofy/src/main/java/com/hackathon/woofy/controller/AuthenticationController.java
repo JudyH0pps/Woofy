@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
-	WooriFunc wooriFunc = new WooriFunc();
+	WooriFunc wooriFunc;
 	
 	@PostMapping("/getCellCerti")
 	public String getCellCerti(@RequestBody Map<String, Object> jsonRequest) {
