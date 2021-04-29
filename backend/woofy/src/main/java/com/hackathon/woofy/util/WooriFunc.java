@@ -34,218 +34,181 @@ import com.hackathon.woofy.request.wooriApi.ExecuteWooriAcctToWooriAcctiRequestB
 import com.hackathon.woofy.request.wooriApi.GetAccBasicInfoRequestBody;
 import com.hackathon.woofy.request.wooriApi.GetCellCertiRequestBody;
 import com.hackathon.woofy.request.wooriApi.WooriApiRequestHeader;
-import com.hackathon.woofy.response.ApiResponse;
-import com.hackathon.woofy.service.ApiService;
-
 
 public class WooriFunc {
-	
-	private Keys keys = new Keys();
-	private ApiService<Map<String, Object>> apiService;
 
-    @Autowired
-    public WooriFunc() {
-        this.apiService = new ApiService<>(new RestTemplate());
-    }
+   private Keys keys = new Keys();
 
-	private String getAES256EncStr(String BFNB) {
+   private String getAES256EncStr(String BFNB) {
 
-		try {
-			String str = BFNB;
-			String key = keys.getWooriSecretkey();
-			String iv = "0000000000000000";
-			
-			Key keySpec;
-			byte[] keyBytes = new byte[key.length()];
-			byte[] b = key.getBytes("UTF-8");
-			int len = b.length;
+      try {
+         String str = BFNB;
+         String key = keys.getWooriSecretkey();
+         String iv = "0000000000000000";
 
-			if (len > keyBytes.length) {
-				len = keyBytes.length;
-			}
+         Key keySpec;
+         byte[] keyBytes = new byte[key.length()];
+         byte[] b = key.getBytes("UTF-8");
+         int len = b.length;
 
-			System.arraycopy(b, 0, keyBytes, 0, len);
-			keySpec = new SecretKeySpec(keyBytes, "AES");
-			
-			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
-			
-			byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
-			String encStr = new String(Base64.encodeBase64(encrypted));
+         if (len > keyBytes.length) {
+            len = keyBytes.length;
+         }
 
-			return encStr.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return BFNB;
-		}
-	}
-	
-	private String WooriAPIRequest(String targetURL, Map<String, Object> targetRequestBodyMap) 
-		throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, 
-		InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-		
-		StringBuilder urlBuilder = new StringBuilder(targetURL);
-		URL url = new URL(urlBuilder.toString());
-		
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		
-		conn.setRequestMethod("POST");
-		conn.setRequestProperty("appKey", keys.getWooriAppKey());
-		conn.setRequestProperty("Content-Type", "application/json");
-				
-		Gson gson = new Gson();
-		String json = gson.toJson(targetRequestBodyMap);
-		byte[] body = json.getBytes();
-		
-		System.out.println(body);
-		
-		conn.setFixedLengthStreamingMode(body.length);
-		conn.setDoOutput(true);
+         System.arraycopy(b, 0, keyBytes, 0, len);
+         keySpec = new SecretKeySpec(keyBytes, "AES");
 
-		OutputStream out = conn.getOutputStream();
-		out.write(body);
+         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+         c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
 
-		BufferedReader rd;
-		if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-			rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		} else {
-			rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-		}
+         byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
+         String encStr = new String(Base64.encodeBase64(encrypted));
 
-		StringBuilder sb = new StringBuilder();
-		String line;
-		
-		while ((line = rd.readLine()) != null) {
-			sb.append(line);
-		}
+         return encStr.toString();
+      } catch (Exception e) {
+         e.printStackTrace();
+         return BFNB;
+      }
+   }
 
-		rd.close();
-		conn.disconnect();
+   private String WooriAPIRequest(String targetURL, Map<String, Object> targetRequestBodyMap)
+         throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+         InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
-		System.out.println("FROM: " + targetURL + " " + sb.toString());
+      StringBuilder urlBuilder = new StringBuilder(targetURL);
+      URL url = new URL(urlBuilder.toString());
 
-		// String -> JSON
-		return sb.toString();
-	}
-	
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-	public String getCellCerti(String COMC_DIS, String HP_NO, String HP_CRTF_AGR_YN, String FNM, String RRNO_BFNB, String ENCY_RRNO_LSNM) 
-		throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, 
-		InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-		
-		String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/login/getCellCerti";
-		String enc = getAES256EncStr(ENCY_RRNO_LSNM);
+      conn.setRequestMethod("POST");
+      conn.setRequestProperty("appKey", keys.getWooriAppKey());
+      conn.setRequestProperty("Content-Type", "application/json");
 
-		WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader(null, null, null, null, null, null, null, null);
-		GetCellCertiRequestBody getCellCertiRequestBody = new GetCellCertiRequestBody(COMC_DIS, HP_NO, HP_CRTF_AGR_YN, FNM, RRNO_BFNB, enc);
+      Gson gson = new Gson();
+      String json = gson.toJson(targetRequestBodyMap);
+      byte[] body = json.getBytes();
 
-		Map<String, Object> targetRequestBodyMap = new HashMap<>();
+      System.out.println(body);
 
-		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
-		targetRequestBodyMap.put("dataBody", getCellCertiRequestBody);
-		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("appKey", keys.getWooriAppKey());
-		httpHeaders.add("Content-Type", "application/json");
-		
-		System.out.println(apiService.post(targetURL, httpHeaders, targetRequestBodyMap).toString());
-				
-		return "DEBUG";
-	}
-	
-	public String executeCellCerti(String RRNO_BFNB, String ENCY_RRNO_LSNM, String ENCY_SMS_CRTF_NO, String CRTF_UNQ_NO) 
-			throws IOException, InvalidKeyException, NoSuchAlgorithmException,	NoSuchPaddingException, 
-			InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+      conn.setFixedLengthStreamingMode(body.length);
+      conn.setDoOutput(true);
 
-		String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/login/executeCellCerti";
-		String enc = getAES256EncStr(ENCY_RRNO_LSNM);
+      OutputStream out = conn.getOutputStream();
+      out.write(body);
 
-		WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader(null, null, null, null, null, null, null, null);
-		ExecuteCellCertiRequestBody executeCellCertiRequestBody = new ExecuteCellCertiRequestBody(RRNO_BFNB, enc, ENCY_SMS_CRTF_NO, CRTF_UNQ_NO);
+      BufferedReader rd;
+      if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+         rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      } else {
+         rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+      }
 
-		Map<String, Object> targetRequestBodyMap = new HashMap<>();
+      StringBuilder sb = new StringBuilder();
+      String line;
 
-		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
-		targetRequestBodyMap.put("dataBody", executeCellCertiRequestBody);
-		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("appKey", keys.getWooriAppKey());
-		httpHeaders.add("Content-Type", "application/json");
-		
-		System.out.println(apiService.post(targetURL, httpHeaders, null).toString());
-		
-		return "DEBUG";
-	}
+      while ((line = rd.readLine()) != null) {
+         sb.append(line);
+      }
 
-	public String getAccBasicInfo(String INQ_ACNO, String INQ_BAS_DT, String ACCT_KND, String INQ_CUCD) 
-			throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, 
-			InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+      rd.close();
+      conn.disconnect();
 
-		String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/finance/getAccBasicInfo";
-		
-		WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader(null, null, null, null, null, null, null, null);
-		GetAccBasicInfoRequestBody getAccBasicInfoRequestBody = new GetAccBasicInfoRequestBody(INQ_ACNO, INQ_BAS_DT, ACCT_KND, INQ_CUCD);
+      System.out.println("FROM: " + targetURL + " " + sb.toString());
 
-		Map<String, Object> targetRequestBodyMap = new HashMap<>();
+      // String -> JSON
+      return sb.toString();
+   }
 
-		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
-		targetRequestBodyMap.put("dataBody", getAccBasicInfoRequestBody);
-		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("appKey", keys.getWooriAppKey());
-		httpHeaders.add("Content-Type", "application/json");
-		
-		System.out.println(apiService.post(targetURL, httpHeaders, targetRequestBodyMap).toString());
-		
-		return "DEBUG";
-	}
-	
-	public String executeWooriAcctToWooriAcct(String WDR_ACNO, String TRN_AM, String RCV_BKCD, String RCV_ACNO, String PTN_PBOK_PRNG_TXT) 
-			throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, 
-			InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+   public String getCellCerti(String COMC_DIS, String HP_NO, String HP_CRTF_AGR_YN, String FNM, String RRNO_BFNB,
+         String ENCY_RRNO_LSNM) throws IOException, InvalidKeyException, NoSuchAlgorithmException,
+         NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
 
-		String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/trans/executeWooriAcctToWooriAcct";
-	
-		WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader(null, null, null, null, null, null, null, null);
-		ExecuteWooriAcctToWooriAcctiRequestBody executeWooriAcctToWooriAcctiRequestBody = 
-				new ExecuteWooriAcctToWooriAcctiRequestBody(WDR_ACNO, TRN_AM, RCV_BKCD, RCV_ACNO, PTN_PBOK_PRNG_TXT);
-		
-		Map<String, Object> targetRequestBodyMap = new HashMap<>();
+      String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/login/getCellCerti";
+      String enc = getAES256EncStr(ENCY_RRNO_LSNM);
 
-		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
-		targetRequestBodyMap.put("dataBody", executeWooriAcctToWooriAcctiRequestBody);
-		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("appKey", keys.getWooriAppKey());
-		httpHeaders.add("Content-Type", "application/json");
-		
-		System.out.println(apiService.post(targetURL, httpHeaders, targetRequestBodyMap).toString());
-		
-		return "DEBUG";
-	}
-	
-	public String executeWooriAcctToOtherAcct(String WDR_ACNO, String TRN_AM, String RCV_BKCD, String RCV_ACNO, String PTN_PBOK_PRNG_TXT) 
-			throws IOException, InvalidKeyException, NoSuchAlgorithmException, 	NoSuchPaddingException, 
-			InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+      WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader("", "", "", "", "", "", "", "");
+      GetCellCertiRequestBody getCellCertiRequestBody = new GetCellCertiRequestBody(COMC_DIS, HP_NO, HP_CRTF_AGR_YN,
+            FNM, RRNO_BFNB, enc);
 
-		String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/trans/executeWooriAcctToOtherAcct";
-		
-		WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader(null, null, null, null, null, null, null, null);
-		ExecuteWooriAcctToOtherAcctRequestBody executeWooriAcctToOtherAcctRequestBody = 
-				new ExecuteWooriAcctToOtherAcctRequestBody(WDR_ACNO, TRN_AM, RCV_BKCD, RCV_ACNO, PTN_PBOK_PRNG_TXT);
+      Map<String, Object> targetRequestBodyMap = new HashMap<>();
 
-		Map<String, Object> targetRequestBodyMap = new HashMap<>();
+      targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
+      targetRequestBodyMap.put("dataBody", getCellCertiRequestBody);
 
-		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
-		targetRequestBodyMap.put("dataBody", executeWooriAcctToOtherAcctRequestBody);
-		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("appKey", keys.getWooriAppKey());
-		httpHeaders.add("Content-Type", "application/json");
-		
-		System.out.println(apiService.post(targetURL, httpHeaders, targetRequestBodyMap).toString());
-		
-		return "DEBUG";
-	}
-	
+      return WooriAPIRequest(targetURL, targetRequestBodyMap);
+   }
+
+   public String executeCellCerti(String RRNO_BFNB, String ENCY_RRNO_LSNM, String ENCY_SMS_CRTF_NO, String CRTF_UNQ_NO)
+         throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+         InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+
+      String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/login/executeCellCerti";
+      String enc = getAES256EncStr(ENCY_RRNO_LSNM);
+
+      WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader("", "", "", "", "", "", "", "");
+      ExecuteCellCertiRequestBody executeCellCertiRequestBody = new ExecuteCellCertiRequestBody(RRNO_BFNB, enc,
+            ENCY_SMS_CRTF_NO, CRTF_UNQ_NO);
+
+      Map<String, Object> targetRequestBodyMap = new HashMap<>();
+
+      targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
+      targetRequestBodyMap.put("dataBody", executeCellCertiRequestBody);
+
+      return WooriAPIRequest(targetURL, targetRequestBodyMap);
+   }
+
+   public String getAccBasicInfo(String INQ_ACNO, String INQ_BAS_DT, String ACCT_KND, String INQ_CUCD)
+         throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+         InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+
+      String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/finance/getAccBasicInfo";
+
+      WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader("", "", "", "", "", "", "", "");
+      GetAccBasicInfoRequestBody getAccBasicInfoRequestBody = new GetAccBasicInfoRequestBody(INQ_ACNO, INQ_BAS_DT,
+            ACCT_KND, INQ_CUCD);
+
+      Map<String, Object> targetRequestBodyMap = new HashMap<>();
+
+      targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
+      targetRequestBodyMap.put("dataBody", getAccBasicInfoRequestBody);
+      
+      return WooriAPIRequest(targetURL, targetRequestBodyMap);
+   }
+
+   public String executeWooriAcctToWooriAcct(String WDR_ACNO, String TRN_AM, String RCV_BKCD, String RCV_ACNO,
+         String PTN_PBOK_PRNG_TXT) throws IOException, InvalidKeyException, NoSuchAlgorithmException,
+         NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+
+      String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/trans/executeWooriAcctToWooriAcct";
+
+      WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader("", "", "", "", "", "", "", "");
+      ExecuteWooriAcctToWooriAcctiRequestBody executeWooriAcctToWooriAcctiRequestBody = new ExecuteWooriAcctToWooriAcctiRequestBody(
+            WDR_ACNO, TRN_AM, RCV_BKCD, RCV_ACNO, PTN_PBOK_PRNG_TXT);
+
+      Map<String, Object> targetRequestBodyMap = new HashMap<>();
+
+      targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
+      targetRequestBodyMap.put("dataBody", executeWooriAcctToWooriAcctiRequestBody);
+      
+      return WooriAPIRequest(targetURL, targetRequestBodyMap);
+   }
+
+   public String executeWooriAcctToOtherAcct(String WDR_ACNO, String TRN_AM, String RCV_BKCD, String RCV_ACNO,
+         String PTN_PBOK_PRNG_TXT) throws IOException, InvalidKeyException, NoSuchAlgorithmException,
+         NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+
+      String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/trans/executeWooriAcctToOtherAcct";
+
+      WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader("", "", "", "", "", "", "", "");
+      ExecuteWooriAcctToOtherAcctRequestBody executeWooriAcctToOtherAcctRequestBody = new ExecuteWooriAcctToOtherAcctRequestBody(
+            WDR_ACNO, TRN_AM, RCV_BKCD, RCV_ACNO, PTN_PBOK_PRNG_TXT);
+
+      Map<String, Object> targetRequestBodyMap = new HashMap<>();
+
+      targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
+      targetRequestBodyMap.put("dataBody", executeWooriAcctToOtherAcctRequestBody);
+
+      return WooriAPIRequest(targetURL, targetRequestBodyMap);
+   }
+
 }
