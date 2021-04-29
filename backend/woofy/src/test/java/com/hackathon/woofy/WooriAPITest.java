@@ -16,7 +16,7 @@ import com.hackathon.woofy.util.WooriFunc;
 
 @SpringBootTest
 public class WooriAPITest {
-	private final WooriFunc wooriFunc = new WooriFunc(); 
+	private WooriFunc wooriFunc = new WooriFunc();
 	
 	@Test
 	void getCellCertiTest() throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, IOException {

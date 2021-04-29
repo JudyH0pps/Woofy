@@ -21,6 +21,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.hackathon.woofy.config.Keys;
@@ -32,11 +35,18 @@ import com.hackathon.woofy.request.wooriApi.GetAccBasicInfoRequestBody;
 import com.hackathon.woofy.request.wooriApi.GetCellCertiRequestBody;
 import com.hackathon.woofy.request.wooriApi.WooriApiRequestHeader;
 import com.hackathon.woofy.response.ApiResponse;
+import com.hackathon.woofy.service.ApiService;
 
 
 public class WooriFunc {
 	
 	private Keys keys = new Keys();
+	private ApiService<Map<String, Object>> apiService;
+
+    @Autowired
+    public WooriFunc() {
+        this.apiService = new ApiService<>(new RestTemplate());
+    }
 
 	private String getAES256EncStr(String BFNB) {
 
@@ -133,8 +143,14 @@ public class WooriFunc {
 
 		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
 		targetRequestBodyMap.put("dataBody", getCellCertiRequestBody);
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add("appKey", keys.getWooriAppKey());
+		httpHeaders.add("Content-Type", "application/json");
+		
+		System.out.println(apiService.post(targetURL, httpHeaders, targetRequestBodyMap).toString());
 				
-		return WooriAPIRequest(targetURL, targetRequestBodyMap);
+		return "DEBUG";
 	}
 	
 	public String executeCellCerti(String RRNO_BFNB, String ENCY_RRNO_LSNM, String ENCY_SMS_CRTF_NO, String CRTF_UNQ_NO) 
@@ -152,7 +168,13 @@ public class WooriFunc {
 		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
 		targetRequestBodyMap.put("dataBody", executeCellCertiRequestBody);
 		
-		return WooriAPIRequest(targetURL, targetRequestBodyMap);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add("appKey", keys.getWooriAppKey());
+		httpHeaders.add("Content-Type", "application/json");
+		
+		System.out.println(apiService.post(targetURL, httpHeaders, null).toString());
+		
+		return "DEBUG";
 	}
 
 	public String getAccBasicInfo(String INQ_ACNO, String INQ_BAS_DT, String ACCT_KND, String INQ_CUCD) 
@@ -169,7 +191,13 @@ public class WooriFunc {
 		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
 		targetRequestBodyMap.put("dataBody", getAccBasicInfoRequestBody);
 		
-		return WooriAPIRequest(targetURL, targetRequestBodyMap);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add("appKey", keys.getWooriAppKey());
+		httpHeaders.add("Content-Type", "application/json");
+		
+		System.out.println(apiService.post(targetURL, httpHeaders, targetRequestBodyMap).toString());
+		
+		return "DEBUG";
 	}
 	
 	public String executeWooriAcctToWooriAcct(String WDR_ACNO, String TRN_AM, String RCV_BKCD, String RCV_ACNO, String PTN_PBOK_PRNG_TXT) 
@@ -187,8 +215,13 @@ public class WooriFunc {
 		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
 		targetRequestBodyMap.put("dataBody", executeWooriAcctToWooriAcctiRequestBody);
 		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add("appKey", keys.getWooriAppKey());
+		httpHeaders.add("Content-Type", "application/json");
 		
-		return WooriAPIRequest(targetURL, targetRequestBodyMap);
+		System.out.println(apiService.post(targetURL, httpHeaders, targetRequestBodyMap).toString());
+		
+		return "DEBUG";
 	}
 	
 	public String executeWooriAcctToOtherAcct(String WDR_ACNO, String TRN_AM, String RCV_BKCD, String RCV_ACNO, String PTN_PBOK_PRNG_TXT) 
@@ -206,7 +239,13 @@ public class WooriFunc {
 		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
 		targetRequestBodyMap.put("dataBody", executeWooriAcctToOtherAcctRequestBody);
 		
-		return WooriAPIRequest(targetURL, targetRequestBodyMap);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add("appKey", keys.getWooriAppKey());
+		httpHeaders.add("Content-Type", "application/json");
+		
+		System.out.println(apiService.post(targetURL, httpHeaders, targetRequestBodyMap).toString());
+		
+		return "DEBUG";
 	}
 	
 }
