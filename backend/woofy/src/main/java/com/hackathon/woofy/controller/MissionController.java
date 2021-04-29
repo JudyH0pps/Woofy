@@ -29,20 +29,133 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/mission")
+@RequestMapping("/api/v1/missions")
 public class MissionController {
 
 	private final ParentService parentService;
 	private final MissionService missionService;
 	private final ChildService childService;
 
+	/**
+	 * 부모가 자식의 미션을 저장
+	 * @param missionRequest
+	 * @return
+	 */
+	@PostMapping(value="", produces = "application/json; charset=utf8")
+	public Object saveMission(@RequestBody MissionRequest missionRequest) {
+		final BasicResponse basicResponse = new BasicResponse();
 
+		try {
+			Map<String, Object> map = new HashMap<>();
+			
+			Parent p = parentService.findById(missionRequest.getParent().getId());
+			Child c = childService.findById(missionRequest.getChild().getId());
+			
+			Mission result = new Mission(missionRequest);
+			result.setParent(p);
+			result.setChild(c);
+			
+			missionService.saveMission(result);
+
+			map.put("mission", result);
+			basicResponse.dataBody = map;
+			basicResponse.data = "success";
+			basicResponse.status = true;
+
+		} catch (Exception e) {
+			basicResponse.data = "error";
+			basicResponse.status = false;
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
+	}
+
+	/**
+	 * 미션Id로 단건 조회
+	 * @param mission_id
+	 * @return
+	 */
+	@GetMapping(value = "/{mission_id}", produces = "application/json; charset=utf8")
+	public Object findByMissionId(@PathVariable(name = "mission_id") Long mission_id) {
+		final BasicResponse basicResponse = new BasicResponse();
+
+		try {
+			Map<String, Object> map = new HashMap<>();
+
+			Mission result = missionService.findById(mission_id);
+			
+			map.put("mission", result);
+			basicResponse.dataBody = map;
+			basicResponse.data = "success";
+			basicResponse.status = true;
+
+		} catch (Exception e) {
+			basicResponse.data = "error";
+			basicResponse.status = false;
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
+	}
+	
+	@PutMapping(value = "/{mission_id}", produces = "application/json; charset=utf8")
+	public Object updateMission(@PathVariable(name = "mission_id") Long mission_id, 
+			@RequestBody MissionRequest missionRequest) {
+		final BasicResponse basicResponse = new BasicResponse();
+
+		try {
+			Map<String, Object> map = new HashMap<>();
+			
+			Mission result = missionService.findById(mission_id);
+			result.setTitle(missionRequest.getTitle());
+			result.setContent(missionRequest.getContent());
+			result.setPrize(missionRequest.getPrize());
+			result.setMissionStatus(missionRequest.getMissionStatus());
+
+			missionService.saveMission(result);
+			
+			map.put("mission", result);
+			basicResponse.dataBody = map;
+			basicResponse.data = "success";
+			basicResponse.status = true;
+
+		} catch (Exception e) {
+			basicResponse.data = "error";
+			basicResponse.status = false;
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
+	}
+	
+	@DeleteMapping(value = "/{mission_id}", produces = "application/json; charset=utf8")
+	public Object updateMission(@PathVariable(name = "mission_id") Long mission_id) {
+		final BasicResponse basicResponse = new BasicResponse();
+
+		try {
+			Map<String, Object> map = new HashMap<>();
+			
+			missionService.deleteMission(mission_id);
+			
+			basicResponse.data = "success";
+			basicResponse.status = true;
+
+		} catch (Exception e) {
+			basicResponse.data = "error";
+			basicResponse.status = false;
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
+	}
+	
 	/**
 	 * 부모가 모든 자식의 미션 상황을 조회
 	 * @param missionRequest
 	 * @return
 	 */
-	@GetMapping("{p_username}/childs")
+	@GetMapping(value = "/{p_username}/childs", produces = "application/json; charset=utf8")
 	public Object findByParent(@PathVariable(name = "p_username") String p_username) {
 		
 		final BasicResponse basicResponse = new BasicResponse();
@@ -77,113 +190,23 @@ public class MissionController {
 	}
 	
 	/**
-	 * 부모가 한 자식의 미션 상황을 조회
-	 * @param parent
-	 * @param child
+	 * 부모가 한 자식의 미션 조회
+	 * @param c_username
 	 * @return
 	 */
-	@GetMapping("{c_username}")
+	@GetMapping(value = "/{c_username}/child", produces = "application/json; charset=utf8")
 	public Object findByParentAndChild(@PathVariable(name = "c_username") String c_username) {
 		final BasicResponse basicResponse = new BasicResponse();
 
 		try {
 			Map<String, Object> map = new HashMap<>();
-			System.out.println(basicResponse.toString());
 			
 			Child c = childService.findByUsername(c_username);
 			
 			List<Mission> result = missionService.findByParentAndChild(c.getParent(), c);
 
-			for(Mission m : result) {
-				System.out.println(m);
-			}
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
-
-		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
-			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
-		}
-	}
-	
-	/**
-	 * 부모가 자식의 미션을 저장
-	 * @param missionRequest
-	 * @return
-	 */
-	@PostMapping()
-	public Object saveMission(@RequestBody MissionRequest missionRequest) {
-		final BasicResponse basicResponse = new BasicResponse();
-
-		try {
-			Map<String, Object> map = new HashMap<>();
-
-			Mission result = new Mission(missionRequest);
-			missionService.saveMission(result);
-
-			map.put("mission", result);
-			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
-
-		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
-			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
-		}
-	}
-	
-	/**
-	 * 부모가 자식의 미션 수정
-	 * @param missionRequest
-	 * @return
-	 */
-	@PutMapping("{mission_id}")
-	public Object updateMission(@PathVariable(name = "mission_id") Long mission_id, 
-			@RequestBody MissionRequest missionRequest) {
-		final BasicResponse basicResponse = new BasicResponse();
-
-		try {
-			Map<String, Object> map = new HashMap<>();
-			
-			Mission result = missionService.findById(mission_id);
-			result.setTitle(missionRequest.getTitle());
-			result.setContent(missionRequest.getContent());
-			result.setPrize(missionRequest.getPrize());
-			result.setMissionStatus(missionRequest.getMissionStatus());
-
-			missionService.saveMission(result);
-			
-			map.put("mission", result);
-			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
-
-		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
-			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
-		}
-	}
-	
-	@DeleteMapping("{mission_id}")
-	public Object updateMission(@PathVariable(name = "mission_id") Long mission_id) {
-		final BasicResponse basicResponse = new BasicResponse();
-
-		try {
-			Map<String, Object> map = new HashMap<>();
-			
-			missionService.deleteMission(mission_id);
-			
 			basicResponse.data = "success";
 			basicResponse.status = true;
 

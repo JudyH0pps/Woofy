@@ -21,19 +21,16 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.hackathon.woofy.config.Keys;
-import com.hackathon.woofy.request.ApiDataBodyRequest;
 import com.hackathon.woofy.request.wooriApi.ExecuteCellCertiRequestBody;
 import com.hackathon.woofy.request.wooriApi.ExecuteWooriAcctToOtherAcctRequestBody;
 import com.hackathon.woofy.request.wooriApi.ExecuteWooriAcctToWooriAcctiRequestBody;
 import com.hackathon.woofy.request.wooriApi.GetAccBasicInfoRequestBody;
 import com.hackathon.woofy.request.wooriApi.GetCellCertiRequestBody;
 import com.hackathon.woofy.request.wooriApi.WooriApiRequestHeader;
+
 
 public class WooriFunc {
 
