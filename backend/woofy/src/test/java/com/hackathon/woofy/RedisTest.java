@@ -12,11 +12,16 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.listener.ChannelTopic;
 
+import com.hackathon.woofy.service.RedisService;
+
 @SpringBootTest
 public class RedisTest {
 
 	@Autowired
 	StringRedisTemplate redisTemplate;
+	
+	@Autowired
+	RedisService redisService;
 	
 	@Test
 	void dummyTest() {
@@ -63,7 +68,7 @@ public class RedisTest {
 	}
 
 	@Test
-	void hashSetSetTimeLimitScriptTest() {
+	void hashSetTimeLimitScriptTest() {
 		// 핵심은 Lua Script 였다 -_-;;
 		String script = "return redis.call('expiremember', KEYS[1], KEYS[2], ARGV[1], ARGV[2])";
 	    DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(script);
@@ -74,5 +79,43 @@ public class RedisTest {
 	    System.out.println(result);
 	}
 
+	@Test
+	void getHashSetItemTest() {
+		// 핵심은 Lua Script 였다 -_-;;
+		String script = "return redis.call('hget', KEYS[1], ARGV[1])";
+	    DefaultRedisScript<String> redisScript = new DefaultRedisScript<>(script);
+	    redisScript.setResultType(String.class);
+	    List<String> keys = Arrays.asList("practice");
+	    String result = redisTemplate.execute(redisScript, keys, "fruit1");
+	    System.out.println(result);
+	}
+	
+	@Test
+	void redisServiceTest1() {
+		System.out.println(redisService.insertHashTableContent("test1", "content1", "apple"));
+		System.out.println(redisService.insertHashTableContent("test1", "content2", "pizza"));
+	}
 
+	@Test
+	void redisServiceTest2() {
+		System.out.println(redisService.getHashSetItem("test1", "content1"));
+		System.out.println(redisService.getHashSetItem("test1", "content2"));
+		System.out.println(redisService.getHashSetItem("test1", "content3"));
+	}
+
+	@Test
+	void redisServiceTest3() {
+		// Insert Item
+		System.out.println(redisService.insertHashTableContent("test2", "content1", "apple"));
+		System.out.println(redisService.insertHashTableContent("test2", "content2", "pizza"));
+		
+		// set Time Limit to child Key
+		redisService.setHashSetTimeLimit("test2", "content1", 30);
+		redisService.setHashSetTimeLimit("test2", "content2", 60);
+		
+		System.out.println(redisService.getHashSetItem("test2", "content1"));
+		System.out.println(redisService.getHashSetItem("test2", "content2"));
+	}
+	
+	
 }
