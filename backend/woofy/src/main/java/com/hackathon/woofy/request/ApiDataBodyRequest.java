@@ -11,10 +11,9 @@ public class ApiDataBodyRequest {
 	private String HP_NO;
 	private String HP_CRTF_AGR_YN;
 	private String FNM;
-	private String RRNO_BFNB; // 주민등록번호
+	private String RRNO_BFNB;
 	private String ENCY_RRNO_LSNM;
 
-	// 휴대폰 인증을 위한 생성자
 	public ApiDataBodyRequest(String COMC_DIS, String HP_NO, String HP_CRTF_AGR_YN, String FNM, String RRNO_BFNB, String ENCY_RRNO_LSNM) {
 		this.COMC_DIS = COMC_DIS;
 		this.HP_NO = HP_NO;

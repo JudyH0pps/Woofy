@@ -25,22 +25,22 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import com.google.gson.Gson;
 import com.hackathon.woofy.config.Keys;
 import com.hackathon.woofy.request.ApiDataBodyRequest;
-import com.hackathon.woofy.request.ApiDataHeaderRequest;
+import com.hackathon.woofy.request.wooriApi.WooriApiRequestHeader;
 import com.hackathon.woofy.response.ApiResponse;
 
 
 public class WooriFunc {
 	
-	private Keys keys;
+	private Keys keys = new Keys();
 
-	// ÁÖ¹Îµî·Ï¹øÈ£ ¾ÏÈ£È­
+	// ï¿½Ö¹Îµï¿½Ï¹ï¿½È£ ï¿½ï¿½È£È­
 	public String getAES256EncStr(String BFNB) {
 
 		try {
-			String str = BFNB; // ¾ÏÈ£È­ ´ë»ó ÁÖ¹Îµî·Ï¹øÈ£
-			String key = keys.getWooriSecretkey(); // ½ÃÅ©¸´ Å°
+			String str = BFNB;
+			String key = keys.getWooriSecretkey();
 			String iv = "0000000000000000";
-
+			
 			Key keySpec;
 			byte[] keyBytes = new byte[key.length()];
 			byte[] b = key.getBytes("UTF-8");
@@ -57,7 +57,7 @@ public class WooriFunc {
 			byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
 			String encStr = new String(Base64.encodeBase64(encrypted));
 
-			System.out.println("ÁÖ¹Î¹øÈ£ ¾ÏÈ£È­ " + encStr);
+			System.out.println("result: " + encStr);
 
 			return encStr.toString();
 		} catch (Exception e) {
@@ -67,7 +67,8 @@ public class WooriFunc {
 	}
 
 	public String getCellCerti() throws IOException, InvalidKeyException, NoSuchAlgorithmException,
-			NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+		NoSuchPaddingException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+		
 		StringBuilder urlBuilder = new StringBuilder("https://openapi.wooribank.com:444/oai/wb/v1/login/getCellCerti");
 		URL url = new URL(urlBuilder.toString());
 
@@ -75,22 +76,22 @@ public class WooriFunc {
 		conn.setRequestMethod("POST");
 		conn.setRequestProperty("appKey", keys.getWooriAppKey());
 		conn.setRequestProperty("Content-Type", "application/json");
-
+		
 		// === Map -> JSON
 		Map<String, Object> map = new HashMap<>();
 
-		ApiDataHeaderRequest apiDataHeaderRequest = new ApiDataHeaderRequest(null, null, null, null, null, null, null, null);
+		WooriApiRequestHeader apiDataHeaderRequest = new WooriApiRequestHeader(null, null, null, null, null, null, null, null);
 		map.put("dataHeader", apiDataHeaderRequest);
 
-		String enc = getAES256EncStr("123456"); // ÁÖ¹Îµî·Ï¹øÈ£ ¾ÏÈ£È­
+		String enc = getAES256EncStr("123456");
 
-		ApiDataBodyRequest apiDataBodyRequest = new ApiDataBodyRequest("1", "01064103518", "Y", "¾È¼ºÈ£", "950128", enc);
+		ApiDataBodyRequest apiDataBodyRequest = new ApiDataBodyRequest("1", "01064103518", "Y", "í™ê¸¸ë™", "950128", enc);
 		map.put("dataBody", apiDataBodyRequest);
 
 		Gson gson = new Gson();
 		String json = gson.toJson(map);
 		byte[] body = json.getBytes("utf-8");
-		// Map -> JSON ===
+		// Map -> JSON
 
 		conn.setFixedLengthStreamingMode(body.length);
 		conn.setDoOutput(true);
@@ -116,7 +117,7 @@ public class WooriFunc {
 
 		System.out.println(sb.toString());
 
-		// °á°ú°ª String -> JSON ÆÄ½Ì
+		// String -> JSON
 		gson = new Gson();
 		ApiResponse apiResponse = gson.fromJson(sb.toString(), ApiResponse.class);
 		System.out.println(apiResponse.toString());
