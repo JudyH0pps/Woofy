@@ -25,6 +25,24 @@ public class MissionService {
 	}
 	
 	/**
+	 * 미션 저장
+	 * @param mission
+	 */
+	@Transactional
+	public void saveMission(Mission mission) {
+		missionRepo.save(mission);
+	}
+	
+	/**
+	 * 미션 삭제
+	 * @param id
+	 */
+	@Transactional
+	public void deleteMission(Long id) {
+		missionRepo.deleteById(id);
+	}
+	
+	/**
 	 * 부모가 설정한 미션 전체조회
 	 * @param parent
 	 * @return
@@ -43,23 +61,5 @@ public class MissionService {
 	@Transactional
 	public List<Mission> findByParentAndChild(Parent parent, Child child){
 		return missionRepo.findByParentAndChild(parent, child);
-	}
-	
-	/**
-	 * 미션 저장
-	 * @param mission
-	 */
-	@Transactional
-	public void saveMission(Mission mission) {
-		missionRepo.save(mission);
-	}
-	
-	/**
-	 * 미션 삭제
-	 * @param id
-	 */
-	@Transactional
-	public void deleteMission(Long id) {
-		missionRepo.deleteById(id);
 	}
 }

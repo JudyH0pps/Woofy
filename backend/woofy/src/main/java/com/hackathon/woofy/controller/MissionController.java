@@ -48,11 +48,9 @@ public class MissionController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			Parent p = parentService.findById(missionRequest.getParent().getId());
 			Child c = childService.findById(missionRequest.getChild().getId());
 			
 			Mission result = new Mission(missionRequest);
-			result.setParent(p);
 			result.setChild(c);
 			
 			missionService.saveMission(result);
@@ -202,8 +200,9 @@ public class MissionController {
 			Map<String, Object> map = new HashMap<>();
 			
 			Child c = childService.findByUsername(c_username);
+			Parent p = c.getParent();
 			
-			List<Mission> result = missionService.findByParentAndChild(c.getParent(), c);
+			List<Mission> result = missionService.findByParentAndChild(p, c);
 
 			map.put("mission", result);
 			basicResponse.dataBody = map;

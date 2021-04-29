@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hackathon.woofy.entity.Child;
+import com.hackathon.woofy.entity.Mission;
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.request.UserRequest;
 import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.ParentService;
+import com.hackathon.woofy.service.SuspiciousService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +32,7 @@ public class ChildController {
 
 	private final ChildService childService;
 	private final ParentService parentService;
+	private final SuspiciousService suspiciousService;
 
 	@PostMapping(value = "", produces = "application/json; charset=utf8")
 	public Object signup(@RequestBody Map<String, Object> jsonRequest) {
@@ -60,10 +63,27 @@ public class ChildController {
 		}
 	}
 	
-	@GetMapping(value = "/{childUsername}")
-	public String getChildInfo(@PathVariable(value="childUsername") String childUsername) {
-		System.out.println(childUsername);
-		return "DEBUG";
+	@GetMapping(value = "/{c_username}")
+	public Object getChildInfo(@PathVariable(value="c_username") String c_username) {
+		final BasicResponse basicResponse = new BasicResponse();
+
+		try {
+			Map<String, Object> map = new HashMap<>();
+
+			Child result = childService.findByUsername(c_username);
+			
+			map.put("child", result);
+			basicResponse.dataBody = map;
+			basicResponse.data = "success";
+			basicResponse.status = true;
+
+		} catch (Exception e) {
+			basicResponse.data = "error";
+			basicResponse.status = false;
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
 	}
 
 	@PutMapping(value = "/{childUsername}", produces = "application/json; charset=utf8")
@@ -75,12 +95,31 @@ public class ChildController {
 		return "DEBUG";
 	}
 
-	@DeleteMapping(value = "/{childUsername}")
-	public String deleteChildInfo(@PathVariable(value="childUsername") String childUsername) {
+	// 미완성 **************************
+	@DeleteMapping(value = "/{child_id}", produces = "application/json; charset=utf8")
+	public Object deleteChildInfo(@PathVariable(value="child_id") Long child_id) {
 		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		System.out.println(childUsername);
 		
-		return "DEBUG";
+		final BasicResponse basicResponse = new BasicResponse();
+
+		try {
+			Map<String, Object> map = new HashMap<>();
+			
+			Child c = childService.findById(child_id);
+			
+			childService.deleteChild(child_id);
+			
+			basicResponse.data = "success";
+			basicResponse.status = true;
+
+		} catch (Exception e) {
+			basicResponse.data = "error";
+			basicResponse.status = false;
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
+		
 	}	
 
 	@PutMapping(value = "/{childUsername}/allowence", produces = "application/json; charset=utf8")
