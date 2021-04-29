@@ -21,7 +21,7 @@ public class MissionService {
 	
 	@Transactional
 	public Mission findById(Long id) {
-		return missionRepo.findById(id).get(); // �ܰ� ��ȸ
+		return missionRepo.findById(id).get(); // 단건 조회
 	}
 	
 	/**
