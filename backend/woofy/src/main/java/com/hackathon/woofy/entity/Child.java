@@ -28,7 +28,6 @@ import lombok.ToString;
 @Table(name = "child")
 @Getter
 @Setter
-@ToString(of = { "id", "username", "password", "parent" })
 public class Child {
 
 	@Id
@@ -49,10 +48,10 @@ public class Child {
 	@JoinColumn(name = "parent_id")
 	private Parent parent;
 	
-//	@OneToMany(mappedBy = "child")
+//	@OneToMany(mappedBy = "child",cascade = CascadeType.ALL)
 //	private List<Suspicious> suspicious = new ArrayList<>();
 	
-//	@OneToMany(mappedBy = "child")
+//	@OneToMany(mappedBy = "child", cascade = CascadeType.ALL)
 //	private List<Mission> missions = new ArrayList<>();
 	
 	// 생성 메서드
@@ -78,6 +77,13 @@ public class Child {
 		this.phoneNumber = (String)childObject.get("phoneNumber");
 		this.birthDay = (String)childObject.get("birthDay");
 		this.parent = parent;
+	}
+
+	@Override
+	public String toString() {
+		return "Child [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + ", birthDay=" + birthDay + ", authNum="
+				+ authNum + ", isAuth=" + isAuth + ", parent=" + parent + "]";
 	}
 	
 	

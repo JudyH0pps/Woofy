@@ -27,7 +27,6 @@ import lombok.ToString;
 @Table(name = "parent")
 @Getter
 @Setter
-@ToString(of = { "id", "username", "password" })
 public class Parent {
 
 	@Id
@@ -74,6 +73,13 @@ public class Parent {
 		this.account = (String)parentObject.get("accountNumber");
 	}
 
+	@Override
+	public String toString() {
+		return "Parent [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", birthDay="
+				+ birthDay + ", account=" + account + ", authNum=" + authNum + ", isAuth=" + isAuth + "]";
+	}
+
 //	public void addChild(Child child) {
 //		child.setParent(this);
 //		childs.add(child);
@@ -81,5 +87,7 @@ public class Parent {
 
 //	@OneToMany(mappedBy = "parent")
 //	private List<Child> childs = new ArrayList<>(); // �б⸸ ����
+	
+	
 	
 }

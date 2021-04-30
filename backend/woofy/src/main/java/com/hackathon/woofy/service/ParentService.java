@@ -29,4 +29,9 @@ public class ParentService {
 	public Parent findbyPhoneNumber(String phoneNumber){
 		return parentRepo.findByPhoneNumber(phoneNumber);
 	}
+  
+  @Transactional
+	public Parent findById(Long id) {
+		return parentRepo.findById(id).get();
+	}
 }

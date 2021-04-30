@@ -12,10 +12,10 @@ public class GetAccBasicInfoRequestBody {
 	private String ACCT_KND;
 	private String INQ_CUCD;
 
-	public GetAccBasicInfoRequestBody(String INQ_ACNO, String INQ_BAS_DT, String ACCT_KND, String INQ_CUCD) {
+	public GetAccBasicInfoRequestBody(String INQ_ACNO, String INQ_BAS_DT, String INQ_CUCD,String ACCT_KND) {
 		this.INQ_ACNO = INQ_ACNO;
 		this.INQ_BAS_DT = INQ_BAS_DT;
-		this.ACCT_KND = ACCT_KND;
 		this.INQ_CUCD = INQ_CUCD;
+		this.ACCT_KND = ACCT_KND;
 	}
 }
