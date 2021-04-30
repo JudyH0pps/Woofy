@@ -21,9 +21,9 @@
       </div>
     </article>
     <div class="login_btn">
-      <button class="login_button" @click="login()">LOG IN</button>
+      <button class="login_button" @click="parentLogin()">LOG IN</button>
     </div>
-    <button class="login_button" @click="login2()">자녀페이지</button>
+    <button class="login_button" @click="childLogin()">자녀페이지</button>
     <div class="login_signup-btn">
       <button class="login_signup-button" @click="signup()">SIGN UP</button>
     </div>
@@ -40,10 +40,12 @@ export default {
     };
   },
   methods: {
-    login() {
+    parentLogin() {
+      this.$store.dispatch('login', );
       this.$router.push({ name: "ParentHome" });
     },
-    login2() {
+    childLogin() {
+      this.$store.dispatch('login', );
       this.$router.push({ name: "ChildHome" });
     },
     signup() {
