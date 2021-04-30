@@ -114,7 +114,7 @@ public class AuthenticationController {
 		String HP_NO = (String)cellCretiRequestBody.get("HP_NO");
 		
 		if (CRTF_UNQ_NO == null) {
-			responseObject.put("status", 204);
+			responseObject.put("status", 400);
 			return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
 		}
 		
@@ -159,8 +159,8 @@ public class AuthenticationController {
 			Child searchChild = childService.findByPhoneNumber(HP_NO);
 			if (searchChild == null) {
 				// 자녀의 SMS 인증은 사후 인증이다. 여기에서는 별다른 로직 구현 없이 별도의 처리를 진행한다.
-				responseObject.put("status", 404);
-				return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);	// 이곳의 204 에러는 자녀가 없다는 의미이다.
+				responseObject.put("status", 204);
+				return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);	// 이곳의 204 에러는 자녀가 없다는 의미이다.
 			}
 			
 			// TO-DO: 자녀의 SMS 인증 여부를 True로 변경하고 저장한다.
