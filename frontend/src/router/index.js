@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import ParentHome from "@/components/ParentHome.vue";
 import ParentChildDetail from "@/components/ParentChildDetail.vue";
 import ChildHome from "@/components/ChildHome.vue";
+import ChildRemittance from "@/components/ChildRemittance.vue";
 import { authRouters } from "@/router/auth";
 
 Vue.use(VueRouter);
@@ -34,6 +35,11 @@ const routes = [
         path: "/ChildHome",
         name: "ChildHome",
         component: ChildHome,
+    },
+    {
+        path: "/ChildRemittance",
+        name: "ChildRemittance",
+        component: ChildRemittance,
     },
     ...authRouters,
 ];
