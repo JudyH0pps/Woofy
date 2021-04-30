@@ -39,6 +39,7 @@ export default {
       user: "Woori아들",
       money: 4800,
       viweingContent: 0,
+      payments: [],
     };
   },
   components: {

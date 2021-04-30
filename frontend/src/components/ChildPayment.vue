@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="childPayment">
     <div class="barcode">
       <VueBarcode
         :value="barcodeValue"
@@ -10,6 +10,25 @@
       >
         Show this if the rendering fails.
       </VueBarcode>
+    </div>
+    <div class="paymentDetail">
+      <p style="text-align: center">결제내역</p>
+      <v-card outlined tile>
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </v-card>
+      <v-card outlined tile>
+        <v-list-item-content>
+          <v-list-item-title> 스타벅스 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >3,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </v-card>
     </div>
   </section>
 </template>
@@ -30,6 +49,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.childPayment {
+  width: 100%;
+}
 .barcode {
   display: flex;
   flex-direction: column;
@@ -41,5 +63,10 @@ export default {
 
 .userMoney {
   text-align: right;
+}
+
+.paymentDetail {
+  width: 95%;
+  margin: 0 auto 0;
 }
 </style>
