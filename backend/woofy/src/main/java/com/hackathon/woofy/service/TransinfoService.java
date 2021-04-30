@@ -26,4 +26,9 @@ public class TransinfoService {
 	public List<Transinfo> findByParent(Parent parent){
 		return transinfoRepo.findByParent(parent);
 	}
+	
+	@Transactional
+	public List<Transinfo> findByChild(Long child_id){
+		return transinfoRepo.findByChild(child_id);
+	}
 }

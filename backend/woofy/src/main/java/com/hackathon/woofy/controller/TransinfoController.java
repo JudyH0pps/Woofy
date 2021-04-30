@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/payment")
+@RequestMapping("/api/v1/transinfo")
 public class TransinfoController {
 
 	private final TransinfoService transinfoService;
@@ -37,12 +37,11 @@ public class TransinfoController {
 	private final ChildService childService;
 
 	/**
-	 * 부모는 자신의 모든 거래내역(자식 포함)을 조회
+	 * 부모 -> 부모/자식 거래내역 전체 조회
 	 * @param p_username
 	 * @return
 	 */
-	/*
-	@GetMapping(value = "/{p_username}/childs", produces = "application/json; charset=utf8")
+	@GetMapping(value = "/parent/{p_username}", produces = "application/json; charset=utf8")
 	public Object findByParent(@PathVariable(name = "p_username") String p_username) {
 
 		final BasicResponse basicResponse = new BasicResponse();
@@ -52,25 +51,61 @@ public class TransinfoController {
 
 			Parent p = parentService.findParent(p_username);
 
-			List<Mission> result = missionService.findByParent(p);
+			List<Transinfo> result = transinfoService.findByParent(p);
 
-			map.put("mission", result);
+			map.put("transinfo", result);
 
 			if (result.size() != 0) {
 				basicResponse.dataBody = map;
-				basicResponse.status = "200";
+				basicResponse.status = "success";
 
 			} else {
 				basicResponse.dataBody = map;
-				basicResponse.status = "200 none";
+				basicResponse.status = "none";
 			}
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
 	}
-	*/
+	
+	/**
+	 * 자식 -> 자신의 거래내역 전체 조회
+	 * @param c_username
+	 * @return
+	 */
+	@GetMapping(value = "/child/{c_username}", produces = "application/json; charset=utf8")
+	public Object findByChild(@PathVariable(name = "c_username") String c_username) {
+
+		final BasicResponse basicResponse = new BasicResponse();
+
+		try {
+			Map<String, Object> map = new HashMap<>();
+			
+			Child c = childService.findByUsername(c_username);
+
+			List<Transinfo> result = transinfoService.findByChild(c.getId());
+
+			map.put("transinfo", result);
+
+			if (result.size() != 0) {
+				basicResponse.dataBody = map;
+				basicResponse.status = "success";
+
+			} else {
+				basicResponse.dataBody = map;
+				basicResponse.status = "none";
+			}
+
+		} catch (Exception e) {
+			basicResponse.status = "error";
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
+	}
+	
 }

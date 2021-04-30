@@ -162,10 +162,10 @@ public class SuspiciousController {
 			map.put("suspicious", result);
 			
 			if(result.size() != 0) {
+				basicResponse.dataBody = map;
 				basicResponse.status = "success";
 				
 			} else {
-				basicResponse.dataBody = map;
 				basicResponse.status = "none";
 			}
 		} catch (Exception e) {

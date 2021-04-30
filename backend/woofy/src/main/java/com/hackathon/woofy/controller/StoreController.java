@@ -44,8 +44,6 @@ public class StoreController {
 	public Object storeReq(@RequestBody StoreRequest storeRequset) {
 		final BasicResponse basicResponse = new BasicResponse();
 		
-		System.out.println("storeRequset: "+storeRequset.toString());
-		
 		Parent parent = null;
 		Child child = null;
 		Transinfo transinfo  = new Transinfo(); // 거래내역 저장;
@@ -60,7 +58,6 @@ public class StoreController {
 			if (storeRequset.getParent() != null) { // 부모가 거래할 시
 				parent = parentService.findParent(storeRequset.getParent().getUsername());
 				
-				System.out.println("Parent: " + parent.toString());
 				WDR_ACNO = parent.getAccount();
 				
 			} else { // 자식이 거래할 시
