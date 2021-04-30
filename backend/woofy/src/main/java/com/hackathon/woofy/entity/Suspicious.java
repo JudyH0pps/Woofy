@@ -41,9 +41,17 @@ public class Suspicious {
 	@JoinColumn(name = "child_id")
 	private Child child;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_id")
-	private Parent parent;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "parent_id")
+//	private Parent parent;
+	
+	public Suspicious(SuspiciousRequest suspiciousRequest) {
+		this.location = suspiciousRequest.getLocation();
+		this.startTime = suspiciousRequest.getStartTime();
+		this.endTime = suspiciousRequest.getEndTime();
+//		this.parent = suspiciousRequest.getParent();
+		this.child = suspiciousRequest.getChild();
+	}
 
 	public Suspicious(Map<String, Object> suspiciousRequestObject, Parent parent, Child child) {
 		super();
@@ -51,7 +59,15 @@ public class Suspicious {
 		this.startTime = (String)suspiciousRequestObject.get("startTime");
 		this.endTime = (String)suspiciousRequestObject.get("endTime");
 		this.child = child;
-		this.parent = parent;
+//		this.parent = parent;
 	}
+
+	@Override
+	public String toString() {
+		return "Suspicious [id=" + id + ", location=" + location + ", startTime=" + startTime + ", endTime=" + endTime
+				+ ", child=" + child + "]";
+	}
+	
+	
 
 }

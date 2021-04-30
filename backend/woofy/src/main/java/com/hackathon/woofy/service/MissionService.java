@@ -21,11 +21,29 @@ public class MissionService {
 	
 	@Transactional
 	public Mission findById(Long id) {
-		return missionRepo.findById(id).get(); // ´Ü°Ç Á¶È¸
+		return missionRepo.findById(id).get(); // ë‹¨ê±´ ì¡°íšŒ
 	}
 	
 	/**
-	 * ºÎ¸ğ°¡ ¸ğµç ÀÚ½ÄÀÇ ¹Ì¼Ç »óÈ²À» Á¶È¸
+	 * ë¯¸ì…˜ ì €ì¥
+	 * @param mission
+	 */
+	@Transactional
+	public void saveMission(Mission mission) {
+		missionRepo.save(mission);
+	}
+	
+	/**
+	 * ë¯¸ì…˜ ì‚­ì œ
+	 * @param id
+	 */
+	@Transactional
+	public void deleteMission(Long id) {
+		missionRepo.deleteById(id);
+	}
+	
+	/**
+	 * ë¶€ëª¨ê°€ ì„¤ì •í•œ ë¯¸ì…˜ ì „ì²´ì¡°íšŒ
 	 * @param parent
 	 * @return
 	 */
@@ -35,7 +53,7 @@ public class MissionService {
 	}
 	
 	/**
-	 * ºÎ¸ğ°¡ ÇÑ ÀÚ½ÄÀÇ ¹Ì¼Ç »óÈ²À» Á¶È¸
+	 * ìì‹(1ëª…)ì˜ ë¯¸ì…˜ ì¡°íšŒ
 	 * @param parent
 	 * @param child
 	 * @return
@@ -43,19 +61,5 @@ public class MissionService {
 	@Transactional
 	public List<Mission> findByParentAndChild(Parent parent, Child child){
 		return missionRepo.findByParentAndChild(parent, child);
-	}
-	
-	/**
-	 * ºÎ¸ğ°¡ ÀÚ½ÄÀÇ ¹Ì¼ÇÀ» ÀúÀå
-	 * @param mission
-	 */
-	@Transactional
-	public void saveMission(Mission mission) {
-		missionRepo.save(mission);
-	}
-	
-	@Transactional
-	public void deleteMission(Long id) {
-		missionRepo.deleteById(id);
 	}
 }

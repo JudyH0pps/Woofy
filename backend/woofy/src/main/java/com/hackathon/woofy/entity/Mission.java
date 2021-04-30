@@ -44,9 +44,9 @@ public class Mission {
 	@JoinColumn(name = "child_id")
 	private Child child;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_id")
-	private Parent parent;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "parent_id")
+//	private Parent parent;
 	
 	public Mission() {}
 	
@@ -56,7 +56,7 @@ public class Mission {
 		this.content = missionRequest.getContent();
 		this.prize = missionRequest.getPrize();
 		this.missionStatus = missionRequest.getMissionStatus();
-		this.parent = missionRequest.getParent();
+//		this.parent = missionRequest.getParent();
 		this.child = missionRequest.getChild();
 	}	
 
@@ -67,7 +67,7 @@ public class Mission {
 		this.content = (String)missionRequestObject.get("content");
 		this.prize = (int)missionRequestObject.get("prize");
 		this.child = child;
-		this.parent = parent;
+//		this.parent = parent;
 	}
 	
 	

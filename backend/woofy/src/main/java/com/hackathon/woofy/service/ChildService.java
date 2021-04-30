@@ -23,13 +23,23 @@ public class ChildService {
 		return childRepo.save(child);
 	}
 	
+	@Transactional
 	public Child findByUsername(String username) {
 		return childRepo.findByUsername(username);
 	}
-
+  
+  @Transactional
 	public Child findByPhoneNumber(String phoneNumber) {
 		return childRepo.findByPhoneNumber(phoneNumber);
 	}
 
+	@Transactional
+	public Child findById(Long id) {
+		return childRepo.findById(id).get();
+	}
 	
+	@Transactional
+	public void deleteChild(Long id) {
+		childRepo.deleteById(id);
+	}	
 }
