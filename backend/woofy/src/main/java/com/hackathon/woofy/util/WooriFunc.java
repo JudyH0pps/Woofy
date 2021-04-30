@@ -192,6 +192,8 @@ public class WooriFunc {
       targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
       targetRequestBodyMap.put("dataBody", executeWooriAcctToWooriAcctiRequestBody);
       
+      System.out.println("MMMMMMMMap: "+targetRequestBodyMap);
+      
       return WooriAPIRequest(targetURL, targetRequestBodyMap);
    }
 

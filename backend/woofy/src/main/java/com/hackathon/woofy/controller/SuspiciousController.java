@@ -52,7 +52,7 @@ public class SuspiciousController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			Child c = childService.findById(suspiciousRequest.getChild().getId());
+			Child c = childService.findByUsername(suspiciousRequest.getChild().getUsername());
 			
 			Suspicious result = new Suspicious(suspiciousRequest);
 			result.setChild(c);
@@ -125,7 +125,7 @@ public class SuspiciousController {
 	}
 	
 	@DeleteMapping(value = "/{suspicious_id}", produces = "application/json; charset=utf8")
-	public Object updateMission(@PathVariable(name = "suspicious_id") Long suspicious_id) {
+	public Object deleteSuspicious(@PathVariable(name = "suspicious_id") Long suspicious_id) {
 		final BasicResponse basicResponse = new BasicResponse();
 
 		try {
