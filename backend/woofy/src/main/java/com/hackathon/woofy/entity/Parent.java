@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hackathon.woofy.request.UserRequest;
 
 import lombok.AccessLevel;
@@ -23,10 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
-@Table(name = "parent")
-@Getter
-@Setter
+@Entity @Table(name = "parent") @Getter @Setter
 public class Parent {
 
 	@Id
@@ -35,15 +34,18 @@ public class Parent {
 	private Long id;
 
 	private String username;
+	
+	@JsonProperty
 	private String password;
+	
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	private String birthDay;	// format 처리 과정은 개발 단계에서 TBD
+	private String birthDay;
 	private String account;
-	private String authNum; // ������ȣ
-	private boolean isAuth; // ���� �ߴ��� Ȯ��
+	private String authNum;
+	private boolean isAuth = false;
 	
 //	@OneToMany(mappedBy = "parent")
 //	private List<Child> childs = new ArrayList<>(); // �б⸸ ����
@@ -73,6 +75,11 @@ public class Parent {
 		this.account = (String)parentObject.get("accountNumber");
 	}
 
+	@JsonIgnore
+	public String getPassword() {
+		return this.password;
+	}
+	
 	@Override
 	public String toString() {
 		return "Parent [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName

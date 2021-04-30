@@ -57,10 +57,10 @@ public class MissionController {
 
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -83,10 +83,10 @@ public class MissionController {
 			
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -111,10 +111,10 @@ public class MissionController {
 			
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -129,11 +129,10 @@ public class MissionController {
 			Map<String, Object> map = new HashMap<>();
 			
 			missionService.deleteMission(mission_id);
-			
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -161,15 +160,15 @@ public class MissionController {
 			
 			if(result.size() != 0) {
 				basicResponse.dataBody = map;
-				basicResponse.status = "200";
+				basicResponse.status = "success";
 				
 			} else {
 				basicResponse.dataBody = map;
-				basicResponse.status = "200 none";
+				basicResponse.status = "none";
 			}
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -195,10 +194,10 @@ public class MissionController {
 
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);

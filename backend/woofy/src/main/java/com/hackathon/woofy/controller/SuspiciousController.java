@@ -61,10 +61,10 @@ public class SuspiciousController {
 			
 			map.put("suspicious", result);
 			basicResponse.dataBody = map;
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 			
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -87,10 +87,10 @@ public class SuspiciousController {
 			
 			map.put("suspicious", result);
 			basicResponse.dataBody = map;
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -114,10 +114,10 @@ public class SuspiciousController {
 			
 			map.put("suspicious", result);
 			basicResponse.dataBody = map;
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -130,13 +130,12 @@ public class SuspiciousController {
 
 		try {
 			Map<String, Object> map = new HashMap<>();
-			
 			suspiciousService.deleteSuspicious(suspicious_id);
 			
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -163,15 +162,14 @@ public class SuspiciousController {
 			map.put("suspicious", result);
 			
 			if(result.size() != 0) {
-				basicResponse.dataBody = map;
-				basicResponse.status = "200";
+				basicResponse.status = "success";
 				
 			} else {
 				basicResponse.dataBody = map;
-				basicResponse.status = "200 none";
+				basicResponse.status = "none";
 			}
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -198,10 +196,10 @@ public class SuspiciousController {
 
 			map.put("suspicious", result);
 			basicResponse.dataBody = map;
-			basicResponse.status = "200";
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.status = "400";
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);

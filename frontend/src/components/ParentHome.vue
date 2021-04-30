@@ -23,7 +23,7 @@
       </div>
     </div>
       <p style=" height: 10%;margin: 3% 4% 0% 4%; font-weight: bold; color: rgb(97 95 95); font-size: larger;height: 3%;
-    background-color: white;">자녀(완성아님.....귀찮아서 일단ㅎㅎ)</p>
+    background-color: white;">자녀 관리</p>
     <div class="ChildList">
     <div v-for="(child,index) in user.childs" :key="index" class="ChildAccountSummary" @click="moveTo('ParentChildDetail')">
         <div style="width:100%; height:70%;">

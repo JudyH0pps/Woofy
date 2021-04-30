@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 import ParentHome from "@/components/ParentHome.vue";
 import ParentChildDetail from "@/components/ParentChildDetail.vue";
 import ChildHome from "@/components/ChildHome.vue";
+import ChildRemittance from "@/components/ChildRemittance.vue";
 import { authRouters } from "@/router/auth";
 
 Vue.use(VueRouter);
@@ -18,8 +18,7 @@ const authCheck = () => (to, from, next) => {
 const routes = [
     {
         path: "/",
-        name: "Home",
-        component: Home,
+        redirect: "/login",
         beforeEnter: authCheck(),
     },
     {
@@ -36,6 +35,11 @@ const routes = [
         path: "/ChildHome",
         name: "ChildHome",
         component: ChildHome,
+    },
+    {
+        path: "/ChildRemittance",
+        name: "ChildRemittance",
+        component: ChildRemittance,
     },
     ...authRouters,
 ];

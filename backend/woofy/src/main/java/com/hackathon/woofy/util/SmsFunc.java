@@ -26,7 +26,7 @@ public class SmsFunc {
 	    params.put("from", keys.getSmsSenderNumber()); // �߽Ź�ȣ
 	    params.put("to", to); // ���Ź�ȣ
 	    params.put("text", content); // ���ڳ���    
-	    params.put("type", "SMS"); // Message type ( SMS, LMS, MMS, ATA )
+	    params.put("type", "LMS"); // Message type ( SMS, LMS, MMS, ATA )
 	    params.put("app_version", "JAVA SDK v1.2"); // application name and version
 
 	    try {
