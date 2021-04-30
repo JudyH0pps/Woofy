@@ -14,6 +14,7 @@
       </div>
       <v-btn color="primary" fab small>></v-btn>
     </div>
+    <div class="ChildAccountSummary aligncenter" style="color: gray;">미션 추가 요청<v-icon>mdi-plus-circle-outline</v-icon></div>
   </section>
 </template>
 
