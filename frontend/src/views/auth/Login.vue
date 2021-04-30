@@ -5,8 +5,8 @@
         <div class="input_title"><span>ID</span></div>
         <input
           type="ID"
-          placeholder="이메일 주소를 입력해주세요."
-          id="email"
+          placeholder="아이디를 입력해주세요."
+          id="id"
           autofocus
         />
       </div>
@@ -41,11 +41,11 @@ export default {
   },
   methods: {
     parentLogin() {
-      this.$store.dispatch('login', true);
+      this.$store.dispatch("login", true);
       this.$router.push({ name: "ParentHome" });
     },
     childLogin() {
-      this.$store.dispatch('login', false);
+      this.$store.dispatch("login", false);
       this.$router.push({ name: "ChildHome" });
     },
     signup() {

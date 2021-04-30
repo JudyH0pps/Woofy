@@ -4,6 +4,7 @@ import ParentHome from "@/components/ParentHome.vue";
 import ParentChildDetail from "@/components/ParentChildDetail.vue";
 import ChildHome from "@/components/ChildHome.vue";
 import ChildRemittance from "@/components/ChildRemittance.vue";
+import ChildMissionRequest from "@/components/ChildMissionRequest.vue";
 import { authRouters } from "@/router/auth";
 
 Vue.use(VueRouter);
@@ -40,6 +41,11 @@ const routes = [
         path: "/ChildRemittance",
         name: "ChildRemittance",
         component: ChildRemittance,
+    },
+    {
+        path: "/ChildMissionRequest",
+        name: "ChildMissionRequest",
+        component: ChildMissionRequest,
     },
     ...authRouters,
 ];
