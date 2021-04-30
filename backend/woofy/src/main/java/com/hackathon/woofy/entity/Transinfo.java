@@ -18,14 +18,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "payment")
+@Table(name = "transinfo")
 @Getter
 @Setter
-public class Payment {
+public class Transinfo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "payment_id")
+	@Column(name = "transinfo_id")
 	private Long id;
 	
 	private LocalDateTime date; // 결제 날짜
@@ -35,7 +35,7 @@ public class Payment {
 	private Long childNum; // 자녀 결제 시, child_id 저장
 	
 	@Enumerated(EnumType.STRING)
-	private PaymentStatus paymentStatus;
+	private TransinfoStatus transinfoStatus;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")

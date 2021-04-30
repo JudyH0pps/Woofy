@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
-import com.hackathon.woofy.entity.Payment;
-import com.hackathon.woofy.entity.PaymentStatus;
+import com.hackathon.woofy.entity.Transinfo;
+import com.hackathon.woofy.entity.TransinfoStatus;
 import com.hackathon.woofy.request.StoreRequest;
 import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.ParentService;
-import com.hackathon.woofy.service.PaymentService;
+import com.hackathon.woofy.service.TransinfoService;
 import com.hackathon.woofy.util.WooriFunc;
 
 import lombok.RequiredArgsConstructor;
@@ -31,19 +31,24 @@ public class StoreController {
 
 	private final ParentService parentService;
 	private final ChildService childService;
-	private final PaymentService paymentService;
+	private final TransinfoService transinfoService;
 
 	private WooriFunc wf;
 
+	/**
+	 * 매장에서 거래 요청
+	 * @param storeRequset
+	 * @return
+	 */
 	@PostMapping(value = "", produces = "application/json; charset=utf8")
-	public Object storePayReq(@RequestBody StoreRequest storeRequset) {
+	public Object storeReq(@RequestBody StoreRequest storeRequset) {
 		final BasicResponse basicResponse = new BasicResponse();
 		
 		System.out.println("storeRequset: "+storeRequset.toString());
 		
 		Parent parent = null;
 		Child child = null;
-		Payment payment  = new Payment(); // 거래내역 저장;
+		Transinfo transinfo  = new Transinfo(); // 거래내역 저장;
 		boolean isChild = false; // 부모인지 자식인지 판별
 		boolean isLimit = false; // 한도초과인지 확인
 		
@@ -67,18 +72,18 @@ public class StoreController {
 				if (child.getSpendLimit() < storeRequset.getPrice()) { // 한도 초과일 때
 					isLimit = true;
 					
-					payment.setDate(LocalDateTime.now());
-					payment.setLocation(storeRequset.getLocation());
-					payment.setPrice(storeRequset.getPrice());
-					payment.setChildNum(child.getId());
-					payment.setParent(child.getParent());
-					payment.setPaymentStatus(PaymentStatus.FAIL);
+					transinfo.setDate(LocalDateTime.now());
+					transinfo.setLocation(storeRequset.getLocation());
+					transinfo.setPrice(storeRequset.getPrice());
+					transinfo.setChildNum(child.getId());
+					transinfo.setParent(child.getParent());
+					transinfo.setTransinfoStatus(TransinfoStatus.FAIL);
 					
-					paymentService.savePayment(payment);
+					transinfoService.saveTransinfo(transinfo);
 					
 					// 추가적으로 한도 넘으면 부모에게 알림 할지말지 정하자
 					
-					basicResponse.dataBody = payment;
+					basicResponse.dataBody = transinfo;
 					basicResponse.status = "limit";
 				} 
 			}
@@ -88,20 +93,20 @@ public class StoreController {
 //				String api = wf.executeWooriAcctToWooriAcct(WDR_ACNO, storeRequset.getPrice() + "", "020", "1002987654321", "입금"); // Only Request
 //				System.out.println(api);
 				
-				payment.setDate(LocalDateTime.now());
-				payment.setLocation(storeRequset.getLocation());
-				payment.setPrice(storeRequset.getPrice());
+				transinfo.setDate(LocalDateTime.now());
+				transinfo.setLocation(storeRequset.getLocation());
+				transinfo.setPrice(storeRequset.getPrice());
 				if(isChild) {
-					payment.setChildNum(child.getId());
-					payment.setParent(child.getParent());
+					transinfo.setChildNum(child.getId());
+					transinfo.setParent(child.getParent());
 				} else {
-					payment.setParent(parent);
+					transinfo.setParent(parent);
 				}
-				payment.setPaymentStatus(PaymentStatus.SUCCESS);
+				transinfo.setTransinfoStatus(TransinfoStatus.SUCCESS);
 				
-				paymentService.savePayment(payment);
+				transinfoService.saveTransinfo(transinfo);
 				
-				basicResponse.dataBody = payment;
+				basicResponse.dataBody = transinfo;
 				basicResponse.status = "success";
 			}
 

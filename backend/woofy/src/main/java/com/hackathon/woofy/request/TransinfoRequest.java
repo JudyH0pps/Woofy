@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PaymentRequest {
+public class TransinfoRequest {
 
 	private String location;
 	private int price;

@@ -1,5 +1,5 @@
 package com.hackathon.woofy.entity;
 
-public enum PaymentStatus {
+public enum TransinfoStatus {
 	SUCCESS, FAIL
 }

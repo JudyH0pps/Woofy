@@ -17,10 +17,4 @@ public class StoreRequest {
 	public Parent parent; // 거래하는 사람이 부모인지
 	public Child child; // 자식인지 판별하기 위함
 	
-	@Override
-	public String toString() {
-		return "StoreRequest [price=" + price + ", location=" + location + ", parent=" + parent + ", child=" + child
-				+ "]";
-	}
-	
 }

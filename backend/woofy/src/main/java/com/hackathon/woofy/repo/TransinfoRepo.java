@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.hackathon.woofy.entity.Parent;
-import com.hackathon.woofy.entity.Payment;
+import com.hackathon.woofy.entity.Transinfo;
 
-public interface PaymentRepo extends JpaRepository<Payment, Long> {
+public interface TransinfoRepo extends JpaRepository<Transinfo, Long> {
 
-	@Query("select p from Payment p where p.parent = :parent_id ")
-	List<Payment> findByParent(@Param("parent_id") Parent parent);
+	@Query("select t from Transinfo t where t.parent = :parent_id ")
+	List<Transinfo> findByParent(@Param("parent_id") Parent parent);
 }
