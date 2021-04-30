@@ -166,22 +166,27 @@ public class AuthenticationController {
 				responseObject.put("status", 404);
 				responseObject.put("CRTF_UNQ_NO", CRTF_UNQ_NO);	// CRTF_UNQ_NO는 부모 회원가입 시에 유효성 검증에 사용된다.
 				responseObject.put("CUS_USG_ACNO", targetAccountNumber);
+				
 				return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);	// 404 메시지를 내보내서 프론트엔드에서 회원가입 페이지로 이동하는데 활용하게 한다.
 			}
 		}
 		
 		else {
+			// 자녀의 요청을 핸들링 한다.
 			Child searchChild = childService.findByPhoneNumber(HP_NO);
-			if (searchChild == null) {
-				// 자녀의 SMS 인증은 사후 인증이다. 여기에서는 별다른 로직 구현 없이 별도의 처리를 진행한다.
-				responseObject.put("status", 204);
-				return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);	// 이곳의 204 에러는 자녀가 없다는 의미이다.
+			if (searchChild == null) {				
+				redisService.insertHashTableContent("ChildSignupRequestSMSTable", CRTF_UNQ_NO, HP_NO);
+				redisService.setHashSetTimeLimit("ChildSignupRequestSMSTable", CRTF_UNQ_NO, 900);
+
+				// 자녀의 경우 인증을 성공했다는 의미에서 200을 호출한다.
+				responseObject.put("status", 200);
+				responseObject.put("CRTF_UNQ_NO", CRTF_UNQ_NO);
+				return new ResponseEntity<>(responseObject, HttpStatus.ACCEPTED);		
 			}
-			
-			// TO-DO: 자녀의 SMS 인증 여부를 True로 변경하고 저장한다. 자녀 Entity의 테이블 구성에 따라 로직을 구성하도록 한다.
 		}
 		
-		responseObject.put("status", 200);
-		return new ResponseEntity<>(responseObject, HttpStatus.ACCEPTED);
+		// 만약에 어떤 값이든 존재하면 304 상태코드를 호출한다. 304의 경우 리턴 데이터가 없다.
+		responseObject.put("status", 304);
+		return new ResponseEntity<>(responseObject, HttpStatus.FOUND);
 	}
 }
