@@ -51,12 +51,9 @@ public class ChildController {
 			
 			map.put("child", result);
 			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
-
+			basicResponse.status = "success";
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -74,12 +71,10 @@ public class ChildController {
 			
 			map.put("child", result);
 			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -106,15 +101,11 @@ public class ChildController {
 			Map<String, Object> map = new HashMap<>();
 			
 			Child c = childService.findById(child_id);
-			
 			childService.deleteChild(child_id);
-			
-			basicResponse.data = "success";
-			basicResponse.status = true;
+			basicResponse.status = "success";
 
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);

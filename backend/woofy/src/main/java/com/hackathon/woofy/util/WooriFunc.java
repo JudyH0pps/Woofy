@@ -154,23 +154,28 @@ public class WooriFunc {
       return WooriAPIRequest(targetURL, targetRequestBodyMap);
    }
 
-   public String getAccBasicInfo(String INQ_ACNO, String INQ_BAS_DT, String ACCT_KND, String INQ_CUCD)
-         throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-         InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-
-      String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/finance/getAccBasicInfo";
-
-      WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader("", "", "", "", "", "", "", "");
-      GetAccBasicInfoRequestBody getAccBasicInfoRequestBody = new GetAccBasicInfoRequestBody(INQ_ACNO, INQ_BAS_DT,
-            ACCT_KND, INQ_CUCD);
-
-      Map<String, Object> targetRequestBodyMap = new HashMap<>();
-
-      targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
-      targetRequestBodyMap.put("dataBody", getAccBasicInfoRequestBody);
-      
-      return WooriAPIRequest(targetURL, targetRequestBodyMap);
-   }
+   public String getAccBasicInfo(String INQ_ACNO, String INQ_BAS_DT, String ACCT_KND, String INQ_CUCD) {
+		String targetURL = "https://openapi.wooribank.com:444/oai/wb/v1/finance/getAccBasicInfo";
+		
+		WooriApiRequestHeader wooriApiRequestHeader = new WooriApiRequestHeader("", "", "", "", "", "", "", "");
+		GetAccBasicInfoRequestBody getAccBasicInfoRequestBody = new GetAccBasicInfoRequestBody(INQ_ACNO, INQ_BAS_DT, ACCT_KND, INQ_CUCD);
+		
+		Map<String, Object> targetRequestBodyMap = new HashMap<>();
+		
+		targetRequestBodyMap.put("dataHeader", wooriApiRequestHeader);
+		targetRequestBodyMap.put("dataBody", getAccBasicInfoRequestBody);
+		  
+		String result = null;
+		
+	  	try {
+	  		result = WooriAPIRequest(targetURL, targetRequestBodyMap);
+		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | IOException e) {
+			e.printStackTrace();
+		}
+	  	
+	  	return result;
+	}
 
    public String executeWooriAcctToWooriAcct(String WDR_ACNO, String TRN_AM, String RCV_BKCD, String RCV_ACNO,
          String PTN_PBOK_PRNG_TXT) throws IOException, InvalidKeyException, NoSuchAlgorithmException,
