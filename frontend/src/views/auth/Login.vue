@@ -41,11 +41,11 @@ export default {
   },
   methods: {
     parentLogin() {
-      this.$store.dispatch('login', );
+      this.$store.dispatch('login', true);
       this.$router.push({ name: "ParentHome" });
     },
     childLogin() {
-      this.$store.dispatch('login', );
+      this.$store.dispatch('login', false);
       this.$router.push({ name: "ChildHome" });
     },
     signup() {

@@ -89,6 +89,8 @@ export default {
       return num.money.toString().replace(regexp,',');
     }
   },
+  created() {
+  }
 };
 </script>
 

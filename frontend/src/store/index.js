@@ -9,8 +9,8 @@ export default new Vuex.Store({
     isParent: null,
   },
   mutations: {
-    setParent(isParent) {
-      this.isParent = isParent;
+    setParent(state, isParent) {
+      state.isParent = isParent;
     }
   },
   actions: {
