@@ -36,6 +36,7 @@ public class Suspicious {
 	private String location;
 	private String startTime;
 	private String endTime;
+	private String imageUrl;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "child_id")

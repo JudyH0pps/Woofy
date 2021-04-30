@@ -14,6 +14,7 @@ public class SuspiciousRequest {
 	private String location;
 	private String startTime;
 	private String endTime;
+	private String imageUrl;
 	
 	private Child child;
 }
