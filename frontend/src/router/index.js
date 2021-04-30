@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 import ParentHome from "@/components/ParentHome.vue";
 import ParentChildDetail from "@/components/ParentChildDetail.vue";
 import ChildHome from "@/components/ChildHome.vue";
@@ -18,8 +17,7 @@ const authCheck = () => (to, from, next) => {
 const routes = [
     {
         path: "/",
-        name: "Home",
-        component: Home,
+        redirect: "/login",
         beforeEnter: authCheck(),
     },
     {
