@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.ParentService;
 import com.hackathon.woofy.service.RedisService;
+import com.hackathon.woofy.util.SmsFunc;
 import com.hackathon.woofy.util.WooriFunc;
 
 @RestController
@@ -40,6 +42,7 @@ public class ParentController {
 	@Autowired RedisService redisService;
 	
 	WooriFunc wooriFunc = new WooriFunc();
+	SmsFunc smsFunc = new SmsFunc();
 	
 	@PostMapping(value = "", produces = "application/json; charset=utf8")
 	public Object signup(@RequestBody Map<String, Object> jsonRequest) {
@@ -98,7 +101,62 @@ public class ParentController {
 		
 		return new ResponseEntity<>(basicResponse, HttpStatus.CREATED);
 	}
+
+	@PostMapping(value = "/code", produces = "application/json; charset=utf8")
+	public Object createAndSendChildJoin(@RequestBody Map<String, Object> jsonRequest) {
+		Map<String, Object> joinRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		
+		String frontPageURL = "http://localhost:8081/child-signup?request_code=";
+		String targetRequestCode = "MQ" + RandomStringUtils.randomNumeric(10);
+		
+		String targetUserName = (String)joinRequestObject.get("userName");
+		String targetPhoneNumber = (String)joinRequestObject.get("phoneNumber");
+		
+		redisService.insertHashTableContent("ChildSignupRequestParentTable", targetRequestCode, targetUserName);
+		redisService.setHashSetTimeLimit("ChildSignupRequestParentTable", targetRequestCode, 900);
+
+		String targetMessage1 = 
+				"WooFY(가제) 자녀 계정을 가입하시려면 이 링크를 통해 진행해주세요. (";
+		
+		String targetMessage2 = frontPageURL + targetRequestCode + ")";
+		smsFunc.sendMessage(targetPhoneNumber, targetMessage1 + targetMessage2);
+		
+		final BasicResponse basicResponse = new BasicResponse();
+		
+		JSONObject responseObject = new JSONObject();
+		responseObject.put("url", frontPageURL + targetRequestCode);
+		
+		basicResponse.status = "201";
+		basicResponse.dataBody = responseObject;
+		
+		return new ResponseEntity<>(basicResponse, HttpStatus.CREATED);
+	}
 	
+	@PutMapping(value = "/{parentUsername}", produces = "application/json; charset=utf8")
+	public String modifyParentInfo(@PathVariable(value="parentUsername") String parentUserName, @RequestBody Map<String, Object> jsonRequest) {
+		// JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
+		Map<String, Object> parentObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		System.out.println(parentObject);
+		
+		return "DEBUG";
+	}
+
+	@DeleteMapping(value = "/{parentUsername}")
+	public String deleteParentInfo(@PathVariable(value="parentUsername") String parentUserName) {
+		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
+		System.out.println(parentUserName);
+		
+		return "DEBUG";
+	}
+		
+	@GetMapping(value = "/{parentUsername}/child")
+	public String getParentChildList(@PathVariable(value="parentUsername") String parentUserName) {
+		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
+		System.out.println(parentUserName);
+		
+		return "DEBUG";
+	}
+
 	/*
 	@GetMapping("{username}/child")
 	public Object findChildByParent(@PathVariable(name = "username") String username) {
@@ -125,36 +183,4 @@ public class ParentController {
 		}
 	}
 	*/
-	@PutMapping(value = "/{parentUsername}", produces = "application/json; charset=utf8")
-	public String modifyParentInfo(@PathVariable(value="parentUsername") String parentUserName, @RequestBody Map<String, Object> jsonRequest) {
-		// JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		Map<String, Object> parentObject = (Map<String, Object>) jsonRequest.get("dataBody");
-		System.out.println(parentObject);
-		
-		return "DEBUG";
-	}
-
-	@DeleteMapping(value = "/{parentUsername}")
-	public String deleteParentInfo(@PathVariable(value="parentUsername") String parentUserName) {
-		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		System.out.println(parentUserName);
-		
-		return "DEBUG";
-	}
-	
-	@PostMapping(value = "/code", produces = "application/json; charset=utf8")
-	public String createAndSendChildJoin(@RequestBody Map<String, Object> jsonRequest) {
-		Map<String, Object> joinRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
-		System.out.println(joinRequestObject);
-		
-		return "DEBUG";
-	}
-	
-	@GetMapping(value = "/{parentUsername}/child")
-	public String getParentChildList(@PathVariable(value="parentUsername") String parentUserName) {
-		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		System.out.println(parentUserName);
-		
-		return "DEBUG";
-	}
 }
