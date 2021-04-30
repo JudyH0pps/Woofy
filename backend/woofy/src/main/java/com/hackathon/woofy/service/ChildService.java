@@ -20,7 +20,6 @@ public class ChildService {
 	
 	@Transactional
 	public Child saveChild(Child child) {
-		
 		return childRepo.save(child);
 	}
 	
@@ -28,7 +27,12 @@ public class ChildService {
 	public Child findByUsername(String username) {
 		return childRepo.findByUsername(username);
 	}
-	
+  
+  @Transactional
+	public Child findByPhoneNumber(String phoneNumber) {
+		return childRepo.findByPhoneNumber(phoneNumber);
+	}
+
 	@Transactional
 	public Child findById(Long id) {
 		return childRepo.findById(id).get();
@@ -37,6 +41,5 @@ public class ChildService {
 	@Transactional
 	public void deleteChild(Long id) {
 		childRepo.deleteById(id);
-	}
-	
+	}	
 }

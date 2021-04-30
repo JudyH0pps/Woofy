@@ -16,4 +16,6 @@ public interface ChildRepo extends CrudRepository<Child, Long>{
 	@Query("select c from Child c where c.parent = :parent_id")
 	List<Child> findByParent(@Param("parent_id") Parent parent);
 
+	Child findByPhoneNumber(String phoneNumber);
+
 }
