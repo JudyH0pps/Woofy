@@ -151,11 +151,10 @@ public class SuspiciousController {
 	public Object findByParent(@PathVariable(name = "p_username") String p_username) {
 		
 		final BasicResponse basicResponse = new BasicResponse();
-
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			Parent p = parentService.findParent(p_username);
+			Parent p = parentService.findByUsername(p_username);
 			
 			List<Suspicious> result = suspiciousService.findByParent(p);
 			
@@ -171,9 +170,9 @@ public class SuspiciousController {
 		} catch (Exception e) {
 			basicResponse.status = "error";
 			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
+		
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 	
 	

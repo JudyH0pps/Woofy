@@ -7,9 +7,12 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,7 +28,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity @Table(name = "parent") @Getter @Setter
+@Entity @Table(name = "parent") 
+@Getter @Setter
 public class Parent {
 
 	@Id
@@ -33,19 +37,17 @@ public class Parent {
 	@Column(name = "parent_id")
 	private Long id;
 
-	private String username;
-	
-	@JsonProperty
-	private String password;
-	
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String phoneNumber;
 	private String birthDay;
 	private String account;
 	private String authNum;
 	private boolean isAuth = false;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 	
 //	@OneToMany(mappedBy = "parent")
 //	private List<Child> childs = new ArrayList<>(); // �б⸸ ����
@@ -54,38 +56,31 @@ public class Parent {
 	
 	public Parent(UserRequest userRequest) {
 		super();
-		this.username = userRequest.getUsername();
-		this.password = userRequest.getPassword();
 		this.firstName = userRequest.getFirstName();
 		this.lastName = userRequest.getLastName();
 		this.email = userRequest.getEmail();
-		this.phoneNumber = userRequest.getPhoneNumber();
 		this.birthDay = userRequest.getBirthDay();
 	}
 
 	public Parent(Map<String, Object> parentObject) {
 		super();
-		this.username = (String)parentObject.get("username");
-		this.password = (String)parentObject.get("password");
 		this.firstName = (String)parentObject.get("firstName");
 		this.lastName = (String)parentObject.get("lastName");
 		this.email = (String)parentObject.get("email");
-		this.phoneNumber = (String)parentObject.get("phoneNumber");
 		this.birthDay = (String)parentObject.get("birthDay");
 		this.account = (String)parentObject.get("accountNumber");
-	}
-
-	@JsonIgnore
-	public String getPassword() {
-		return this.password;
 	}
 	
 	@Override
 	public String toString() {
-		return "Parent [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", birthDay="
+		return "Parent [id=" + id + ", password=" + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", phoneNumber=" + ", birthDay="
 				+ birthDay + ", account=" + account + ", authNum=" + authNum + ", isAuth=" + isAuth + "]";
 	}
+	
+    public String getUsername() {
+        return this.user.getUsername();
+    }
 
 //	public void addChild(Child child) {
 //		child.setParent(this);

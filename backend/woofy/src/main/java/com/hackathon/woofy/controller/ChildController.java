@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Mission;
 import com.hackathon.woofy.entity.Parent;
+import com.hackathon.woofy.entity.User;
 import com.hackathon.woofy.request.UserRequest;
 import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.ParentService;
 import com.hackathon.woofy.service.RedisService;
 import com.hackathon.woofy.service.SuspiciousService;
+import com.hackathon.woofy.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +37,7 @@ public class ChildController {
 
 	private final ChildService childService;
 	private final ParentService parentService;
+	private final UserService userService;
 	private final SuspiciousService suspiciousService;
 	
 	@Autowired RedisService redisService;
@@ -49,45 +52,45 @@ public class ChildController {
 		String targetRequestCode = (String) jsonRequest.get("requestCode");
 		String targetSMSCRTFCode = (String) jsonRequest.get("smsCRTFCode");
 
-		try {
-			String requestParentUsername = redisService.getHashSetItem("ChildSignupRequestParentTable", targetRequestCode);
-
-			// 1. 요청한 부모의 데이터를 검증한다.
-			if (requestParentUsername == null) {
-				basicResponse.status = "400";
-				return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
-			}
-			
-			Parent targetParent = parentService.findParent(requestParentUsername);	// 현단계에서는 디버그 전화번호를 사용한다. -> 조회할 때는 username으로 조회하기로 통일합시다
-			
-			if (targetParent == null) {
-				basicResponse.status = "400";
-				return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
-			}
-			
-			// 2. SMS 인증의 유효성을 검증한다.
-			String requestPhoneNumber = redisService.getHashSetItem("ChildSignupRequestSMSTable", targetSMSCRTFCode);
-			
-			if (requestPhoneNumber == null) {
-				basicResponse.status = "400";
-				return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
-			}
-			
-			// 3. 자녀의 정보를 등록한다. 
-			Child child = new Child(childObject, targetParent);
-			child.setAuth(true);
-			Child result = childService.saveChild(child);
-			
-			// 4. 결과 값을 리턴하기 위한 오브젝트를 생성하고 basicResponse에 기록한다.
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("username", result.getUsername());
-			
-			basicResponse.dataBody = jsonObject;
-			basicResponse.status = "201";
-		} catch (Exception e) {
-			basicResponse.status = "500";
-			e.printStackTrace();
-		}
+//		try {
+//			String requestParentUsername = redisService.getHashSetItem("ChildSignupRequestParentTable", targetRequestCode);
+//
+//			// 1. 요청한 부모의 데이터를 검증한다.
+//			if (requestParentUsername == null) {
+//				basicResponse.status = "400";
+//				return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
+//			}
+//			
+//			User targetParent = userService.findByUsername(requestParentUsername);	// 현단계에서는 디버그 전화번호를 사용한다. -> 조회할 때는 username으로 조회하기로 통일합시다
+//			
+//			if (targetParent == null) {
+//				basicResponse.status = "400";
+//				return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
+//			}
+//			
+//			// 2. SMS 인증의 유효성을 검증한다.
+//			String requestPhoneNumber = redisService.getHashSetItem("ChildSignupRequestSMSTable", targetSMSCRTFCode);
+//			
+//			if (requestPhoneNumber == null) {
+//				basicResponse.status = "400";
+//				return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
+//			}
+//			
+//			// 3. 자녀의 정보를 등록한다. 
+//			Child child = new Child(childObject, targetParent);
+//			child.setAuth(true);
+//			Child result = childService.saveChild(child);
+//			
+//			// 4. 결과 값을 리턴하기 위한 오브젝트를 생성하고 basicResponse에 기록한다.
+//			JSONObject jsonObject = new JSONObject();
+//			jsonObject.put("username", result.getUsername());
+//			
+//			basicResponse.dataBody = jsonObject;
+//			basicResponse.status = "201";
+//		} catch (Exception e) {
+//			basicResponse.status = "500";
+//			e.printStackTrace();
+//		}
 
 		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}

@@ -28,7 +28,7 @@ public class ChildService {
 		return childRepo.findByUsername(username);
 	}
   
-  @Transactional
+	@Transactional
 	public Child findByPhoneNumber(String phoneNumber) {
 		return childRepo.findByPhoneNumber(phoneNumber);
 	}

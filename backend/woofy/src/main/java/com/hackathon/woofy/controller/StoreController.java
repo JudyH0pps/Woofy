@@ -41,7 +41,7 @@ public class StoreController {
 	 * @return
 	 */
 	@PostMapping(value = "", produces = "application/json; charset=utf8")
-	public Object storeReq(@RequestBody StoreRequest storeRequset) {
+	public Object storeReq(@RequestBody StoreRequest storeRequest) {
 		final BasicResponse basicResponse = new BasicResponse();
 		
 		Parent parent = null;
@@ -55,23 +55,23 @@ public class StoreController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 
-			if (storeRequset.getParent() != null) { // 부모가 거래할 시
-				parent = parentService.findParent(storeRequset.getParent().getUsername());
+			if (storeRequest.getParent() != null) { // 부모가 거래할 시
+				parent = parentService.findByUsername(storeRequest.getParent().getUsername());
 				
 				WDR_ACNO = parent.getAccount();
 				
 			} else { // 자식이 거래할 시
 				isChild = true;
 				
-				child = childService.findByUsername(storeRequset.getChild().getUsername());
+				child = childService.findByUsername(storeRequest.getChild().getUsername());
 				WDR_ACNO = child.getParent().getAccount();
 
-				if (child.getSpendLimit() < storeRequset.getPrice()) { // 한도 초과일 때
+				if (child.getSpendLimit() < storeRequest.getPrice()) { // 한도 초과일 때
 					isLimit = true;
 					
 					transinfo.setDate(LocalDateTime.now());
-					transinfo.setLocation(storeRequset.getLocation());
-					transinfo.setPrice(storeRequset.getPrice());
+					transinfo.setLocation(storeRequest.getLocation());
+					transinfo.setPrice(storeRequest.getPrice());
 					transinfo.setChildNum(child.getId());
 					transinfo.setParent(child.getParent());
 					transinfo.setTransinfoStatus(TransinfoStatus.FAIL);
@@ -91,8 +91,8 @@ public class StoreController {
 //				System.out.println(api);
 				
 				transinfo.setDate(LocalDateTime.now());
-				transinfo.setLocation(storeRequset.getLocation());
-				transinfo.setPrice(storeRequset.getPrice());
+				transinfo.setLocation(storeRequest.getLocation());
+				transinfo.setPrice(storeRequest.getPrice());
 				if(isChild) {
 					transinfo.setChildNum(child.getId());
 					transinfo.setParent(child.getParent());

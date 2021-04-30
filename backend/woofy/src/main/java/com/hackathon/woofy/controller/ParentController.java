@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +26,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hackathon.woofy.entity.Parent;
+import com.hackathon.woofy.entity.User;
 import com.hackathon.woofy.request.UserRequest;
 import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.ParentService;
 import com.hackathon.woofy.service.RedisService;
+import com.hackathon.woofy.service.UserService;
 import com.hackathon.woofy.util.SmsFunc;
 import com.hackathon.woofy.util.WooriFunc;
 
@@ -39,7 +42,9 @@ public class ParentController {
 	
 	@Autowired ParentService parentService;
 	@Autowired ChildService childService;
+	@Autowired UserService userService;
 	@Autowired RedisService redisService;
+	@Autowired PasswordEncoder passwordEncoder;
 	
 	WooriFunc wooriFunc = new WooriFunc();
 	SmsFunc smsFunc = new SmsFunc();
@@ -49,7 +54,24 @@ public class ParentController {
 
 		final BasicResponse basicResponse = new BasicResponse();
 		
-		Map<String, Object> parentObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		Map<String, Object> dataBodyObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		Map<String, Object> userObject = new JSONObject(), parentObject = new JSONObject();
+		
+		String targetPassword = (String)dataBodyObject.get("password");
+		
+		// User Data
+		userObject.put("username", (String)dataBodyObject.get("username"));
+		userObject.put("password", passwordEncoder.encode(targetPassword));
+		userObject.put("phoneNumber", (String)dataBodyObject.get("phoneNumber"));
+		userObject.put("role", "ROLE_PARENT");
+		
+		// Parent Data
+		parentObject.put("firstName", (String)dataBodyObject.get("firstName"));
+		parentObject.put("lastName", (String)dataBodyObject.get("lastName"));
+		parentObject.put("email", (String)dataBodyObject.get("email"));
+		parentObject.put("birthDay", (String)dataBodyObject.get("birthDay"));
+		parentObject.put("accountNumber", (String)dataBodyObject.get("accountNumber"));
+		
 		String requestCode = (String)jsonRequest.get("requestCode"); // JPA 기반으로 작성된 코드의 동작을 저해하지 않도록 하기 위해 dataBody와 별도의 key를 분리했다.
 		
 		if (requestCode == null) {
@@ -57,13 +79,14 @@ public class ParentController {
 			new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
 		}
 		
-		try {		
+		try {
+			User user = new User(userObject);
 			Parent parent = new Parent(parentObject);	 
 			
 			// KeyDB 서버에 가입 CRTF 키가 저장되어 있는지 확인한다. 없으면 유효하지 않은 가입 세션이 된다. (keyDB를 이용하여 유사 세션을 구현했다.)
 			String currentPhoneNumber = redisService.getHashSetItem("ParentJoinCRTFTable", requestCode);
 			
-			if (currentPhoneNumber == null || !currentPhoneNumber.equals(parent.getPhoneNumber())) {
+			if (currentPhoneNumber == null || !currentPhoneNumber.equals(user.getPhoneNumber())) {
 				basicResponse.status = "400";
 				new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
 			}
@@ -85,10 +108,17 @@ public class ParentController {
 			
 			parent.setAuth(true);	// 부모의 경우 이전의 단계들로부터 휴대폰 인증을 완료했다. 여기에서는 바로 true로 설정한다.
 			
+			// 부모와 유저의 정보를 저장한다.
+			System.out.println(user.getUsername());
+			System.out.println(user.getPassword());
+			System.out.println(user.getPhoneNumber());
+			
+			User newUser = userService.saveUser(user);
+			parent.setUser(newUser);
 			parentService.saveParent(parent);
 			
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("username", parent.getUsername());
+			jsonObject.put("username", user.getUsername());
 			
 			basicResponse.dataBody = jsonObject;
 			basicResponse.status = "201";
@@ -101,7 +131,7 @@ public class ParentController {
 		
 		return new ResponseEntity<>(basicResponse, HttpStatus.CREATED);
 	}
-
+	
 	@PostMapping(value = "/code", produces = "application/json; charset=utf8")
 	public Object createAndSendChildJoin(@RequestBody Map<String, Object> jsonRequest) {
 		Map<String, Object> joinRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");

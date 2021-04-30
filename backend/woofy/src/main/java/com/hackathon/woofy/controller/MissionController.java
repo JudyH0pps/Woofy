@@ -149,30 +149,30 @@ public class MissionController {
 		
 		final BasicResponse basicResponse = new BasicResponse();
 
-		try {
-			Map<String, Object> map = new HashMap<>();
-			
-			Parent p = parentService.findParent(p_username);
-			
-			List<Mission> result = missionService.findByParent(p);
-
-			map.put("mission", result);
-			
-			if(result.size() != 0) {
-				basicResponse.dataBody = map;
-				basicResponse.status = "success";
-				
-			} else {
-				basicResponse.dataBody = map;
-				basicResponse.status = "none";
-			}
-
-		} catch (Exception e) {
-			basicResponse.status = "error";
-			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
-		}
+//		try {
+//			Map<String, Object> map = new HashMap<>();
+//			
+//			Parent p = parentService.findParent(p_username);
+//			
+//			List<Mission> result = missionService.findByParent(p);
+//
+//			map.put("mission", result);
+//			
+//			if(result.size() != 0) {
+//				basicResponse.dataBody = map;
+//				basicResponse.status = "success";
+//				
+//			} else {
+//				basicResponse.dataBody = map;
+//				basicResponse.status = "none";
+//			}
+//
+//		} catch (Exception e) {
+//			basicResponse.status = "error";
+//			e.printStackTrace();
+//		}
+		
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 	
 	/**

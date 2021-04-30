@@ -21,17 +21,12 @@ public class ParentService {
 	}
 	
 	@Transactional
-	public Parent findParent(String userName){
-		return parentRepo.findByUsername(userName);
+	public Parent findById(Long id) {
+		return parentRepo.findById(id).get();
 	}
 	
 	@Transactional
-	public Parent findbyPhoneNumber(String phoneNumber){
-		return parentRepo.findByPhoneNumber(phoneNumber);
-	}
-  
-  @Transactional
-	public Parent findById(Long id) {
-		return parentRepo.findById(id).get();
+	public Parent findByUsername(String username) {
+		return parentRepo.findByUsername(username);
 	}
 }
