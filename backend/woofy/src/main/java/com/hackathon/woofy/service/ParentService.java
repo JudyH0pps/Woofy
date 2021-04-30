@@ -25,5 +25,13 @@ public class ParentService {
 		return parentRepo.findByUsername(userName);
 	}
 	
-	
+	@Transactional
+	public Parent findbyPhoneNumber(String phoneNumber){
+		return parentRepo.findByPhoneNumber(phoneNumber);
+	}
+  
+  @Transactional
+	public Parent findById(Long id) {
+		return parentRepo.findById(id).get();
+	}
 }

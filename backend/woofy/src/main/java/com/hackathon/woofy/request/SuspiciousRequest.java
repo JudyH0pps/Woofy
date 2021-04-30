@@ -16,5 +16,5 @@ public class SuspiciousRequest {
 	private String endTime;
 	
 	private Child child;
-	private Parent parent;
+//	private Parent parent;
 }

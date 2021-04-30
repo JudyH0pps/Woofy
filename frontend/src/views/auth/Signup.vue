@@ -1,33 +1,5 @@
 <template>
-  <section>
-    <article>
-      <div>
-        <div class="input_title"><span>ID</span></div>
-        <input
-          type="ID"
-          placeholder="이메일 주소를 입력해주세요."
-          id="email"
-          autofocus
-        />
-      </div>
-      <br />
-      <div>
-        <div class="input_title"><span>Password</span></div>
-        <input
-          type="password"
-          placeholder="비밀번호를 입력해주세요."
-          v-model="password"
-        />
-      </div>
-    </article>
-    <div class="login_btn">
-      <button class="login_button" @click="login()">LOG IN</button>
-    </div>
-    <button class="login_button" @click="login2()">자녀페이지</button>
-    <div class="login_signup-btn">
-      <button class="login_signup-button" @click="signup()">SIGN UP</button>
-    </div>
-  </section>
+  <section>signup</section>
 </template>
 
 <script>
@@ -45,9 +17,6 @@ export default {
     },
     login2() {
       this.$router.push({ name: "ChildHome" });
-    },
-    signup() {
-      this.$router.push({ name: "Signup" });
     },
   },
 };

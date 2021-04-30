@@ -57,10 +57,10 @@ public class ChildRepoTest {
 		}
 		
 		Mission m = new Mission();
-		m.setTitle("ÀÌ°Å ÇØºÁ!");
-		m.setContent("ÀÌ°Å!");
+		m.setTitle("ï¿½Ì°ï¿½ ï¿½Øºï¿½!");
+		m.setContent("ï¿½Ì°ï¿½!");
 		m.setChild(child2);
-		m.setParent(parent);
+//		m.setParent(parent);
 		
 		missionRepo.save(m);
 		
