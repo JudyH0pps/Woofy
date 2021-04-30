@@ -43,6 +43,7 @@ public class Child {
 	private String birthDay;	// format 泥섎━ 怨쇱젙�� 媛쒕컻 �떒怨꾩뿉�꽌 TBD
 	private String authNum; // 占쏙옙占쏙옙占쏙옙호
 	private boolean isAuth; // 占쏙옙占쏙옙 占쌩댐옙占쏙옙 확占쏙옙
+	private int spendLimit; // 자녀 한도
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
@@ -65,6 +66,7 @@ public class Child {
 		this.lastName = userRequest.getLastName();
 		this.phoneNumber = userRequest.getPhoneNumber();
 		this.birthDay = userRequest.getBirthDay();
+		this.spendLimit = userRequest.getSpendLimit();
 		this.parent = parent;
 	}
 	

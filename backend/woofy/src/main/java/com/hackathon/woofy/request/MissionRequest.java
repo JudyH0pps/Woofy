@@ -15,7 +15,6 @@ public class MissionRequest {
 	private int prize;
 	private MissionStatus missionStatus;
 	
-//	private Parent parent;
 	private Child child;
 	
 }

@@ -2,6 +2,8 @@ package com.hackathon.woofy;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,8 +33,14 @@ public class ChildRepoTest {
 	@Autowired
 	MissionRepo missionRepo;
 	
+	@Autowired
+	EntityManager em;
+	
 	@Test
 	public void testMember() {
+		
+		em.flush();
+		em.clear();
 		
 		// add mission
 		UserRequest req = new UserRequest();
