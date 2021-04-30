@@ -30,7 +30,9 @@ public class Payment {
 	
 	private LocalDateTime date; // 결제 날짜
 	private String location; // 결제 장소
-	private int prize; // 결제 금액
+	private int price; // 결제 금액
+	
+	private Long childNum; // 자녀 결제 시, 자녀 번호 저장
 	
 	@Enumerated(EnumType.STRING)
 	private PaymentStatus paymentStatus;

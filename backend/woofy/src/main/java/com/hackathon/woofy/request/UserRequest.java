@@ -16,6 +16,7 @@ public class UserRequest {
 	private String birthDay;
 	private String phoneNumber;
 	private String email;
+	private int spendLimit;
 	
 	private Parent parent;
 	private Child child;

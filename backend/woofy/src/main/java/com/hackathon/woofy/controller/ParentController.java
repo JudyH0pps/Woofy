@@ -50,11 +50,9 @@ public class ParentController {
 			
 			map.put("parent", result);
 			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
+			basicResponse.status = "200";
 		} catch(Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "400";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);

@@ -57,12 +57,10 @@ public class MissionController {
 
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
+			basicResponse.status = "200";
 
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "400";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -85,12 +83,10 @@ public class MissionController {
 			
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
+			basicResponse.status = "200";
 
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "400";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -115,12 +111,10 @@ public class MissionController {
 			
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
+			basicResponse.status = "200";
 
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "400";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -136,12 +130,10 @@ public class MissionController {
 			
 			missionService.deleteMission(mission_id);
 			
-			basicResponse.data = "success";
-			basicResponse.status = true;
+			basicResponse.status = "200";
 
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "400";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -169,18 +161,15 @@ public class MissionController {
 			
 			if(result.size() != 0) {
 				basicResponse.dataBody = map;
-				basicResponse.data = "success";
-				basicResponse.status = true;
+				basicResponse.status = "200";
 				
 			} else {
 				basicResponse.dataBody = map;
-				basicResponse.data = "none";
-				basicResponse.status = true;
+				basicResponse.status = "200 none";
 			}
 
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "400";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
@@ -206,12 +195,10 @@ public class MissionController {
 
 			map.put("mission", result);
 			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
+			basicResponse.status = "200";
 
 		} catch (Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			basicResponse.status = "400";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
