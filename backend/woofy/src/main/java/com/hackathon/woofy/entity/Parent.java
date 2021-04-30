@@ -50,7 +50,7 @@ public class Parent {
 	private User user;
 	
 //	@OneToMany(mappedBy = "parent")
-//	private List<Child> childs = new ArrayList<>(); // �б⸸ ����
+//	private List<Child> childs = new ArrayList<>();
 	
 	public Parent() {};
 	

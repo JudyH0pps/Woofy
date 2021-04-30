@@ -180,7 +180,7 @@ public class AuthenticationController {
 		
 		else {
 			// 자녀의 요청을 핸들링 한다.
-			Child searchChild = childService.findByPhoneNumber(HP_NO);
+			User searchChild = userService.findByPhoneNumber(HP_NO);
 			if (searchChild == null) {				
 				redisService.insertHashTableContent("ChildSignupRequestSMSTable", CRTF_UNQ_NO, HP_NO);
 				redisService.setHashSetTimeLimit("ChildSignupRequestSMSTable", CRTF_UNQ_NO, 900);

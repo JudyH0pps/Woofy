@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
+import com.hackathon.woofy.entity.User;
 import com.hackathon.woofy.repo.ParentRepo;
 
 @Service
@@ -28,5 +29,9 @@ public class ParentService {
 	@Transactional
 	public Parent findByUsername(String username) {
 		return parentRepo.findByUsername(username);
+	}
+	
+	public Parent findByUser(User user) {
+		return parentRepo.findByUser(user);
 	}
 }

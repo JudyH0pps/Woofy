@@ -34,21 +34,22 @@ public class Child {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "child_id")
 	private Long id;
-
-	private String username;
-	private String password;
 	private String firstName;
 	private String lastName;
 	private String phoneNumber;
 	private String birthDay;	// format 泥섎━ 怨쇱젙�� 媛쒕컻 �떒怨꾩뿉�꽌 TBD
 	private String authNum; // 占쏙옙占쏙옙占쏙옙호
-	private boolean isAuth; // 占쏙옙占쏙옙 占쌩댐옙占쏙옙 확占쏙옙
 	private int spendLimit; // 자녀 한도
+	private boolean isAuth = false;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
 	private Parent parent;
-	
+		
 //	@OneToMany(mappedBy = "child",cascade = CascadeType.ALL)
 //	private List<Suspicious> suspicious = new ArrayList<>();
 	
@@ -60,11 +61,8 @@ public class Child {
 	
 	public Child(UserRequest userRequest, Parent parent) {
 		super();
-		this.username = userRequest.getUsername();
-		this.password = userRequest.getPassword();
 		this.firstName = userRequest.getFirstName();
 		this.lastName = userRequest.getLastName();
-		this.phoneNumber = userRequest.getPhoneNumber();
 		this.birthDay = userRequest.getBirthDay();
 		this.spendLimit = userRequest.getSpendLimit();
 		this.parent = parent;
@@ -72,22 +70,20 @@ public class Child {
 	
 	public Child(Map<String, Object> childObject, Parent parent) {
 		super();
-		this.username = (String)childObject.get("username");
-		this.password = (String)childObject.get("password");
 		this.firstName = (String)childObject.get("firstName");
 		this.lastName = (String)childObject.get("lastName");
-		this.phoneNumber = (String)childObject.get("phoneNumber");
 		this.birthDay = (String)childObject.get("birthDay");
 		this.parent = parent;
 	}
+	
+    public String getUsername() {
+        return this.user.getUsername();
+    }
 
 	@Override
 	public String toString() {
-		return "Child [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + ", birthDay=" + birthDay + ", authNum="
+		return "Child [id=" + id + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", birthDay=" + birthDay + ", authNum="
 				+ authNum + ", isAuth=" + isAuth + ", parent=" + parent + "]";
 	}
-	
-	
-
 }

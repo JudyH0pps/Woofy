@@ -185,23 +185,23 @@ public class SuspiciousController {
 	public Object findByParentAndChild(@PathVariable(name = "c_username") String c_username) {
 		final BasicResponse basicResponse = new BasicResponse();
 
-		try {
-			Map<String, Object> map = new HashMap<>();
-			
-			Child c = childService.findByUsername(c_username);
-			Parent p = c.getParent();
-			
-			List<Suspicious> result = suspiciousService.findByParentAndChild(p, c);
-
-			map.put("suspicious", result);
-			basicResponse.dataBody = map;
-			basicResponse.status = "success";
-
-		} catch (Exception e) {
-			basicResponse.status = "error";
-			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
-		}
+//		try {
+//			Map<String, Object> map = new HashMap<>();
+//			
+//			Child c = childService.findByUsername(c_username);
+//			Parent p = c.getParent();
+//			
+//			List<Suspicious> result = suspiciousService.findByParentAndChild(p, c);
+//
+//			map.put("suspicious", result);
+//			basicResponse.dataBody = map;
+//			basicResponse.status = "success";
+//
+//		} catch (Exception e) {
+//			basicResponse.status = "error";
+//			e.printStackTrace();
+//		}
+//		
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 }

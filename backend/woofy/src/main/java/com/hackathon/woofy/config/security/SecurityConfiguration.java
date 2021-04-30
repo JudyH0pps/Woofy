@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 //import 생략
 
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -30,14 +32,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	         .httpBasic().disable()
 	         .csrf().disable()
 	         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	         .and()
-	             .authorizeRequests()
-	                 .antMatchers(HttpMethod.POST, 
-	                		 "/api/v1/parent", 
-	                		 "/api/v1/child", 
-	                		 "/api/v1/signin", 
-	                		 "/api/v1/auth/*").permitAll()
-	                 .anyRequest().hasRole("USER")
 	         .and()
 	             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 	

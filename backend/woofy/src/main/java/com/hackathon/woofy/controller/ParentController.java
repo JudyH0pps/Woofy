@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -108,11 +109,7 @@ public class ParentController {
 			
 			parent.setAuth(true);	// 부모의 경우 이전의 단계들로부터 휴대폰 인증을 완료했다. 여기에서는 바로 true로 설정한다.
 			
-			// 부모와 유저의 정보를 저장한다.
-			System.out.println(user.getUsername());
-			System.out.println(user.getPassword());
-			System.out.println(user.getPhoneNumber());
-			
+			// 부모와 유저의 정보를 저장한다.		
 			User newUser = userService.saveUser(user);
 			parent.setUser(newUser);
 			parentService.saveParent(parent);
@@ -132,11 +129,12 @@ public class ParentController {
 		return new ResponseEntity<>(basicResponse, HttpStatus.CREATED);
 	}
 	
+	@Secured("ROLE_PARENT")
 	@PostMapping(value = "/code", produces = "application/json; charset=utf8")
 	public Object createAndSendChildJoin(@RequestBody Map<String, Object> jsonRequest) {
 		Map<String, Object> joinRequestObject = (Map<String, Object>) jsonRequest.get("dataBody");
 		
-		String frontPageURL = "http://localhost:8081/child-signup?request_code=";
+		String frontPageURL = "http://localhost:8081/ChildSignup?request_code=";
 		String targetRequestCode = "MQ" + RandomStringUtils.randomNumeric(10);
 		
 		String targetUserName = (String)joinRequestObject.get("userName");
