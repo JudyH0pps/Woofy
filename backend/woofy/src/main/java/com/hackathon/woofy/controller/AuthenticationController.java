@@ -114,7 +114,7 @@ public class AuthenticationController {
 		String HP_NO = (String)cellCretiRequestBody.get("HP_NO");
 		
 		if (CRTF_UNQ_NO == null) {
-			responseObject.put("status", 400);
+			responseObject.put("status", 204);
 			return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
 		}
 		
@@ -149,9 +149,9 @@ public class AuthenticationController {
 				// 찾고자 하는 부모가 없다. 새로 가입해야 한다.
 				redisService.insertHashTableContent("ParentJoinCRTFTable", CRTF_UNQ_NO, HP_NO);
 				redisService.setHashSetTimeLimit("ParentJoinCRTFTable", CRTF_UNQ_NO, 900);
-				responseObject.put("status", 204);
+				responseObject.put("status", 404);
 				responseObject.put("CRTF_UNQ_NO", CRTF_UNQ_NO);	// CRTF_UNQ_NO는 부모 회원가입 시에 유효성 검증에 사용된다.
-				return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);	// 204 메시지를 뱉어내서 프론트엔드에서 회원가입 페이지로 이동하는데 활용하게 한다.
+				return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);	// 404 메시지를 뱉어내서 프론트엔드에서 회원가입 페이지로 이동하는데 활용하게 한다.
 			}
 		}
 		
@@ -159,8 +159,8 @@ public class AuthenticationController {
 			Child searchChild = childService.findByPhoneNumber(HP_NO);
 			if (searchChild == null) {
 				// 자녀의 SMS 인증은 사후 인증이다. 여기에서는 별다른 로직 구현 없이 별도의 처리를 진행한다.
-				responseObject.put("status", 204);
-				return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);	// 이곳의 204 에러는 자녀가 없다는 의미이다.
+				responseObject.put("status", 404);
+				return new ResponseEntity<>(responseObject, HttpStatus.NOT_FOUND);	// 이곳의 204 에러는 자녀가 없다는 의미이다.
 			}
 			
 			// TO-DO: 자녀의 SMS 인증 여부를 True로 변경하고 저장한다.
