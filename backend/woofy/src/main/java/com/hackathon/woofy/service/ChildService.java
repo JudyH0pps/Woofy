@@ -20,7 +20,6 @@ public class ChildService {
 	
 	@Transactional
 	public Child saveChild(Child child) {
-		
 		return childRepo.save(child);
 	}
 	
@@ -28,4 +27,9 @@ public class ChildService {
 		return childRepo.findByUsername(username);
 	}
 
+	public Child findByPhoneNumber(String phoneNumber) {
+		return childRepo.findByPhoneNumber(phoneNumber);
+	}
+
+	
 }

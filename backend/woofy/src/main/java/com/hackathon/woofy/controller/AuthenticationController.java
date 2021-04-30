@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.hackathon.woofy.entity.Child;
+import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.MissionService;
 import com.hackathon.woofy.service.ParentService;
@@ -43,6 +45,12 @@ public class AuthenticationController {
 	
 	@Autowired
 	RedisService redisService;
+	
+	@Autowired
+	ParentService parentService;
+	
+	@Autowired
+	ChildService childService;
 	
 	@PostMapping("/getCellCerti")
 	public ResponseEntity<JSONObject> getCellCerti(@RequestBody Map<String, Object> jsonRequest) throws ParseException {
@@ -92,7 +100,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/executeCellCerti")
-	public String executeCellCerti(@RequestBody Map<String, Object> jsonRequest) {
+	public ResponseEntity<JSONObject> executeCellCerti(@RequestBody Map<String, Object> jsonRequest) {
 		String requestType = (String)jsonRequest.get("type");
 		Map<String, Object> cellCretiRequestBody = (Map<String, Object>) jsonRequest.get("dataBody");
 		System.out.println(requestType);
@@ -100,9 +108,65 @@ public class AuthenticationController {
 		
 		JSONObject responseObject = new JSONObject();
 		
+		// SMS 인증번호(개발 단계에서 암호화/복호화 안함)
+		String SMS_CRTF_NO = (String)cellCretiRequestBody.get("ENCY_SMS_CRTF_NO");
+		String CRTF_UNQ_NO = (String)redisService.getHashSetItem("CellCertiTable", SMS_CRTF_NO);
+		String HP_NO = (String)cellCretiRequestBody.get("HP_NO");
+		
+		if (CRTF_UNQ_NO == null) {
+			responseObject.put("status", 400);
+			return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+		}
 		
 		String result = "";
 		
-		return result;
+		try {
+			result = wooriFunc.executeCellCerti(
+					(String)cellCretiRequestBody.get("RRNO_BFNB"), 
+					(String)cellCretiRequestBody.get("ENCY_RRNO_LSNM"),
+					SMS_CRTF_NO,
+					CRTF_UNQ_NO
+					);
+		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException
+				| InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException
+				| IOException e) {
+			e.printStackTrace();
+			result = "FAILED";
+		}
+		
+		// 해당 SMS 인증 정보를 찾는데 실패했다.
+		if (result.equals("FAILED")) {
+			responseObject.put("status", 400);
+			return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+		}
+		
+		System.out.println(result);
+		
+		// 현재 요청 타입이 부모 가입("1")이면, 부모를 휴대폰 번호로 찾는다. 없으면 가입하라는 메시지를 남기자.
+		if (requestType.equals("1")) {
+			Parent searchParent = parentService.findbyPhoneNumber(HP_NO);
+			if (searchParent == null) {
+				// 찾고자 하는 부모가 없다. 새로 가입해야 한다.
+				redisService.insertHashTableContent("ParentJoinCRTFTable", CRTF_UNQ_NO, HP_NO);
+				redisService.setHashSetTimeLimit("ParentJoinCRTFTable", CRTF_UNQ_NO, 900);
+				responseObject.put("status", 204);
+				responseObject.put("CRTF_UNQ_NO", CRTF_UNQ_NO);	// CRTF_UNQ_NO는 부모 회원가입 시에 유효성 검증에 사용된다.
+				return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);	// 204 메시지를 뱉어내서 프론트엔드에서 회원가입 페이지로 이동하는데 활용하게 한다.
+			}
+		}
+		
+		else {
+			Child searchChild = childService.findByPhoneNumber(HP_NO);
+			if (searchChild == null) {
+				// 자녀의 SMS 인증은 사후 인증이다. 여기에서는 별다른 로직 구현 없이 별도의 처리를 진행한다.
+				responseObject.put("status", 204);
+				return new ResponseEntity<>(responseObject, HttpStatus.NO_CONTENT);	// 이곳의 204 에러는 자녀가 없다는 의미이다.
+			}
+			
+			// TO-DO: 자녀의 SMS 인증 여부를 True로 변경하고 저장한다.
+		}
+		
+		responseObject.put("status", 200);
+		return new ResponseEntity<>(responseObject, HttpStatus.ACCEPTED);
 	}
 }
