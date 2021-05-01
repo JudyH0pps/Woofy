@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.hackathon.woofy'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = 1.8
 
 configurations {
 	compileOnly {
@@ -36,4 +36,9 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
 }
