@@ -52,7 +52,7 @@ public class SuspiciousController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			Child c = childService.findById(suspiciousRequest.getChild().getId());
+			Child c = childService.findByUsername(suspiciousRequest.getChild().getUsername());
 			
 			Suspicious result = new Suspicious(suspiciousRequest);
 			result.setChild(c);
@@ -125,12 +125,13 @@ public class SuspiciousController {
 	}
 	
 	@DeleteMapping(value = "/{suspicious_id}", produces = "application/json; charset=utf8")
-	public Object updateMission(@PathVariable(name = "suspicious_id") Long suspicious_id) {
+	public Object deleteSuspicious(@PathVariable(name = "suspicious_id") Long suspicious_id) {
 		final BasicResponse basicResponse = new BasicResponse();
 
 		try {
 			Map<String, Object> map = new HashMap<>();
 			suspiciousService.deleteSuspicious(suspicious_id);
+			
 			basicResponse.status = "success";
 
 		} catch (Exception e) {
@@ -150,11 +151,10 @@ public class SuspiciousController {
 	public Object findByParent(@PathVariable(name = "p_username") String p_username) {
 		
 		final BasicResponse basicResponse = new BasicResponse();
-
 		try {
 			Map<String, Object> map = new HashMap<>();
 			
-			Parent p = parentService.findParent(p_username);
+			Parent p = parentService.findByUsername(p_username);
 			
 			List<Suspicious> result = suspiciousService.findByParent(p);
 			
@@ -165,15 +165,14 @@ public class SuspiciousController {
 				basicResponse.status = "success";
 				
 			} else {
-				basicResponse.dataBody = map;
 				basicResponse.status = "none";
 			}
 		} catch (Exception e) {
 			basicResponse.status = "error";
 			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
+		
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 	
 	
@@ -186,23 +185,23 @@ public class SuspiciousController {
 	public Object findByParentAndChild(@PathVariable(name = "c_username") String c_username) {
 		final BasicResponse basicResponse = new BasicResponse();
 
-		try {
-			Map<String, Object> map = new HashMap<>();
-			
-			Child c = childService.findByUsername(c_username);
-			Parent p = c.getParent();
-			
-			List<Suspicious> result = suspiciousService.findByParentAndChild(p, c);
-
-			map.put("suspicious", result);
-			basicResponse.dataBody = map;
-			basicResponse.status = "success";
-
-		} catch (Exception e) {
-			basicResponse.status = "error";
-			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
-		}
+//		try {
+//			Map<String, Object> map = new HashMap<>();
+//			
+//			Child c = childService.findByUsername(c_username);
+//			Parent p = c.getParent();
+//			
+//			List<Suspicious> result = suspiciousService.findByParentAndChild(p, c);
+//
+//			map.put("suspicious", result);
+//			basicResponse.dataBody = map;
+//			basicResponse.status = "success";
+//
+//		} catch (Exception e) {
+//			basicResponse.status = "error";
+//			e.printStackTrace();
+//		}
+//		
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 }

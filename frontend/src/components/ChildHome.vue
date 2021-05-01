@@ -1,22 +1,26 @@
 <template>
-  <section>
-    <div class="aligncenter" style="width: 100%; height: 70%">
-      <div>
-        <div
-          style="
-            text-align: center;
-            font-size: 17px;
-            font-weight: 600;
-            color: gray;
-            margin-top: 20px;
-          "
-        >
-          {{ user }} 님의 잔액
-        </div>
-        <div class="userMoney">
-          <span style="font-size: 39px"> {{ money }} </span>원
-        </div>
+  <section class="childHome">
+    <div>
+      <div
+        style="
+          text-align: center;
+          font-size: 17px;
+          font-weight: 600;
+          color: gray;
+          margin-top: 20px;
+        "
+      >
+        {{ user }} 님의 잔액
       </div>
+      <div class="userMoney">
+        <span style="font-size: 39px"> {{ money }} </span>원
+      </div>
+      <v-progress-linear
+        color="light-blue"
+        height="10"
+        value="10"
+        striped
+      ></v-progress-linear>
     </div>
     <div class="buttons">
       <v-btn @click="changeViewingContent(0)" plain>결제</v-btn>
@@ -59,6 +63,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.childHome {
+  height: 80vh;
+}
 .barcode {
   display: flex;
   flex-direction: column;
@@ -74,5 +81,9 @@ export default {
 .buttons {
   display: flex;
   justify-content: space-around;
+}
+.v-progress-linear {
+  width: 95%;
+  margin: 0 auto 0;
 }
 </style>

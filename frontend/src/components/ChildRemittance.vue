@@ -1,6 +1,7 @@
 <template>
   <section class="ChildRemittance">
     <p style="text-align: center; margin: 20px">은행 선택</p>
+    <v-item-group>
     <v-row>
       <v-col v-for="(item, i) in items" :key="i" cols="6" md="6">
         <v-item>
@@ -8,6 +9,7 @@
         </v-item>
       </v-col>
     </v-row>
+    </v-item-group>
   </section>
 </template>
 

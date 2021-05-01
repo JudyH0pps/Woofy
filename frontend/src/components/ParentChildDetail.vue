@@ -57,7 +57,11 @@ export default {
             money : 20000,
             pocketMoney:50000,
             mission:[
-              
+              {
+                title:'미션 1',
+                content : '미션 설명'
+
+              }
             ],
             payment:[
               {
