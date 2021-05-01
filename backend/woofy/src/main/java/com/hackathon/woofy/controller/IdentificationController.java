@@ -46,8 +46,10 @@ public class IdentificationController {
 		}
 		
 		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("role", targetUser.getRoles().iterator().next());
 		jsonObject.put("token", jwtTokenProvider.createToken(String.valueOf(targetUser.getId()), targetUser.getRoles()));
 		
+		basicResponse.status = "200";
 		basicResponse.dataBody = jsonObject;
 		
 		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
