@@ -1,6 +1,6 @@
 $logoColor : #0067ac;
 $wooriBoldColor: #0078b9;
-$wooriMiddleColor: #20c4f4;
+$wooriMiddleColor: #7ad7f3;
 $wooriAppColor : #4285f4;
 $hamburgerColor : #5b9ad5;
 
@@ -35,4 +35,42 @@ $hamburgerColor : #5b9ad5;
 
 .float{
   float: left;
+}
+
+.modalBackground{
+  position:fixed;
+  background-color: #00000021;
+  width:100%;
+  height:100%;
+  z-index: 2;
+}
+
+.modal{
+  position: fixed;
+  background-color: white;
+  width:90%;
+  height: 90%;
+  top:8.5%;
+  left:5%;
+  z-index: 2;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px #00000087;
+}
+
+@keyframes zoomIn {
+  from { 
+    transform: scale(0.8); 
+  } 
+  to { 
+    transform: scale(1); 
+  } 
+}
+
+@keyframes zoomOut { 
+  from { 
+    transform: scale(1); 
+  } 
+  to { 
+    transform: scale(0); 
+  } 
 }

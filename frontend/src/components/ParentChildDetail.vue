@@ -1,7 +1,11 @@
 <template>
   <div class="content" style="overflow:hidden">
-    <v-icon @click="$router.push('/ParentHome')" size="40px" style="position: absolute; margin-top: 3px;">mdi-chevron-left</v-icon>
-    <v-icon size="23px" color="#a2a2a2" style="position: absolute; right:10px; top:13px">mdi-cog</v-icon>
+    <v-icon @click="$router.push('/ParentHome')" size="40px" style="position: absolute; margin-top: 3px; z-index:1;">mdi-chevron-left</v-icon>
+    <v-icon size="23px" color="#a2a2a2" style="position: absolute; right:10px; top:13px;z-index:1;">mdi-cog</v-icon>
+    <div v-if="showModal" class="modalBackground">
+      <div style="margin:5% 4%; width:90%; height:10%; "><v-icon @click="closeModal" style="float:right; z-index:6;">mdi-close</v-icon></div>
+      <div class="modal"></div>
+    </div>
     <div class="ParantChildInform">
         <div style="width:100%; height:25%; text-align:center; font-weight: 500;">{{child.name}}</div>
         <div class="parentChildDetail">
@@ -14,7 +18,7 @@
             <div style="width:100%; height:20px; background-color:#e0dede;"></div>
       </div>
     </div>
-    <div style="height:75%; width:100%;">
+    <div style="height:75%; width:100%; overflow:hidden;">
       <v-tabs v-model="tab" background-color="#4285f4" dark color="white" grow>
         <v-tab style="font-size:15px;"
           v-for="tab in tabs"
@@ -24,13 +28,38 @@
         <v-tabs-slider color="rgb(141 200 239)"></v-tabs-slider>
       </v-tabs>
 
-      <v-tabs-items style="height:100%; width:100%; overflow:scroll; padding-bottom:10%;" v-model="tab">
+      <v-tabs-items style="height:100%; width:100%;padding-bottom:10%;" v-model="tab">
         <v-tab-item style="height:100%; width:100%; overflow:scroll;">
           <payment class="ParentChildPayment" v-for="(pay,index) in child.payment" :key="index" :payment="pay"></payment>
         </v-tab-item>
 
         <v-tab-item style="height:100%; width:100%; overflow:scroll; padding-bottom:10%;">
-          <missoin class="ParentChildMission" v-for="(missions,index) in child.missions" :key="index" :payment="pay"></missoin>
+            <div @click="$router.push('/WaitingMission')" class="ParentChildMission alignCenter float" style="
+    font-size: small;height:11%; background-color: rgb(224 238 249); width:45%;">
+            <v-badge  color="red" :content="waitingMission.length" style="width:90%; text-align:center" >
+              등록 대기중인 미션    
+            </v-badge>
+            </div>
+            <div @click="$router.push('/CreateMission')" class="ParentChildMission alignCenter" style="
+    font-size: small; height:11%; background-color: rgb(224 238 249); width:40%;">
+              미션 추가   
+            </div>
+          <div>매일 미션
+            <div @click="openModal">
+              <Mission class="ParentChildMission" v-for="(mission,index) in dailyMission" :arrow="'right'" :key="index" :mission="mission"></Mission>
+            </div>
+          </div>
+          <div @click="openModal">
+            등록된 미션
+             <!-- <v-badge  color="green" :content="1" style="width:90%; margin:0 5%; padding-top:2px; text-align:center" >
+              <Mission style="width:100%; margin:0; background: #caf5c975;" class="ParentChildMission" :arrow="'right'" :mission="generalMission[0]"></Mission>         
+            </v-badge> -->
+          <Mission class="ParentChildMission" v-for="(mission,index) in generalMission" :arrow="'right'" :key="index" :mission="mission"></Mission>
+          </div>
+          <div>
+
+
+          </div>
         </v-tab-item>
       </v-tabs-items>
 
@@ -41,27 +70,89 @@
 
 <script>
 import Payment from './Payment.vue';
+import Mission from './Mission.vue';
+// import WaitingMission from '@/components/WaitingMissions.vue';
+// import $ from 'jquery';
+
 export default {
-  components: { Payment },
+  components: { Payment,Mission,
+  // WaitingMission
+  },
   computed:{
-    childMoney(){
-      var regexp = /\B(?=(\d{3})+(?!\d))/g;
-      return this.child.money.toString().replace(regexp,',');
-    },
+    
+  },
+  mounted(){
+    this.child.missions.forEach(mission => {
+      if(mission.missionStatus == 'REQUEST'){
+        this.waitingMission.push(mission);
+      }else{
+        if(mission.missionType==0){
+          this.generalMission.push(mission);
+        }else{
+          this.dailyMission.push(mission);
+        }
+      }
+    });
+    this.$store.commit('setWaitingMissions', this.waitingMission);
   },
   data() {
     return {
+      showModal:false,
       child:{
-
             name : 'Woori 아들',
             money : 20000,
             pocketMoney:50000,
-            mission:[
+            missions:[
               {
-                title:'미션 1',
-                content : '미션 설명'
+                title:'설거지하기',
+                content : '미션 설명',
+                prize : 500,
+                missionStatus:'SUCCESS',
+                missionType:1,
+              },
+              {
+                title:'미션 2',
+                content : '미션 설명',
+                prize : 5000,
+                missionStatus:'REQUEST',
+                missionType:0,
+              },
+              {
+                title:'미션 3',
+                content : '미션 설명',
+                prize : 3000,
+                missionStatus:'ONGOING',
+                missionType:0,
+              },
+              {
+                title:'미션 2',
+                content : '미션 설명',
+                prize : 5000,
+                missionStatus:'REQUEST',
+                missionType:0,
+              },
+              {
+                title:'미션 3',
+                content : '미션 설명',
+                prize : 3000,
+                missionStatus:'ONGOING',
+                missionType:0,
+              },
+              {
+                title:'미션 2',
+                content : '미션 설명',
+                prize : 5000,
+                missionStatus:'SUCCESS',
+                missionType:0,
 
-              }
+              },
+              {
+                title:'미션 3',
+                content : '미션 설명',
+                prize : 3000,
+                missionStatus:'ONGOING',
+                missionType:0,
+              },
             ],
             payment:[
               {
@@ -101,6 +192,12 @@ export default {
               }
             ]
       },
+      dailyMission:[
+      ],
+      generalMission:[
+      ],
+      waitingMission:[
+      ],
       tab: null,
       tabs: ['결제 내역', '미션 관리'], 
     };
@@ -118,6 +215,12 @@ export default {
       }else{
         return 'green';
       }
+    },
+    closeModal(){
+      this.showModal = false;
+    },
+    openModal(){
+      this.showModal = true;
     }
   }
 };
@@ -151,6 +254,16 @@ export default {
 }
 
 .ParentChildMission{
+    height: 10vh;
+    width: 90%;
+    box-shadow: 0px 0px 4px #00000030;
+    margin: 10px 5%;
+    border-radius: 4px;
+}
 
+.modal{
+  transform: scale(0.8); /* 0.5 초 동안 애니메이션을 실행, 단 0.8초 지연시켜 0.8초 후에 애니메이션을 실행 */ 
+  animation: zoomIn .4s forwards;
+  /* animation: zoomOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; */
 }
 </style>
