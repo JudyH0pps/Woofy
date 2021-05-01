@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -119,23 +120,24 @@ public class ChildController {
 		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 	
+	@Secured({"ROLE_PARENT", "ROLE_CHILD"})
 	@GetMapping(value = "/{c_username}")
 	public Object getChildInfo(@PathVariable(value="c_username") String c_username) {
 		final BasicResponse basicResponse = new BasicResponse();
 
-//		try {
-//			Map<String, Object> map = new HashMap<>();
-//
-//			Child result = childService.findByUsername(c_username);
-//			
-//			map.put("child", result);
-//			basicResponse.dataBody = map;
-//			basicResponse.status = "success";
-//
-//		} catch (Exception e) {
-//			basicResponse.status = "error";
-//			e.printStackTrace();
-//		}
+		try {
+			Map<String, Object> map = new HashMap<>();
+
+			Child result = childService.findByUsername(c_username);
+			
+			map.put("child", result);
+			basicResponse.dataBody = map;
+			basicResponse.status = "success";
+
+		} catch (Exception e) {
+			basicResponse.status = "error";
+			e.printStackTrace();
+		}
 		
 		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}

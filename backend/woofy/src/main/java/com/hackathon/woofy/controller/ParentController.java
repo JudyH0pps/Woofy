@@ -82,7 +82,7 @@ public class ParentController {
 		
 		try {
 			User user = new User(userObject);
-			Parent parent = new Parent(parentObject);	 
+			Parent parent = new Parent(parentObject);
 			
 			// KeyDB 서버에 가입 CRTF 키가 저장되어 있는지 확인한다. 없으면 유효하지 않은 가입 세션이 된다. (keyDB를 이용하여 유사 세션을 구현했다.)
 			String currentPhoneNumber = redisService.getHashSetItem("ParentJoinCRTFTable", requestCode);
@@ -186,7 +186,7 @@ public class ParentController {
 	}
 
 	/*
-	@GetMapping("{username}/child")
+	@GetMapping("/{username}/child")
 	public Object findChildByParent(@PathVariable(name = "username") String username) {
 		
 		final BasicResponse basicResponse = new BasicResponse();
