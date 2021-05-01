@@ -115,7 +115,7 @@ public class AuthenticationController {
 		JSONObject responseObject = new JSONObject();
 		
 		// SMS 인증번호(개발 단계에서 암호화/복호화 안함)
-		String SMS_CRTF_NO = (String)cellCretiRequestBody.get("ENCY_SMS_CRTF_NO");
+		String SMS_CRTF_NO = (String)cellCretiRequestBody.get("ENCY_SMS_CRTF_NO"); // 인증번호
 		String CRTF_UNQ_NO = (String)redisService.getHashSetItem("CellCertiTable", SMS_CRTF_NO);
 		String HP_NO = (String)cellCretiRequestBody.get("HP_NO");
 		
