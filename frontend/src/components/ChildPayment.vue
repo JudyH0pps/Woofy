@@ -11,24 +11,104 @@
         Show this if the rendering fails.
       </VueBarcode>
     </div>
+    <p style="text-align: center">결제내역</p>
     <div class="paymentDetail">
-      <p style="text-align: center">결제내역</p>
-      <v-card outlined tile>
+      <div class="payment">
         <v-list-item-content>
           <v-list-item-title> 파리바게트 </v-list-item-title>
           <v-list-item-subtitle style="text-align: right"
             >5,000원</v-list-item-subtitle
           >
         </v-list-item-content>
-      </v-card>
-      <v-card outlined tile>
+      </div>
+      <div class="payment">
         <v-list-item-content>
-          <v-list-item-title> 스타벅스 </v-list-item-title>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
           <v-list-item-subtitle style="text-align: right"
-            >3,000원</v-list-item-subtitle
+            >5,000원</v-list-item-subtitle
           >
         </v-list-item-content>
-      </v-card>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
+      <div class="payment">
+        <v-list-item-content>
+          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-subtitle style="text-align: right"
+            >5,000원</v-list-item-subtitle
+          >
+        </v-list-item-content>
+      </div>
     </div>
   </section>
 </template>
@@ -51,6 +131,7 @@ export default {
 <style lang="scss" scoped>
 .childPayment {
   width: 100%;
+  height: 60%;
 }
 .barcode {
   display: flex;
@@ -67,6 +148,8 @@ export default {
 
 .paymentDetail {
   width: 95%;
+  height: 100%;
   margin: 0 auto 0;
+  overflow-y: scroll;
 }
 </style>

@@ -1,19 +1,19 @@
 <template>
   <v-app>
-    <Nav v-if="$route.name!='Login'"></Nav>
+    <Nav v-if="$route.name != 'Login'"></Nav>
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Nav from '@/components/Nav.vue'
+import Nav from "@/components/Nav.vue";
 
 export default {
-  name: 'App',
-  components:{
-    Nav
+  name: "App",
+  components: {
+    Nav,
   },
 
   data: () => ({

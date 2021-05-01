@@ -1,21 +1,19 @@
 <template>
-  <section>
-    <div class="aligncenter" style="width: 100%; height: 70%">
-      <div>
-        <div
-          style="
-            text-align: center;
-            font-size: 17px;
-            font-weight: 600;
-            color: gray;
-            margin-top: 20px;
-          "
-        >
-          {{ user }} 님의 잔액
-        </div>
-        <div class="userMoney">
-          <span style="font-size: 39px"> {{ money }} </span>원
-        </div>
+  <section class="childHome">
+    <div>
+      <div
+        style="
+          text-align: center;
+          font-size: 17px;
+          font-weight: 600;
+          color: gray;
+          margin-top: 20px;
+        "
+      >
+        {{ user }} 님의 잔액
+      </div>
+      <div class="userMoney">
+        <span style="font-size: 39px"> {{ money }} </span>원
       </div>
     </div>
     <div class="buttons">
@@ -59,6 +57,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.childHome {
+  height: 80vh;
+}
 .barcode {
   display: flex;
   flex-direction: column;
