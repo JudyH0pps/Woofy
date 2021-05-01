@@ -27,10 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
+import com.hackathon.woofy.entity.User;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.MissionService;
 import com.hackathon.woofy.service.ParentService;
 import com.hackathon.woofy.service.RedisService;
+import com.hackathon.woofy.service.UserService;
 import com.hackathon.woofy.util.SmsFunc;
 import com.hackathon.woofy.util.WooriFunc;
 
@@ -52,6 +54,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	ChildService childService;
+	
+	@Autowired
+	UserService userService;
 	
 	@PostMapping("/getCellCerti")
 	public ResponseEntity<JSONObject> getCellCerti(@RequestBody Map<String, Object> jsonRequest) throws ParseException {
@@ -148,7 +153,9 @@ public class AuthenticationController {
 		
 		// 현재 요청 타입이 부모 가입("1")이면, 부모를 휴대폰 번호로 찾는다. 없으면 가입하라는 메시지를 남기자.
 		if (requestType.equals("1")) {
-			Parent searchParent = parentService.findbyPhoneNumber(HP_NO);
+//			Parent searchParent = parentService.findbyPhoneNumber(HP_NO);
+			User searchParent = userService.findByPhoneNumber(HP_NO);
+					
 			if (searchParent == null) {
 				// 찾고자 하는 부모가 없다. 새로 가입해야 한다.
 				JSONArray jsonArray = (JSONArray)targetDataBody.get("REPT_FA");
@@ -173,7 +180,7 @@ public class AuthenticationController {
 		
 		else {
 			// 자녀의 요청을 핸들링 한다.
-			Child searchChild = childService.findByPhoneNumber(HP_NO);
+			User searchChild = userService.findByPhoneNumber(HP_NO);
 			if (searchChild == null) {				
 				redisService.insertHashTableContent("ChildSignupRequestSMSTable", CRTF_UNQ_NO, HP_NO);
 				redisService.setHashSetTimeLimit("ChildSignupRequestSMSTable", CRTF_UNQ_NO, 900);

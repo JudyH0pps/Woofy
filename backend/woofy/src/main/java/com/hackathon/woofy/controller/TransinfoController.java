@@ -49,7 +49,7 @@ public class TransinfoController {
 		try {
 			Map<String, Object> map = new HashMap<>();
 
-			Parent p = parentService.findParent(p_username);
+			Parent p = parentService.findByUsername(p_username);
 
 			List<Transinfo> result = transinfoService.findByParent(p);
 

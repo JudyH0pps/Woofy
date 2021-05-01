@@ -8,14 +8,12 @@ import org.springframework.data.repository.query.Param;
 
 import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
+import com.hackathon.woofy.entity.User;
 
 public interface ChildRepo extends CrudRepository<Child, Long>{
-
-	Child findByUsername(String userName);
+	@Query("select c from Child c where c.user.username = :username")
+	Child findByUsername(@Param("username") String username);
 
 	@Query("select c from Child c where c.parent = :parent_id")
 	List<Child> findByParent(@Param("parent_id") Parent parent);
-
-	Child findByPhoneNumber(String phoneNumber);
-
 }

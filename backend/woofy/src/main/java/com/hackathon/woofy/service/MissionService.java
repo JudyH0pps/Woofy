@@ -52,6 +52,11 @@ public class MissionService {
 		return missionRepo.findByParent(parent);
 	}
 	
+	@Transactional
+	public List<Mission> findByChild(Child child) {
+		return missionRepo.findByChild(child);
+	}
+	
 	/**
 	 * 자식(1명)의 미션 조회
 	 * @param parent

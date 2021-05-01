@@ -57,7 +57,7 @@ public class Mission {
 		this.prize = missionRequest.getPrize();
 		this.missionStatus = missionRequest.getMissionStatus();
 //		this.parent = missionRequest.getParent();
-		this.child = missionRequest.getChild();
+//		this.child = missionRequest();
 	}	
 
 
