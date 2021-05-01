@@ -167,7 +167,6 @@ public class MissionController {
 			if(childs == null) { // 자식이 없을 경우 none
 				basicResponse.status = "none";
 			} else {
-				List<Mission> result = null;
 				
 				for(Child c : childs) {
 					map.put(c.getUsername() , missionService.findByChild(c));
