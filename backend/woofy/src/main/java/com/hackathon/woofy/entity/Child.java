@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hackathon.woofy.request.UserRequest;
 
 import lombok.AccessLevel;
@@ -36,7 +37,6 @@ public class Child {
 	private Long id;
 	private String firstName;
 	private String lastName;
-	private String phoneNumber;
 	private String birthDay;	// format 泥섎━ 怨쇱젙�� 媛쒕컻 �떒怨꾩뿉�꽌 TBD
 	private String authNum; // 占쏙옙占쏙옙占쏙옙호
 	private int spendLimit; // 자녀 한도
@@ -76,6 +76,7 @@ public class Child {
 		this.parent = parent;
 	}
 	
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public String getUsername() {
         return this.user.getUsername();
     }

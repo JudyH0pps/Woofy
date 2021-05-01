@@ -9,8 +9,6 @@ import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.entity.User;
 
 public interface ParentRepo extends JpaRepository<Parent, Long>{
-	@Query("select p from Parent p where p.user.username = :username")
-	Parent findByUsername(String username);
 	Parent findByUser(User user);
 	
 	@Query("select p from Parent p where p.user.username = :username")

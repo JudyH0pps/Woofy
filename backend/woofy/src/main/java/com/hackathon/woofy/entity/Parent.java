@@ -78,9 +78,11 @@ public class Parent {
 				+ birthDay + ", account=" + account + ", authNum=" + authNum + ", isAuth=" + isAuth + "]";
 	}
 	
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public String getUsername() {
         return this.user.getUsername();
     }
+
 
 //	public void addChild(Child child) {
 //		child.setParent(this);

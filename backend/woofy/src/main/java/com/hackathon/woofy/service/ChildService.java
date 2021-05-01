@@ -43,8 +43,4 @@ public class ChildService {
 	public void deleteChild(Long id) {
 		childRepo.deleteById(id);
 	}
-
-	public Child findByUsername(String username) {
-		return childRepo.findByUsername(username);
-	}	
 }

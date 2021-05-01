@@ -18,6 +18,8 @@ import javax.persistence.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -62,7 +64,6 @@ public class User implements UserDetails {
 		this.roles.add((String)userObject.get("role"));
 	}
     
-    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
@@ -71,6 +72,12 @@ public class User implements UserDetails {
     @Override
     public boolean isAccountNonExpired() {
         return true;
+    }
+    
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getUsername() {
+    	return this.username;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
