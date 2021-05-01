@@ -3,7 +3,9 @@ package com.hackathon.woofy.controller;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +17,14 @@ import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.entity.Transinfo;
 import com.hackathon.woofy.entity.TransinfoStatus;
+import com.hackathon.woofy.entity.User;
 import com.hackathon.woofy.request.StoreRequest;
 import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ChildService;
 import com.hackathon.woofy.service.ParentService;
+import com.hackathon.woofy.service.RedisService;
 import com.hackathon.woofy.service.TransinfoService;
+import com.hackathon.woofy.service.UserService;
 import com.hackathon.woofy.util.WooriFunc;
 
 import lombok.RequiredArgsConstructor;
@@ -31,42 +36,56 @@ public class StoreController {
 
 	private final ParentService parentService;
 	private final ChildService childService;
+	private final UserService userService;
 	private final TransinfoService transinfoService;
+	private final WooriFunc wooriFunc = new WooriFunc();
 
-	private WooriFunc wf;
-
+	@Autowired RedisService redisService;
+	
 	/**
 	 * 매장에서 거래 요청
 	 * @param storeRequset
 	 * @return
 	 */
+	
+	// 프로젝트 시연을 위해 사용하는 API이다.
 	@PostMapping(value = "", produces = "application/json; charset=utf8")
 	public Object storeReq(@RequestBody StoreRequest storeRequest) {
 		final BasicResponse basicResponse = new BasicResponse();
 		
 		Parent parent = null;
 		Child child = null;
+		
 		Transinfo transinfo  = new Transinfo(); // 거래내역 저장;
 		boolean isChild = false; // 부모인지 자식인지 판별
 		boolean isLimit = false; // 한도초과인지 확인
+		String WDR_ACNO = ""; // 출금 계좌 번호
 		
-		String WDR_ACNO = ""; // 출금계좌번호
+		String username = redisService.getHashSetItem("PaymentSessionCodeTable", storeRequest.getPaymentCode());
 
+		if (username == null) {
+			basicResponse.status = "404";
+			return new ResponseEntity<>(basicResponse, HttpStatus.NOT_FOUND);
+		}
+		
+		User user = userService.findByUsername(username);
+		String userRole = user.getRoles().iterator().next();
+		
 		try {
 			Map<String, Object> map = new HashMap<>();
 
-			if (storeRequest.getParent() != null) { // 부모가 거래할 시
-				parent = parentService.findByUsername(storeRequest.getParent().getUsername());
-				
+			if (userRole.equals("ROLE_PARENT")) { // 부모가 거래할 시
+				parent = parentService.findByUser(user);
 				WDR_ACNO = parent.getAccount();
-				
-			} else { // 자식이 거래할 시
+			} else { 
+				// 자식이 거래할 시
 				isChild = true;
 				
-				child = childService.findByUsername(storeRequest.getChild().getUsername());
+				child = childService.findByUser(user);
 				WDR_ACNO = child.getParent().getAccount();
 
-				if (child.getSpendLimit() < storeRequest.getPrice()) { // 한도 초과일 때
+				if (child.getSpendLimit() < storeRequest.getPrice()) { 
+					// 한도 초과일 때
 					isLimit = true;
 					
 					transinfo.setDate(LocalDateTime.now());
@@ -85,34 +104,43 @@ public class StoreController {
 				} 
 			}
 			
-			
 			if(!isLimit) {
-//				String api = wf.executeWooriAcctToWooriAcct(WDR_ACNO, storeRequset.getPrice() + "", "020", "1002987654321", "입금"); // Only Request
-//				System.out.println(api);
+				if (storeRequest.getBankCode().equals("020")) {
+					wooriFunc.executeWooriAcctToWooriAcct
+					(WDR_ACNO, Integer.toString(storeRequest.getPrice()), 
+					storeRequest.getBankCode(), storeRequest.getAccountNumber(), 
+					storeRequest.getLocation());
+				} else {
+					wooriFunc.executeWooriAcctToOtherAcct
+					(WDR_ACNO, Integer.toString(storeRequest.getPrice()), 
+					storeRequest.getBankCode(), storeRequest.getAccountNumber(), 
+					storeRequest.getLocation());
+				}
 				
 				transinfo.setDate(LocalDateTime.now());
 				transinfo.setLocation(storeRequest.getLocation());
 				transinfo.setPrice(storeRequest.getPrice());
+				
 				if(isChild) {
 					transinfo.setChildNum(child.getId());
 					transinfo.setParent(child.getParent());
+					child.decreaseSpendLimit(storeRequest.getPrice());
+					childService.saveChild(child);
 				} else {
 					transinfo.setParent(parent);
 				}
-				transinfo.setTransinfoStatus(TransinfoStatus.SUCCESS);
 				
+				transinfo.setTransinfoStatus(TransinfoStatus.SUCCESS);
 				transinfoService.saveTransinfo(transinfo);
 				
 				basicResponse.dataBody = transinfo;
 				basicResponse.status = "success";
 			}
-
-
 		} catch (Exception e) {
 			basicResponse.status = "error";
 			e.printStackTrace();
-		} finally {
-			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
+		
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 }

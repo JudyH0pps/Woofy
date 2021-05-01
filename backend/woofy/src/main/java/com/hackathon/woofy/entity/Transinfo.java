@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +39,7 @@ public class Transinfo {
 	@Enumerated(EnumType.STRING)
 	private TransinfoStatus transinfoStatus;
 	
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
 	private Parent parent;
