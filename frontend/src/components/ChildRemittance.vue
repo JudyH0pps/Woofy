@@ -3,14 +3,18 @@
     <div v-if="beforeAccountInput" class="accountInput">
       <div class="inputField">
         <p>{{ selectedBank }}</p>
-        <input placeholder="입금할 계좌번호 입력" v-model="accountSlash" />
+        <input
+          placeholder="입금할 계좌번호 입력"
+          disabled
+          v-model="accountSlash"
+        />
         <div></div>
       </div>
     </div>
     <div v-if="!beforeAccountInput" class="moneyInput">
       <div class="inputField">
         <p>보낼 금액</p>
-        <input v-model="moneyComma" />
+        <input disabled v-model="moneyComma" />
         <div></div>
       </div>
     </div>
@@ -87,6 +91,7 @@ export default {
           this.accountNumber += key;
         }
       } else {
+        if (this.money.length >= 13) return;
         if (key === "del") {
           this.money = "";
         } else if (this.money == "" && (key === "00" || key === 0)) {
