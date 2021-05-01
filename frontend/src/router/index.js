@@ -7,6 +7,9 @@ import ChildRemittance from "@/components/ChildRemittance.vue";
 import ChildMissionRequest from "@/components/ChildMissionRequest.vue";
 import ChildBankSelection from "@/components/ChildBankSelection.vue";
 import { authRouters } from "@/router/auth";
+import CreateMission from "@/views/CreateMission.vue"
+import WaitingMission from "@/components/WaitingMissions.vue"
+import Casher from "@/views/Casher.vue";
 
 Vue.use(VueRouter);
 
@@ -50,6 +53,20 @@ const routes = [
         component: ChildMissionRequest,
     },
     {
+        path:"/CreateMission",
+        name: "CreateMission",
+        component : CreateMission
+    },
+    {
+        path:"/WaitingMission",
+        name:"WaitingMission",
+        component : WaitingMission
+    },
+    {
+        path:"/Casher",
+        name:"Casher",
+        component : Casher
+    },
         path: "/ChildBankSelection",
         name: "ChildBankSelection",
         component: ChildBankSelection
