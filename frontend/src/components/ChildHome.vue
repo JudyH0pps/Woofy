@@ -15,6 +15,12 @@
       <div class="userMoney">
         <span style="font-size: 39px"> {{ money }} </span>원
       </div>
+      <v-progress-linear
+        color="light-blue"
+        height="10"
+        value="10"
+        striped
+      ></v-progress-linear>
     </div>
     <div class="buttons">
       <v-btn @click="changeViewingContent(0)" plain>결제</v-btn>
@@ -75,5 +81,9 @@ export default {
 .buttons {
   display: flex;
   justify-content: space-around;
+}
+.v-progress-linear {
+  width: 95%;
+  margin: 0 auto 0;
 }
 </style>
