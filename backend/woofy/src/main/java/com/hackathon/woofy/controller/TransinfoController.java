@@ -19,6 +19,7 @@ import com.hackathon.woofy.entity.Mission;
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.entity.Transinfo;
 import com.hackathon.woofy.entity.TransinfoStatus;
+import com.hackathon.woofy.request.TransRequest;
 import com.hackathon.woofy.request.TransinfoRequest;
 import com.hackathon.woofy.response.BasicResponse;
 import com.hackathon.woofy.service.ChildService;
@@ -94,7 +95,6 @@ public class TransinfoController {
 			if (result.size() != 0) {
 				basicResponse.dataBody = map;
 				basicResponse.status = "success";
-
 			} else {
 				basicResponse.dataBody = map;
 				basicResponse.status = "none";
@@ -107,5 +107,4 @@ public class TransinfoController {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
 	}
-	
 }

@@ -15,9 +15,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Table;
 
 import javax.persistence.Id;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,6 +40,7 @@ public class User implements UserDetails {
     /**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 3472640934634654019L;
 
 	@Id
@@ -52,7 +57,11 @@ public class User implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false, length = 100)
     private String phoneNumber;
-        
+       
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = true, length = 100)
+    private String secretCode;
+    
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
@@ -63,6 +72,11 @@ public class User implements UserDetails {
 		this.phoneNumber = (String)userObject.get("phoneNumber");
 		this.roles.add((String)userObject.get("role"));
 	}
+    
+    public boolean applySecretCodeChange(String code) {
+    	this.secretCode = code;
+    	return true;
+    }
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

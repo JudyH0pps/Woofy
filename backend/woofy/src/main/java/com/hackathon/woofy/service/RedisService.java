@@ -40,4 +40,13 @@ public class RedisService {
 	    String result = redisTemplate.execute(redisScript, keys, subkey);
 	    return result;
 	}
+
+	public Long dropHashSetItem(String key, String subkey) {
+		String script = "return redis.call('hdel', KEYS[1], ARGV[1])";
+	    DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>(script);
+	    redisScript.setResultType(Long.class);
+	    List<String> keys = Arrays.asList(key);
+	    Long result = redisTemplate.execute(redisScript, keys, subkey);
+	    return result;
+	}
 }

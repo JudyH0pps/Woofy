@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -158,6 +159,24 @@ public class ParentController {
 		basicResponse.dataBody = responseObject;
 		
 		return new ResponseEntity<>(basicResponse, HttpStatus.CREATED);
+	}
+	
+	@Secured({"ROLE_PARENT"})
+	@PutMapping(value = "/secretcode", produces = "application/json; charset=utf8")
+	public Object modifyChildInfo(@RequestBody Map<String, Object> jsonRequest) {
+		final BasicResponse basicResponse = new BasicResponse();
+		
+		Map<String, Object> childObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		User authUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		String targetSecretCode = (String)childObject.get("code");
+		authUser.applySecretCodeChange(passwordEncoder.encode(targetSecretCode));
+		
+		userService.saveUser(authUser);
+		
+		basicResponse.status = "200";
+		
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/{parentUsername}", produces = "application/json; charset=utf8")

@@ -49,7 +49,6 @@ public class MissionController {
 	 * @param missionRequest
 	 * @return
 	 */
-	
 	@Secured("ROLE_PARENT")
 	@PostMapping(value="", produces = "application/json; charset=utf8")
 	public Object saveMission(@RequestBody MissionRequest missionRequest) {
@@ -57,7 +56,7 @@ public class MissionController {
 		
 		Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
 		Parent targetRequestedParent = parentService.findByUsername(authUser.getName());
-		
+				
 		try {
 			Map<String, Object> map = new HashMap<>();
 			

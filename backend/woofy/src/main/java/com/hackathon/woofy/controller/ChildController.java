@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -141,6 +144,27 @@ public class ChildController {
 		
 		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
+	
+	@Secured({"ROLE_CHILD"})
+	@PutMapping(value = "/secretcode", produces = "application/json; charset=utf8")
+	public Object modifyChildInfo(@RequestBody Map<String, Object> jsonRequest) {
+		final BasicResponse basicResponse = new BasicResponse();
+		
+		Map<String, Object> childObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		User authUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		String targetSecretCode = (String)childObject.get("code");
+		System.out.println(targetSecretCode);
+		authUser.applySecretCodeChange(passwordEncoder.encode(targetSecretCode));
+		
+		userService.saveUser(authUser);
+		
+//		System.out.println(authUser.getSecretCode());
+		
+		basicResponse.status = "200";
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+	}
+
 
 	@PutMapping(value = "/{childUsername}", produces = "application/json; charset=utf8")
 	public String modifyChildInfo(@PathVariable(value="childUsername") String childUsername, @RequestBody Map<String, Object> jsonRequest) {
@@ -171,25 +195,55 @@ public class ChildController {
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
-		
 	}	
 
-	@PutMapping(value = "/{childUsername}/allowence", produces = "application/json; charset=utf8")
-	public String modifyChildAllowenceInfo(@PathVariable(value="childUsername") String childUsername, @RequestBody Map<String, Object> jsonRequest) {
-		// JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		Map<String, Object> childObject = (Map<String, Object>) jsonRequest.get("dataBody");
-		System.out.println(childObject);
+	@Secured("ROLE_PARENT")
+	@PutMapping(value = "/{childUsername}/spendlimit", produces = "application/json; charset=utf8")
+	public Object modifyChildAllowenceInfo(@PathVariable(value="childUsername") String childUsername, @RequestBody Map<String, Object> jsonRequest) {
+		final BasicResponse basicResponse = new BasicResponse();
+		User authUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		return "DEBUG";
+		Map<String, Object> childObject = (Map<String, Object>) jsonRequest.get("dataBody");
+		String requestType = (String) childObject.get("type");
+		int requestAmount = (int) childObject.get("amount");
+				
+		// 디버그 용도로 계좌 확인 절차 비활성화
+		
+		try {
+			Map<String, Object> map = new HashMap<>();
+			Child child = childService.findByUsername(childUsername);
+			
+			if (child == null || !child.getParent().getUser().getUsername().equals(authUser.getUsername())) {
+				basicResponse.status = "invalid";
+				return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
+			}
+						
+			if (requestType.equals("1")) {
+				// 여기에서 부모의 한도 검사 기능 추가 예정
+				child.increaseSpendLimit(requestAmount);
+				childService.saveChild(child);
+				basicResponse.status = "success";
+			}
+			
+			else {
+				if (child.decreaseSpendLimit(requestAmount)) {
+					childService.saveChild(child);
+					basicResponse.status = "success";
+				}
+				
+				else {
+					basicResponse.status = "fail";
+				}
+			}
+			
+			map.put("spendLimit", child.getSpendLimit());
+			basicResponse.dataBody = map;
+		} catch (Exception e) {
+			basicResponse.status = "error";
+			e.printStackTrace();
+			return new ResponseEntity<>(basicResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
-
-	@PutMapping(value = "/{childUsername}/amount", produces = "application/json; charset=utf8")
-	public String modifyChildAmountInfo(@PathVariable(value="childUsername") String childUsername, @RequestBody Map<String, Object> jsonRequest) {
-		// JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		Map<String, Object> childObject = (Map<String, Object>) jsonRequest.get("dataBody");
-		System.out.println(childObject);
-		
-		return "DEBUG";
-	}	
-	
 }
