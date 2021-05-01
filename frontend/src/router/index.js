@@ -19,6 +19,7 @@ const authCheck = () => (to, from, next) => {
 const routes = [
     {
         path: "/",
+        name:"Root",
         redirect: "/login",
         beforeEnter: authCheck(),
     },
