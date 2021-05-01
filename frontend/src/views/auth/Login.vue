@@ -1,6 +1,11 @@
 <template>
   <section>
     <article>
+      <p style="margin: 0 auto; text-align: center">
+        <span class="logo"
+          ><span style="font-style: oblique">WOORI</span> i</span
+        >
+      </p>
       <div>
         <div class="input_title"><span>ID</span></div>
         <input
@@ -58,13 +63,17 @@ export default {
 <style lang="scss" scoped>
 section {
   padding: 45px;
-  background-color: #a3c7ff;
+  background-color: #ffffff;
   height: 100%;
 }
 
 article {
   padding-left: 0px;
   margin-bottom: 51%;
+}
+
+.logo {
+  margin: 0 auto 0;
 }
 
 .login_intro {
