@@ -24,11 +24,11 @@
     </div>
     <div class="buttons">
       <v-btn @click="changeViewingContent(0)" plain>결제</v-btn>
-      <v-btn @click="moveTo('ChildRemittance')" plain>송금</v-btn>
+      <v-btn @click="changeViewingContent(1)" plain>송금</v-btn>
       <v-btn @click="changeViewingContent(2)" plain>미션</v-btn>
     </div>
     <ChildPayment v-if="viweingContent === 0"></ChildPayment>
-    <!-- <ChildRemittance v-if="viweingContent === 1"></ChildRemittance> -->
+    <ChildBankSelection v-if="viweingContent === 1"></ChildBankSelection>
     <ChildMission v-if="viweingContent === 2"></ChildMission>
   </section>
 </template>
@@ -37,6 +37,7 @@
 import ChildPayment from "@/components/ChildPayment.vue";
 // import ChildRemittance from "@/components/ChildRemittance.vue";
 import ChildMission from "@/components/ChildMission.vue";
+import ChildBankSelection from "./ChildBankSelection.vue";
 export default {
   data() {
     return {
@@ -50,6 +51,7 @@ export default {
     ChildPayment,
     // ChildRemittance,
     ChildMission,
+    ChildBankSelection,
   },
   methods: {
     moveTo(component) {

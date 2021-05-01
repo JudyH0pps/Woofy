@@ -1,14 +1,39 @@
 <template>
-  <section class="ChildRemittance">
-    <p style="text-align: center; margin: 20px">은행 선택</p>
-    <v-item-group>
-    <v-row>
-      <v-col v-for="(item, i) in items" :key="i" cols="6" md="6">
-        <v-item>
-          <v-btn plain>{{ item }}</v-btn>
-        </v-item>
-      </v-col>
-    </v-row>
+  <section class="Remittance">
+    <div v-if="beforeAccountInput" class="accountInput">
+      <div class="inputField">
+        <p>{{ selectedBank }}</p>
+        <input
+          placeholder="입금할 계좌번호 입력"
+          disabled
+          v-model="accountSlash"
+        />
+        <div></div>
+      </div>
+    </div>
+    <div v-if="!beforeAccountInput" class="moneyInput">
+      <div class="inputField">
+        <p>보낼 금액</p>
+        <input disabled v-model="moneyComma" />
+        <div></div>
+      </div>
+    </div>
+    <v-item-group class="keypad">
+      <v-row>
+        <v-col
+          @click="inputKey(key)"
+          v-for="(key, i) in keys"
+          :key="i"
+          cols="4"
+        >
+          <v-item>
+            <v-btn plain>{{ key }}</v-btn>
+          </v-item>
+        </v-col>
+      </v-row>
+      <div class="">
+        <button class="OK_button" @click="OK()">확인</button>
+      </div>
     </v-item-group>
   </section>
 </template>
@@ -17,28 +42,129 @@
 export default {
   data() {
     return {
-      items: [
-        "우리은행",
-        "ABC은행",
-        "가나다은행",
-        "EDF은행",
-        "아야어은행",
-        "ㅇㅇ은행",
-        "JBK은행",
-      ],
+      accountNumber: "",
+      beforeAccountInput: true,
+      selectedBank: "",
+      money: "",
+      keys: [1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0, "del"],
     };
   },
   components: {},
+  computed: {
+    moneyComma() {
+      if (this.money === "") {
+        return "0";
+      }
+      let comma = "";
+      let t = this.money.length % 3;
+      for (let idx = 0; idx < this.money.length; idx++) {
+        let char = this.money.charAt(idx);
+        if (idx !== 0 && idx % 3 === t) comma += ",";
+        comma += char;
+      }
+      return comma + " 원";
+    },
+    accountSlash() {
+      if (this.accountNumber.length <= 3) {
+        return this.accountNumber;
+      } else if (this.accountNumber.length <= 6) {
+        return (
+          this.accountNumber.slice(0, 3) + "-" + this.accountNumber.slice(3)
+        );
+      }
+      return (
+        this.accountNumber.slice(0, 3) +
+        "-" +
+        this.accountNumber.slice(3, 6) +
+        "-" +
+        this.accountNumber.slice(6, 13)
+      );
+    },
+  },
+  methods: {
+    inputKey(key) {
+      if (this.beforeAccountInput) {
+        if (this.accountNumber.length >= 13) return;
+        if (key === "del") {
+          this.accountNumber = this.accountNumber.slice(0, -1);
+        } else {
+          this.accountNumber += key;
+        }
+      } else {
+        if (this.money.length >= 13) return;
+        if (key === "del") {
+          this.money = "";
+        } else if (this.money == "" && (key === "00" || key === 0)) {
+          return;
+        } else {
+          this.money += key;
+        }
+      }
+    },
+    OK() {
+      if (this.beforeAccountInput) {
+        this.beforeAccountInput = false;
+        this.keys[9] = "00";
+      } else {
+        return;
+      }
+    },
+  },
+  created() {
+    this.selectedBank = this.$route.query.bankname;
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.ChildRemittance {
+* {
+  font-weight: bold;
+}
+section {
   width: 100%;
   height: 100%;
 }
-
-.userMoney {
-  text-align: right;
+.accountInput,
+.moneyInput {
+  height: 40%;
+}
+.inputField {
+  width: 100%;
+  padding: 100px 20px;
+  input {
+    height: 60px;
+    width: 100%;
+    padding: 20px;
+    background: rgb(233, 233, 233);
+    border-radius: 10px;
+    font-size: 22px;
+  }
+}
+.moneyInput {
+  input {
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    background: white;
+    text-align: right;
+  }
+}
+.keypad {
+  margin: 20% auto 0;
+  height: 40%;
+  width: 90%;
+  * {
+    text-align: center;
+    font-size: 20px;
+  }
+}
+.OK_button {
+  margin: 50px 0;
+  background-color: #3c3eca;
+  width: 100%;
+  height: 60px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  border: none;
 }
 </style>
