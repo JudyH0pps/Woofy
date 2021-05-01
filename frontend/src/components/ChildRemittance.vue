@@ -7,7 +7,13 @@
         <div></div>
       </div>
     </div>
-    <div v-if="!beforeAccountInput" class="moneyInput"></div>
+    <div v-if="!beforeAccountInput" class="moneyInput">
+      <div class="inputField">
+        <p>보낼 금액</p>
+        <input v-model="moneyComma" />
+        <div></div>
+      </div>
+    </div>
     <v-item-group class="keypad">
       <v-row>
         <v-col
@@ -22,7 +28,7 @@
         </v-col>
       </v-row>
       <div class="">
-        <button class="OK_button">확인</button>
+        <button class="OK_button" @click="OK()">확인</button>
       </div>
     </v-item-group>
   </section>
@@ -35,11 +41,25 @@ export default {
       accountNumber: "",
       beforeAccountInput: true,
       selectedBank: "",
+      money: "",
       keys: [1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0, "del"],
     };
   },
   components: {},
   computed: {
+    moneyComma() {
+      if (this.money === "") {
+        return "0";
+      }
+      let comma = "";
+      let t = this.money.length % 3;
+      for (let idx = 0; idx < this.money.length; idx++) {
+        let char = this.money.charAt(idx);
+        if (idx !== 0 && idx % 3 === t) comma += ",";
+        comma += char;
+      }
+      return comma + " 원";
+    },
     accountSlash() {
       if (this.accountNumber.length <= 3) {
         return this.accountNumber;
@@ -59,10 +79,29 @@ export default {
   },
   methods: {
     inputKey(key) {
-      if (key === "del") {
-        this.accountNumber = this.accountNumber.slice(0, -1);
+      if (this.beforeAccountInput) {
+        if (this.accountNumber.length >= 13) return;
+        if (key === "del") {
+          this.accountNumber = this.accountNumber.slice(0, -1);
+        } else {
+          this.accountNumber += key;
+        }
       } else {
-        this.accountNumber += key;
+        if (key === "del") {
+          this.money = "";
+        } else if (this.money == "" && (key === "00" || key === 0)) {
+          return;
+        } else {
+          this.money += key;
+        }
+      }
+    },
+    OK() {
+      if (this.beforeAccountInput) {
+        this.beforeAccountInput = false;
+        this.keys[9] = "00";
+      } else {
+        return;
       }
     },
   },
@@ -94,6 +133,14 @@ section {
     background: rgb(233, 233, 233);
     border-radius: 10px;
     font-size: 22px;
+  }
+}
+.moneyInput {
+  input {
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    background: white;
+    text-align: right;
   }
 }
 .keypad {
