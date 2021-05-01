@@ -67,6 +67,7 @@ const routes = [
         name:"Casher",
         component : Casher
     },
+    {
         path: "/ChildBankSelection",
         name: "ChildBankSelection",
         component: ChildBankSelection
