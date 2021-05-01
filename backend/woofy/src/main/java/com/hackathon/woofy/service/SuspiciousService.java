@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hackathon.woofy.entity.Child;
-import com.hackathon.woofy.entity.Mission;
 import com.hackathon.woofy.entity.Parent;
 import com.hackathon.woofy.entity.Suspicious;
 import com.hackathon.woofy.repo.SuspiciousRepo;
@@ -42,6 +41,11 @@ public class SuspiciousService {
 	@Transactional
 	public List<Suspicious> findByParent(Parent parent) {
 		return suspiciousRepo.findByParent(parent);
+	}
+	
+	@Transactional
+	public List<Suspicious> findByChild(Child child) {
+		return suspiciousRepo.findByChild(child);
 	}
 	
 	/**

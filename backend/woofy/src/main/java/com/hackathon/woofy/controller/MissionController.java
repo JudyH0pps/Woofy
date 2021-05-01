@@ -49,7 +49,6 @@ public class MissionController {
 	 * @param missionRequest
 	 * @return
 	 */
-	
 	@Secured("ROLE_PARENT")
 	@PostMapping(value="", produces = "application/json; charset=utf8")
 	public Object saveMission(@RequestBody MissionRequest missionRequest) {
