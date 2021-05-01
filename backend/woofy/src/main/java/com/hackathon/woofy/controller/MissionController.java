@@ -12,6 +12,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -290,8 +291,26 @@ public class MissionController {
 		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 	
-	
-	
+	@Secured({ "ROLE_PARENT" })
+	@DeleteMapping(value = "/{mission_id}", produces = "application/json; charset=utf8")
+	public Object removeMission(@PathVariable(name = "mission_id") Long mission_id) {
+		final BasicResponse basicResponse = new BasicResponse();
+
+		try {
+			Mission mission = missionService.findById(mission_id);
+			missionDetailService.deleteMissionDetail(mission);
+			missionService.deleteMission(mission_id);
+			
+			basicResponse.status = "success";
+
+		} catch (Exception e) {
+			basicResponse.status = "error";
+			e.printStackTrace();
+			return new ResponseEntity<>(basicResponse, HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+	}
 	
 
 }

@@ -13,4 +13,6 @@ public interface MissionDetailRepo extends JpaRepository<MissionDetail, Long>{
 
 	@Query("select md from MissionDetail md where md.mission = :mission_id")
 	List<MissionDetail> findByMission(@Param("mission_id") Mission mission);
+	
+	void deleteByMission(Mission mission);
 }

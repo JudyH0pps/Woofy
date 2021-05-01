@@ -32,5 +32,10 @@ public class MissionDetailService {
 		return missionDetailRepo.findById(missiondetail_id).get();
 	}
 	
+	@Transactional
+	public void deleteMissionDetail(Mission mission) {
+		missionDetailRepo.deleteByMission(mission);
+	}
+	
 	
 }

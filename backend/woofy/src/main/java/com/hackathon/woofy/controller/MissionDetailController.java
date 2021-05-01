@@ -90,6 +90,12 @@ public class MissionDetailController {
 		}
 	}
 	
+	/**
+	 * 부모가 자식의 미션 요청을 확인 후 성공/실패 응답
+	 * @param missiondetail_id
+	 * @param missionRequest
+	 * @return
+	 */
 	@Secured({ "ROLE_PARENT" })
 	@PutMapping(value = "/response/{missiondetail_id}", produces = "application/json; charset=utf8")
 	public Object requestComplete(@PathVariable(name = "missiondetail_id") Long missiondetail_id, @RequestBody MissionRequest missionRequest) {
@@ -98,7 +104,7 @@ public class MissionDetailController {
 		try {
 			MissionDetail missionDetail = missionDetailService.findById(missiondetail_id);
 			
-			missionDetail.setMissionStatus(missionRequest.getMissiondetail().getMissionStatus());
+			missionDetail.setMissionStatus(missionRequest.getMissiondetail().getMissionStatus()); // 클라이언트가 SUCCESS/FAIL 전송
 			
 			missionDetailService.saveMissionDetail(missionDetail);
 			
