@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hackathon.woofy.entity.Child;
 import com.hackathon.woofy.entity.Parent;
+import com.hackathon.woofy.entity.User;
 import com.hackathon.woofy.repo.ChildRepo;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,11 @@ public class ChildService {
 	@Transactional
 	public Child findByUsername(String username) {
 		return childRepo.findByUsername(username);
+	}
+	
+	@Transactional
+	public Child findByUser(User user) {
+		return childRepo.findByUser(user);
 	}
 
 	@Transactional

@@ -4,38 +4,39 @@
       <div class="ParentAccountSummaryCard">
         
         <div style="border-bottom: 1px solid #00000017; width:100%; height:30%;">
-          <div style="text-align: left; font-size: 80%; float: left; color: #424242; font-weight: 800; margin: 4.1% 7%;">
-            <span style="font-size:15px">{{ user.name }}</span>님, <br>오늘도 행복한 하루 보내세요!
+          <div style="height:33%; text-align: left; font-size: 11px; float: left; color: #424242; font-weight: 800; margin: 4.1% 7%;">
+            <span style="font-size:13px">{{ user.name }}</span>님, <br>오늘도 행복한 하루 보내세요!
           </div>
           <div class="aligncenter" style="float:right; height:100%;"><v-icon>mdi-refresh</v-icon> <v-icon>mdi-dots-vertical</v-icon> </div>
         </div>
         
         <div class="aligncenter" style="width:100%; height:70%;">
           <div>
-              <div style="text-align: center; font-size: 17px; font-weight: 600; color: gray;">{{user.account}}</div>
+              <div style="text-align: center; font-size: 13px; font-weight: 500; color: gray;">{{user.account}}</div>
               <div class="userMoney">
-              <span style="font-size: 39px;"> {{userMoney}} </span>원</div>
-              <div style="text-align: center; font-size: small; font-weight: 700; color: #717070;">
-                계좌 관리 <v-icon>mdi-arrow-right-thin-circle-outline</v-icon></div>
+              <span style="font-size: 34px;"> {{addComma(user.money)}} </span>원</div>
+              <div style="text-align: center; font-size: 12px; font-weight: 700; color: #717070;">
+                계좌 관리<v-icon size="16px">mdi-arrow-right-thin-circle-outline</v-icon></div>
           </div>
         </div>
       
       </div>
     </div>
-      <p style=" height: 10%;margin: 3% 4% 0% 4%; font-weight: bold; color: rgb(97 95 95); font-size: larger;height: 3%;
-    background-color: white;">자녀 관리</p>
+      <!-- <p style=" height: 10%;margin: 3% 4% 0% 4%; font-weight: bold; color: rgb(97 95 95); font-size: larger;height: 3%;
+    background-color: white;">자녀 관리</p> -->
     <div class="ChildList">
     <div v-for="(child,index) in user.childs" :key="index" class="ChildAccountSummary" @click="moveTo('ParentChildDetail')">
-        <div style="width:100%; height:70%;">
-            <div style="float: left">{{child.name}}</div>
-            <div style="float: right; font-size: 25px">{{child.money}} 원</div>
+        <div style="width:100%; height:100%;">
+            <div class="monthlymoney">{{addComma(child.pocketMoney)}}원</div>
+            <div class="alignCenter" style="float: left; font-weight: 600; width:50%; height:100%;">{{child.name}}</div>
+            <div class="parentChild">{{addComma(child.money)}} 원</div>
+        <div style=" font-size: 10px; bottom: 2px; position: absolute; right: 1px; font-weight: 500;">{{Math.round((child.money/child.pocketMoney)*100)}}%</div>
         </div>
-        <div>
-            <div style="float:right; font-size:12px">{{child.rate}}%</div>
-            <v-progress-linear :value="child.rate"></v-progress-linear>
-        </div>
+            <v-progress-linear style="position:absolute; bottom:0;"
+              :color="rateColor(child.money/child.pocketMoney)"
+             :value="(child.money/child.pocketMoney)*100"></v-progress-linear>
     </div>
-    <div class="ChildAccountSummary aligncenter" style="color: gray;">자녀 추가하기<v-icon>mdi-plus-circle-outline</v-icon></div>
+    <div class="ChildAccountSummary aligncenter" style="color: gray; background-color:#f8fbff;">자녀 추가하기<v-icon>mdi-plus-circle-outline</v-icon></div>
     
   </div>
   </div>
@@ -52,20 +53,19 @@ export default {
         childs:[
           {
             name : 'Woori 아들',
-            money : 40000,
-            rate: 60
+            money : 20000,
+            pocketMoney:50000
 
           },
            {
             name : 'Woori 딸',
-            money : 45000,
-            rate: 30
-
+            money : 45331,
+            pocketMoney:30000
           },
           {
             name : 'Woori 막내',
-            money : 7000,
-            rate: 80
+            money : 700,
+            pocketMoney:10000
 
           }
         ]
@@ -73,12 +73,9 @@ export default {
     };
   },
   computed:{
-    userMoney(){
-      var regexp = /\B(?=(\d{3})+(?!\d))/g;
-      return this.user.money.toString().replace(regexp,',');
-    },
   },
   mounted(){
+    
   },
   methods: {
     moveTo(componentName) {
@@ -87,6 +84,19 @@ export default {
     converComma(num){
        var regexp = /\B(?=(\d{3})+(?!\d))/g;
       return num.money.toString().replace(regexp,',');
+    },
+    addComma(num){
+      var regexp = /\B(?=(\d{3})+(?!\d))/g;
+      return num.toString().replace(regexp,',');
+    },
+    rateColor(num){
+      if(num<0.3){
+        return 'red';
+      }else if(num<0.6){
+        return 'orange';
+      }else{
+        return 'green';
+      }
     }
   },
   created() {
@@ -103,13 +113,24 @@ export default {
   /* box-shadow: 2px 2px 2px gray; */
   background-color: $wooriAppColor;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+
+.parentChild{
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    float: right;
+    font-size: 21px;
+    height: 100%;
+    margin: 0px 16px;
+    font-weight: 500;
 }
 
 .ChildList{
     width: 100%;
-    height: 50%;
-    padding: 4%;
+    height: 60%;
+    padding: 2%;
     overflow: scroll;
 }
 
@@ -121,10 +142,20 @@ export default {
 
 .ChildAccountSummary {
   width: 100%;
-    height: 25%;
+    height: 22%;
     margin: 10px auto;
     box-shadow: 0px 0px 6px rgb(0 0 0 / 26%);
     border-radius: 4px;
+    position: relative;
+}
+
+.monthlymoney{
+  position: absolute;
+    right: 16px;
+    top: 11px;
+    font-size: 12px;
+    color: #357dd6;
+    font-weight: 600;
 }
 
 .ParentAccountSummaryCard {

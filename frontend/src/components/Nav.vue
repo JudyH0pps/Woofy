@@ -3,7 +3,7 @@
     <div @click.stop="drawer = !drawer" class="hamburger">
     <v-icon size="4vh" color="#5b9ad5">mdi-menu</v-icon>
     </div>
-    <div @click="moveTo('ParentHome')">
+    <div @click="moveTo('Root')">
       <span class="logo"><span style="font-style:oblique ">WOORI</span> i</span>
     </div>
     <v-navigation-drawer

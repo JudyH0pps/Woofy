@@ -76,6 +76,20 @@ public class Child {
 		this.parent = parent;
 	}
 	
+	public boolean increaseSpendLimit(int money) {
+		this.spendLimit += money;
+		return true;
+	}
+	
+	public boolean decreaseSpendLimit(int money) {
+		if (this.spendLimit - money < 0) {
+			return false;
+		}
+		
+		this.spendLimit -= money;
+		return true;
+	}
+	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public String getUsername() {
         return this.user.getUsername();
