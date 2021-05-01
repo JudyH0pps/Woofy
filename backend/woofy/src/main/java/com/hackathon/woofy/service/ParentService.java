@@ -34,10 +34,4 @@ public class ParentService {
 	public Parent findByUser(User user) {
 		return parentRepo.findByUser(user);
 	}
-
-	@Transactional
-	public Parent findByUserName(String username) {
-		return parentRepo.findByUsername(username);
-	}
-
 }
