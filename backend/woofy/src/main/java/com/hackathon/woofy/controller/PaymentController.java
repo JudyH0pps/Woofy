@@ -39,7 +39,6 @@ public class PaymentController {
 			String checkPriviousCode = redisService.getHashSetItem("PaymentSessionUserTable", targetUsername);
 			
 			if (checkPriviousCode != null) {
-				// REMOVE CODE
 				redisService.dropHashSetItem("PaymentSessionCodeTable", checkPriviousCode);
 			}
 

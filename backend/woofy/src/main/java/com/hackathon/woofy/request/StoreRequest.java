@@ -10,11 +10,9 @@ import lombok.Setter;
 @Setter
 public class StoreRequest {
 
-	private int price; // 매장 물품의 가격
-	
 	private String location; // 의심 지역 알림 서비스를 위함
-	
-	public Parent parent; // 거래하는 사람이 부모인지
-	public Child child; // 자식인지 판별하기 위함
-	
+	private int price; // 매장 물품의 가격
+	private String bankCode;
+	private String accountNumber;
+	private String paymentCode;
 }
