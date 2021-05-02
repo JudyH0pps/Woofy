@@ -20,6 +20,7 @@
       >
         <input
           placeholder="사용하실 아이디를 입력해주세요"
+          type="password"
           v-model="phoneNumber"
         />
       </div>
@@ -32,7 +33,11 @@
           margin-bottom: 30px;
         "
       >
-        <input placeholder="패스워드를 입력해 주세요" v-model="phoneNumber" />
+        <input
+          type="password"
+          placeholder="패스워드를 입력해 주세요"
+          v-model="phoneNumber"
+        />
       </div>
       <div class="input_title"><span>패스워드 확인</span></div>
       <div
