@@ -10,6 +10,7 @@ import { authRouters } from "@/router/auth";
 import CreateMission from "@/views/CreateMission.vue"
 import WaitingMission from "@/components/WaitingMissions.vue"
 import Casher from "@/views/Casher.vue";
+import ConfirmMission from "@/views/ConfirmMission.vue"
 
 Vue.use(VueRouter);
 
@@ -67,9 +68,15 @@ const routes = [
         name:"Casher",
         component : Casher
     },
+    {
         path: "/ChildBankSelection",
         name: "ChildBankSelection",
         component: ChildBankSelection
+    },
+    {
+        path: "/ConfirmMission",
+        name: "ConfirmMission",
+        component: ConfirmMission
     },
     ...authRouters,
 ];

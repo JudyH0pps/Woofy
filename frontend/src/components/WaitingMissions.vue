@@ -3,21 +3,19 @@
     <v-icon @click="$router.push('/ParentChildDetail')" size="40px" style="position: absolute; margin-top: 3px; z-index:1;">mdi-chevron-left</v-icon>
    <div v-if="showModal" class="modalBackground">
       <div style="margin:5% 4%; width:90%; height:10%; "><v-icon @click="closeModal" style="float:right; z-index:6;">mdi-close</v-icon></div>
-      <div class="modal"></div>
+      <MissionDetail class="modal" :mission="detailedMission"></MissionDetail>
     </div> 
     <div class="alignCenter" style="width:100%; height:8%;">등록 요청된 미션</div>
     <div style="width:100%; height:20%; padding-left:5%;">매일 미션
         <div v-if="dailyMissions.length==0" class="alignCenter WaitingMission" style="font-size:small">등록된 매일 미션이 없습니다.</div>
-            <Mission class="WaitingMission" @click="openModal" v-for="(mission,index) in dailyMissions" :arrow="'right'" :key="index" :mission="mission"></Mission>
+            <Mission class="WaitingMission"  @click="openModal" v-for="(mission,index) in dailyMissions" @missionClick="openModal(mission)" :arrow="'right'" :key="index" :mission="mission"></Mission>
           </div>
           <div style="width:100%; height:70%; padding-left:5%;">
             등록된 미션
              <!-- <v-badge  color="green" :content="1" style="width:90%; margin:0 5%; padding-top:2px; text-align:center" >
               <Mission style="width:100%; margin:0; background: #caf5c975;" class="ParentChildMission" :arrow="'right'" :mission="generalMission[0]"></Mission>         
             </v-badge> -->
-            <div @click="openModal">
-              <Mission class="WaitingMission" v-for="(mission,index) in generalMissions" :arrow="'right'" :key="index" :mission="mission"></Mission>
-            </div>
+              <Mission class="WaitingMission"  v-for="(mission,index) in generalMissions" @missionClick="openModal(mission)" :arrow="'right'" :key="index" :mission="mission"></Mission>
           </div>
     <!-- <Mission class="WaitingMission" v-for="(mission,index) in watingMission" :key="index" :arrow="'right'" :mission="mission"></Mission> -->
   </div>
@@ -25,9 +23,10 @@
 
 <script>
 import Mission from './Mission.vue';
+import MissionDetail from './MissionDetail.vue';
 
 export default {
-components:{Mission},
+components:{Mission,MissionDetail},
 props:['waiting'],
 computed:{
   watingMission(){
@@ -48,14 +47,16 @@ data() {
       dailyMissions:[],
       generalMissions:[],
       showModal:false,
+      detailedMission:''
     };
 },
 methods:{
    closeModal(){
       this.showModal = false;
     },
-    openModal(){
-      console.log(this.showModal);
+    openModal(m){
+      console.log(m);
+      this.detailedMission = m;
       this.showModal = true;
     }
 }
