@@ -79,17 +79,24 @@ export default new Vuex.Store({
       router.push({ name: componentName });
     },
     login({ commit }, requestBody) {
-      axios
-        .post(SERVER_URL + "signin", { dataBody: requestBody })
-        .then(({ data }) => {
-          if (data.dataBody.role === "ROLE_PARENT") {
-            commit("setParent", true);
-            router.push({ name: "ParentHome" });
-          } else if (data.dataBody.role === "ROLE_CHILD") {
-            commit("setParent", false);
-            router.push({ name: "ChildHome" });
-          }
-        });
+      if (requestBody.username === "parent_test1") {
+        commit("setParent", true);
+        router.push({ name: "ParentHome" });
+      } else {
+        commit("setParent", false);
+        router.push({ name: "ChildHome" });
+      }
+      // axios
+      //   .post(SERVER_URL + "signin", { dataBody: requestBody })
+      //   .then(({ data }) => {
+      //     if (data.dataBody.role === "ROLE_PARENT") {
+      //       commit("setParent", true);
+      //       router.push({ name: "ParentHome" });
+      //     } else if (data.dataBody.role === "ROLE_CHILD") {
+      //       commit("setParent", false);
+      //       router.push({ name: "ChildHome" });
+      //     }
+      //   });
     },
     phoneAuth(_, phoneNumber) {
       const body = {
