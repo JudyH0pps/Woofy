@@ -40,17 +40,35 @@ export default new Vuex.Store({
         });
     },
     phoneAuth(_, phoneNumber) {
-      let body = {
+      const body = {
         type: "1", // "1": 부모, "2": 자녀. 여기에서는 반드시 구분할 필요 없음
         dataBody: {
           COMC_DIS: "1", // 통신사 번호. 해커톤에서는 미사용해도 무방
           HP_NO: phoneNumber, // 휴대폰 번호
-          HP_CRTF_AGR_YN: "Y", // 동의 여부. Y, N 중의 하나를 넣어도 그냥 동작함. "FNM": "장종하", // 휴대폰 번호 이름
+          HP_CRTF_AGR_YN: "Y", // 동의 여부. Y, N 중의 하나를 넣어도 그냥 동작함.
+          FNM: "장종하", // 휴대폰 번호 이름
           RRNO_BFNB: "900101", // 주민번호 앞자리
           ENCY_RRNO_LSNM: "1234567", // 주민번호 뒷자리. 원래는 프론트에서 INCA 기반의 키보드 보안으로 동작되어야 하나, 그냥 보내도 됨.
         },
       };
-      axios.post(SERVER_URL + "getCellCerti", body);
+      axios.post(SERVER_URL + "auth/getCellCerti", body);
+    },
+    phoneCerti(_, { phoneNumber, certiNum }) {
+      const body = {
+        type: "1", // "1": 부모, "2": 자녀. 여기에서는 반드시 구분 필요
+        dataBody: {
+          RRNO_BFNB: "901121", // 주민번호 앞자리
+          ENCY_RRNO_LSNM: "1234567", // 주민번호 뒷자리
+          HP_NO: phoneNumber, // 휴대폰 번호
+          ENCY_SMS_CRTF_NO: certiNum, // SMS 통해 발송된 6자리 숫자.
+        },
+      };
+      axios
+        .post(SERVER_URL + "auth/executeCellCerti", body)
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => console.log(error.response.data));
     },
   },
   modules: {},
