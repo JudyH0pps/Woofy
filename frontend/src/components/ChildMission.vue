@@ -15,14 +15,26 @@
         <p>설거지 하기</p>
         <p class="amount">+500</p>
       </div>
-      <v-btn color="primary" fab small>></v-btn>
+      <v-btn
+        @click="$router.push({ name: 'ChildMissionComplete' })"
+        color="primary"
+        fab
+        small
+        >></v-btn
+      >
     </div>
     <div class="mission">
       <div style="width: 85%">
         <p>시험 100점</p>
         <p class="amount">+50000</p>
       </div>
-      <v-btn color="primary" fab small>></v-btn>
+      <v-btn
+        @click="$router.push({ name: 'ChildMissionComplete' })"
+        color="primary"
+        fab
+        small
+        >></v-btn
+      >
     </div>
     <div
       @click="moveTo('ChildMissionRequest')"
