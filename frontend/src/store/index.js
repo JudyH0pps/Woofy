@@ -10,7 +10,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    username: "",
+    username: "김시영",
     isParent: null,
     waitingMissions: [],
   },
@@ -46,7 +46,7 @@ export default new Vuex.Store({
           COMC_DIS: "1", // 통신사 번호. 해커톤에서는 미사용해도 무방
           HP_NO: phoneNumber, // 휴대폰 번호
           HP_CRTF_AGR_YN: "Y", // 동의 여부. Y, N 중의 하나를 넣어도 그냥 동작함.
-          FNM: "장종하", // 휴대폰 번호 이름
+          FNM: "김시영", // 휴대폰 번호 이름
           RRNO_BFNB: "900101", // 주민번호 앞자리
           ENCY_RRNO_LSNM: "1234567", // 주민번호 뒷자리. 원래는 프론트에서 INCA 기반의 키보드 보안으로 동작되어야 하나, 그냥 보내도 됨.
         },
@@ -69,6 +69,7 @@ export default new Vuex.Store({
           console.log(data);
         })
         .catch((error) => console.log(error.response.data));
+      router.push({ name: "ParentSignupDetail" });
     },
   },
   modules: {},
