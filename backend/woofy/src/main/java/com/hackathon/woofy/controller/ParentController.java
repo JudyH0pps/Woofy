@@ -148,7 +148,7 @@ public class ParentController {
 		redisService.setHashSetTimeLimit("ChildSignupRequestParentTable", targetRequestCode, 900);
 
 		String targetMessage1 = 
-				"WooFY(가제) 자녀 계정을 가입하시려면 이 링크를 통해 진행해주세요. (";
+				"Woori i 자녀 계정 가입은 이 링크를 통해 진행해주세요. (";
 		
 		String targetMessage2 = frontPageURL + targetRequestCode + ")";
 		smsFunc.sendMessage(targetPhoneNumber, targetMessage1 + targetMessage2);
