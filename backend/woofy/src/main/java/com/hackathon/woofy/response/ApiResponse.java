@@ -1,8 +1,6 @@
 package com.hackathon.woofy.response;
 
 public class ApiResponse {
-
-	// Response와 같은 이름이어야한다.
 	private ApiDataHeaderResponse dataHeader;
 	private ApiDataBodyResponse dataBody;
 	

@@ -25,7 +25,6 @@ import lombok.ToString;
 @Entity
 @Getter @Setter
 @Table(name = "mission")
-@ToString(of = { "id", "title", "parent", "child" })
 public class Mission {
 	
 	@Id

@@ -6,7 +6,8 @@ plugins {
 
 group = 'com.hackathon.woofy'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -27,11 +28,15 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	compileOnly 'org.springframework.boot:spring-boot-starter-data-redis:2.3.10.RELEASE'
+	implementation "org.springframework.boot:spring-boot-starter-data-redis:2.3.10.RELEASE"
+	compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.6.2'
 	compile 'org.apache.commons:commons-lang3:3.12.0'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	compile fileTree(dir: 'libs', include: ['*.jar'])
+	compile ('io.lettuce:lettuce-core:5.3.3.RELEASE')
+	compile "io.projectreactor:reactor-core"
+	testCompile "io.projectreactor:reactor-test"
 }
 
 test {
