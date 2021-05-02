@@ -14,12 +14,18 @@
       </div>
       <v-btn color="primary" fab small>></v-btn>
     </div>
-    <div @click="moveTo('ChildMissionRequest')" class="ChildAccountSummary aligncenter" style="color: gray;">미션 추가 요청<v-icon>mdi-plus-circle-outline</v-icon></div>
+    <div
+      @click="moveTo('ChildMissionRequest')"
+      class="ChildAccountSummary aligncenter"
+      style="color: gray"
+    >
+      미션 추가 요청<v-icon>mdi-plus-circle-outline</v-icon>
+    </div>
   </section>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -27,8 +33,8 @@ export default {
   },
   components: {},
   methods: {
-    ...mapActions(['moveTo'])
-  }
+    ...mapActions(["moveTo"]),
+  },
 };
 </script>
 

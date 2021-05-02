@@ -13,6 +13,7 @@
           placeholder="아이디를 입력해주세요."
           id="id"
           autofocus
+          v-model="username"
         />
       </div>
       <br />
@@ -26,11 +27,11 @@
       </div>
     </article>
     <div class="login_btn">
-      <button class="login_button" @click="login()">LOG IN</button>
+      <button class="login_button" @click="login()">로그인</button>
     </div>
-    <button class="login_button" @click="login()">자녀페이지</button>
+    <!-- <button class="login_button" @click="login()">자녀페이지</button> -->
     <div class="login_signup-btn">
-      <button class="login_signup-button" @click="signup()">SIGN UP</button>
+      <button class="login_signup-button" @click="signup()">회원가입</button>
     </div>
   </section>
 </template>
