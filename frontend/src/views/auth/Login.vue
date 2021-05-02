@@ -26,9 +26,9 @@
       </div>
     </article>
     <div class="login_btn">
-      <button class="login_button" @click="parentLogin()">LOG IN</button>
+      <button class="login_button" @click="login()">LOG IN</button>
     </div>
-    <button class="login_button" @click="childLogin()">자녀페이지</button>
+    <button class="login_button" @click="login()">자녀페이지</button>
     <div class="login_signup-btn">
       <button class="login_signup-button" @click="signup()">SIGN UP</button>
     </div>
@@ -40,7 +40,7 @@
 export default {
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
     };
   },
@@ -55,6 +55,13 @@ export default {
     },
     signup() {
       this.$router.push({ name: "Signup" });
+    },
+    login() {
+      let databody = {
+        username: this.username,
+        password: this.password,
+      };
+      this.$store.dispatch("login", databody);
     },
   },
 };
