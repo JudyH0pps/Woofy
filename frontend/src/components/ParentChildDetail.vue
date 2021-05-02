@@ -4,7 +4,7 @@
     <v-icon size="23px" color="#a2a2a2" style="position: absolute; right:10px; top:13px;z-index:1;">mdi-cog</v-icon>
     <div v-if="showModal" class="modalBackground">
       <div style="margin:5% 4%; width:90%; height:10%; "><v-icon @click="closeModal" style="float:right; z-index:6;">mdi-close</v-icon></div>
-      <MissionDetail class="modal" :mission="detailedMission" @close="closeModal"></MissionDetail>
+      <MissionDetail class="modal" :mission="detailedMission" :user="'parent'" @close="closeModal"></MissionDetail>
     </div>
     <div class="ParantChildInform">
         <div style="width:100%; height:25%; text-align:center; font-weight: 500;">{{child.name}}</div>

@@ -24,6 +24,7 @@ methods:{
       return num.toString().replace(regexp,',');
   },
   missionClick(){
+    console.log("클릭됨");
       this.$emit('missionClick');
   }
 }

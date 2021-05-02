@@ -17,7 +17,7 @@
       </div>
       </div>
     </div>
-    <div v-if="mission.missionStatus!='REQUEST'" style="width:100%; height:75%;">
+    <div v-if="user!='child'&&mission.missionStatus!='REQUEST'" style="width:100%; height:75%;">
       <div class="shadow" v-for="(submission,index) in subMissions" :style="{'background-color':bgColor(submission.missionState), 'color':textColor(submission.missionState)}" style="width:90%; overflow:scroll; height:13%; margin-left:5%; margin-bottom: 16px;" :key="index">
         <div class="float subtitle">{{submission.subtitle}}</div>
         <div v-if="submission.missionState=='Ongoing'" style="float:right;width:50%; height:100%">
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div v-if="mission.missionStatus=='REQUEST'" style="width:100%; height:75%;">
+    <div v-if="user!='parent'&&mission.missionStatus=='REQUEST'" style="width:100%; height:75%;">
       <div class="shadow" v-for="(submission,index) in subMissions" :style="{'background-color':bgColor(submission.missionState), 'color':textColor(submission.missionState)}" style="width:90%; overflow:scroll; height:13%; margin-left:5%; margin-bottom: 16px;" :key="index">
         <div class="float subtitle">{{submission.subtitle}}</div>
         <div v-if="submission.missionState=='Ongoing'" style="float:right;width:50%; height:100%">
@@ -59,34 +59,64 @@
       </div>
     </div>
 
+    <div v-if="user=='child'" style="width:100%; height:75%;">
+      <div class="shadow" v-for="(submission,index) in subMissions" :style="{'background-color':bgColor(submission.missionState), 'color':textColor(submission.missionState)}" style="width:90%; overflow:scroll; height:13%; margin-left:5%; margin-bottom: 16px;" :key="index">
+        <div class="float subtitle">{{submission.subtitle}}</div>
+        <div v-if="submission.missionState=='Ongoing'" style="float:right;width:50%; height:100%">
+          <div class="float subprize">{{addComma(submission.subprize)}}</div>
+          <div style="margin:3%; background-color: #1053de;
+    color: white;" class="shadow subButton">제출</div>
+        </div>
+        <div  v-else style="float:right;width:50%; height:100%">
+          <div style="margin:3%; background-color: #a7a7a7;  
+    color: white;" class="shadow subButton">완료</div>
+        </div>
+      </div>
+    </div>
+
     
   </div>
 </template>
 
 <script>
 export default {
-props:['mission'],
+props:['mission','user'],
 methods:{
   addComma(num){
       var regexp = /\B(?=(\d{3})+(?!\d))/g;
       return num.toString().replace(regexp,',');
     },
     bgColor(mstate){
-      if(mstate=='Ongoing'){
-        return 'transparent';
+      if(this.user=='child'){
+        if(mstate=='Ongoing'){
+          return 'transparent';
+        }else{
+          return '#0067ac';
+        }
       }else{
-        return '#eaf6ff';
+        if(mstate=='Ongoing'){
+          return 'transparent';
+        }else{
+          return '#eaf6ff';
+        }
       }
     },
     textColor(mstate){
-      if(mstate=='Ongoing'){
-        return 'gray';
+      if(this.user=='child'){
+        if(mstate=='Ongoing'){
+          return 'black';
+        }else{
+          return 'white';
+        }
       }else{
-        return 'black';
+        if(mstate=='Ongoing'){
+          return 'gray';
+        }else{
+          return 'black';
+        }
       }
     },
     closeModal(){
-      console.log('모달닫자')
       this.$emit('close');
     }
 },
