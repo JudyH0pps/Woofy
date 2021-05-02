@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ import com.hackathon.woofy.service.RedisService;
 
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/payments")
