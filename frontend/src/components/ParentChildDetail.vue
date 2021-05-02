@@ -8,11 +8,17 @@
       >mdi-cog</v-icon
     >
     <div v-if="showModal" class="modalBackground">
-      <div style="margin:5% 4%; width:90%; height:10%; "><v-icon @click="closeModal" style="float:right; z-index:6;">mdi-close</v-icon></div>
-      <MissionDetail class="modal" 
-      :mission="detailedMission" 
-      :user="'parent'" 
-      @close="closeModal"></MissionDetail>
+      <div style="margin: 5% 4%; width: 90%; height: 10%">
+        <v-icon @click="closeModal" style="float: right; z-index: 6"
+          >mdi-close</v-icon
+        >
+      </div>
+      <MissionDetail
+        class="modal"
+        :mission="detailedMission"
+        :user="'parent'"
+        @close="closeModal"
+      ></MissionDetail>
     </div>
     <div class="ParantChildInform">
       <div
@@ -175,37 +181,37 @@ export default {
             missionType: 1,
           },
           {
-            title: "미션 2",
+            title: "시험 성적 95점 이상",
             content: "미션 설명",
             prize: 5000,
             missionStatus: "REQUEST",
             missionType: 0,
           },
           {
-            title: "미션 3",
+            title: "할머니 안마해드리기",
             content: "미션 설명",
             prize: 3000,
             missionStatus: "ONGOING",
             missionType: 0,
           },
           {
-            title: "미션 2",
+            title: "시험 성적 95점 이상",
             content: "미션 설명",
-            prize: 5000,
+            prize: 50000,
             missionStatus: "REQUEST",
             missionType: 0,
           },
           {
-            title: "미션 3",
+            title: "시험 성적 95점 이상",
             content: "미션 설명",
-            prize: 3000,
+            prize: 50000,
             missionStatus: "ONGOING",
             missionType: 0,
           },
           {
-            title: "미션 2",
+            title: "콩이 산책시키기",
             content: "미션 설명",
-            prize: 5000,
+            prize: 2000,
             missionStatus: "SUCCESS",
             missionType: 0,
           },

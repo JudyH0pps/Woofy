@@ -20,7 +20,8 @@
             >님, <br />오늘도 행복한 하루 보내세요!
           </div>
           <div class="aligncenter" style="float: right; height: 100%">
-            <v-icon>mdi-refresh</v-icon> <v-icon>mdi-dots-vertical</v-icon>
+            <!-- <v-icon>mdi-refresh</v-icon> -->
+            <!-- <v-icon>mdi-dots-vertical</v-icon> -->
           </div>
         </div>
 
@@ -40,7 +41,7 @@
               <span style="font-size: 34px"> {{ addComma(user.money) }} </span
               >원
             </div>
-            <div
+            <!-- <div
               style="
                 text-align: center;
                 font-size: 12px;
@@ -51,7 +52,7 @@
               계좌 관리<v-icon size="16px"
                 >mdi-arrow-right-thin-circle-outline</v-icon
               >
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
