@@ -6,7 +6,6 @@
         v-for="(item, i) in radioButtons"
         :key="i"
         :label="item"
-        :value="n"
       ></v-radio>
     </v-radio-group>
     <div
@@ -33,7 +32,12 @@
         </v-progress-circular>
       </div>
     </div>
-    <button class="OK_button">설정 완료</button>
+    <button
+      @click="$router.push({ name: 'ParentChildDetail' })"
+      class="OK_button"
+    >
+      설정 완료
+    </button>
   </div>
 </template>
 
@@ -47,6 +51,7 @@ export default {
       switch1: "유해 장소 알람 받기",
       switch2: "시간 알람 받기",
       value: "17:00 - 19:00",
+      radioGroup: "",
     };
   },
   methods: {
