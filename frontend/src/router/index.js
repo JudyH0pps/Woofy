@@ -14,6 +14,7 @@ import Casher from "@/views/Casher.vue";
 import ConfirmMission from "@/views/ConfirmMission.vue";
 import ParentChildAlert from "@/components/ParentChildAlert.vue";
 import ChildMissionComplete from "@/components/ChildMissionComplete.vue";
+import ParentChildAccept from "@/components/ParentChildAccept.vue";
 
 Vue.use(VueRouter);
 
@@ -95,6 +96,11 @@ const routes = [
     path: "/ChildMissionComplete",
     name: "ChildMissionComplete",
     component: ChildMissionComplete,
+  },
+  {
+    path: "/ParentChildAccept",
+    name: "ParentChildAccept",
+    component: ParentChildAccept,
   },
   ...authRouters,
 ];

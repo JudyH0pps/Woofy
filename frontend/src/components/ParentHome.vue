@@ -83,7 +83,7 @@
               font-weight: 500;
             "
           >
-            {{ Math.round((child.money / child.pocketMoney) * 100) }}%
+            {{ rate(child.money, child.pocketMoney) }}%
           </div>
         </div>
         <v-progress-linear
@@ -123,9 +123,9 @@ export default {
             pocketMoney: 30000,
           },
           {
-            name: "Woori 막내",
-            money: 700,
-            pocketMoney: 10000,
+            name: "승인 대기중",
+            money: "0",
+            pocketMoney: 0,
           },
         ],
       },
@@ -134,6 +134,12 @@ export default {
   computed: {},
   mounted() {},
   methods: {
+    rate(money, pocketMoney) {
+      if (pocketMoney == 0) {
+        return 0;
+      }
+      return Math.round((money / pocketMoney) * 100);
+    },
     moveTo(componentName) {
       this.$router.push({ name: componentName });
     },
