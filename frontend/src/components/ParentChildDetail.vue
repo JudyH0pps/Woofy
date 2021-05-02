@@ -4,7 +4,7 @@
     <v-icon size="23px" color="#a2a2a2" style="position: absolute; right:10px; top:13px;z-index:1;">mdi-cog</v-icon>
     <div v-if="showModal" class="modalBackground">
       <div style="margin:5% 4%; width:90%; height:10%; "><v-icon @click="closeModal" style="float:right; z-index:6;">mdi-close</v-icon></div>
-      <div class="modal"></div>
+      <MissionDetail class="modal" :mission="detailedMission" @close="closeModal"></MissionDetail>
     </div>
     <div class="ParantChildInform">
         <div style="width:100%; height:25%; text-align:center; font-weight: 500;">{{child.name}}</div>
@@ -37,7 +37,7 @@
             <div @click="$router.push('/WaitingMission')" class="ParentChildMission alignCenter float" style="
     font-size: small;height:11%; background-color: rgb(224 238 249); width:45%;">
             <v-badge  color="red" :content="waitingMission.length" style="width:90%; text-align:center" >
-              등록 대기중인 미션    
+              등록 요청 된 미션    
             </v-badge>
             </div>
             <div @click="$router.push('/CreateMission')" class="ParentChildMission alignCenter" style="
@@ -45,17 +45,13 @@
               미션 추가   
             </div>
           <div>매일 미션
-            <div @click="openModal">
-              <Mission class="ParentChildMission" v-for="(mission,index) in dailyMission" :arrow="'right'" :key="index" :mission="mission"></Mission>
-            </div>
+              <Mission class="ParentChildMission" v-for="(mission,index) in dailyMission" :arrow="'right'" :key="index" @missionClick="openModal(mission)" :mission="mission"></Mission>
           </div>
-          <div @click="openModal">
             등록된 미션
              <!-- <v-badge  color="green" :content="1" style="width:90%; margin:0 5%; padding-top:2px; text-align:center" >
               <Mission style="width:100%; margin:0; background: #caf5c975;" class="ParentChildMission" :arrow="'right'" :mission="generalMission[0]"></Mission>         
             </v-badge> -->
-          <Mission class="ParentChildMission" v-for="(mission,index) in generalMission" :arrow="'right'" :key="index" :mission="mission"></Mission>
-          </div>
+          <Mission class="ParentChildMission" v-for="(mission,index) in generalMission" :arrow="'right'" :key="index" @missionClick="openModal(mission)" :mission="mission"></Mission>
           <div>
 
 
@@ -71,11 +67,12 @@
 <script>
 import Payment from './Payment.vue';
 import Mission from './Mission.vue';
+import MissionDetail from './MissionDetail.vue'
 // import WaitingMission from '@/components/WaitingMissions.vue';
 // import $ from 'jquery';
 
 export default {
-  components: { Payment,Mission,
+  components: { Payment,Mission,MissionDetail
   // WaitingMission
   },
   computed:{
@@ -98,6 +95,7 @@ export default {
   data() {
     return {
       showModal:false,
+      detailedMission:'',
       child:{
             name : 'Woori 아들',
             money : 20000,
@@ -219,7 +217,9 @@ export default {
     closeModal(){
       this.showModal = false;
     },
-    openModal(){
+    openModal(mission){
+      console.log(mission);
+      this.detailedMission = mission;
       this.showModal = true;
     }
   }

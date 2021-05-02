@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="missionClick">
     <div class="float alignCenter" style="height:100%; width:50%;">
       {{mission.title}}
     </div>
@@ -20,9 +20,12 @@ export default {
 props: ['mission','arrow'],
 methods:{
   addComma(num){
-            var regexp = /\B(?=(\d{3})+(?!\d))/g;
-            return num.toString().replace(regexp,',');
-      },
+      var regexp = /\B(?=(\d{3})+(?!\d))/g;
+      return num.toString().replace(regexp,',');
+  },
+  missionClick(){
+      this.$emit('missionClick');
+  }
 }
 }
 </script>
