@@ -3,6 +3,8 @@ import Signup from "@/views/auth/Signup.vue";
 import ParentSignupPage from "@/views/auth/ParentSignupPage.vue";
 import ChildSignupPage from "@/views/auth/ChildSignupPage.vue";
 import ParentSignupDetail from "@/views/auth/ParentSignupDetail.vue";
+import ChildSignupDetail from "@/views/auth/ChildSignupDetail.vue";
+import ChildSignupWaiting from "@/views/auth/ChildSignupWaiting.vue";
 
 const authRouters = [
   {
@@ -29,6 +31,16 @@ const authRouters = [
     path: "/ParentSignupDetail",
     name: "ParentSignupDetail",
     component: ParentSignupDetail,
+  },
+  {
+    path: "/ChildSignupDetail",
+    name: "ChildSignupDetail",
+    component: ChildSignupDetail,
+  },
+  {
+    path: "/ChildSignupWaiting",
+    name: "ChildSignupWaiting",
+    component: ChildSignupWaiting,
   },
 ];
 
