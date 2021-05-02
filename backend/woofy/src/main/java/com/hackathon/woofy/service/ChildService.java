@@ -29,6 +29,11 @@ public class ChildService {
 //	public Child findByPhoneNumber(String phoneNumber) {
 //		return childRepo.findByPhoneNumber(phoneNumber);
 //	}
+	
+	@Transactional
+	public List<Child> findByParent(Parent parent) {
+		return childRepo.findByParent(parent);
+	}
 
 	@Transactional
 	public Child findByUsername(String username) {

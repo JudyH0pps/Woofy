@@ -28,8 +28,8 @@ public class MissionService {
 	 * @param mission
 	 */
 	@Transactional
-	public void saveMission(Mission mission) {
-		missionRepo.save(mission);
+	public Mission saveMission(Mission mission) {
+		return missionRepo.save(mission);
 	}
 	
 	/**
@@ -66,4 +66,5 @@ public class MissionService {
 	public List<Mission> findByParentAndChild(Parent parent, Child child){
 		return missionRepo.findByParentAndChild(parent, child);
 	}
+
 }

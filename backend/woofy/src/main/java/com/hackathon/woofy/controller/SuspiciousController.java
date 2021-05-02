@@ -47,7 +47,7 @@ public class SuspiciousController {
 	 * @param suspiciousRequest
 	 * @return
 	 */
-	@Secured("ROLE_PARENT")
+	@Secured({"ROLE_PARENT"})
 	@PostMapping(value = "", produces = "application/json; charset=utf8")
 	public Object add(@RequestBody SuspiciousRequest suspiciousRequest) {
 		final BasicResponse basicResponse = new BasicResponse();
