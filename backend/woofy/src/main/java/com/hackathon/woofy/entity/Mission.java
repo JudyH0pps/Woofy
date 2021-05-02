@@ -25,7 +25,6 @@ import lombok.ToString;
 @Entity
 @Getter @Setter
 @Table(name = "mission")
-@ToString(of = { "id", "title", "parent", "child" })
 public class Mission {
 	
 	@Id
@@ -33,23 +32,25 @@ public class Mission {
 	@Column(name = "mission_id")
 	private Long id;
 	
-	private String title;
-	private String content;
-	private int prize;
-	
-	@Enumerated(EnumType.STRING)
-	private MissionStatus missionStatus = MissionStatus.ONGOING;
+	private String title; // 미션 제목
+	private int totalPrice; // 총 보상금액(세부 미션 합산)
+	private int isDaily; // 매일 미션인 경우 1 아니면 2
+	private int isRequest; // 부모가 등록한 경우 1 / 자식이 요청한 경우 2
+	private int isComplete; // 세부 미션이 모두 완료되면 1 아니면 2
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "child_id")
 	private Child child;
 	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "parent_id")
-//	private Parent parent;
-	
 	public Mission() {}
+
+	@Override
+	public String toString() {
+		return "Mission [id=" + id + ", title=" + title + ", totalPrice=" + totalPrice + ", isDaily=" + isDaily
+				+ ", isRequest=" + isRequest + ", isComplete=" + isComplete + ", child=" + child + "]";
+	}
 	
+	/*
 	public Mission(MissionRequest missionRequest) {
 		super();
 		this.title = missionRequest.getTitle();
@@ -69,6 +70,8 @@ public class Mission {
 		this.child = child;
 //		this.parent = parent;
 	}
+	*/
+	
 	
 	
 }

@@ -1,12 +1,11 @@
 <template>
   <section>
-    <h1 style="margin: 20px">부모님 회원 가입</h1>
-    <p style="margin: 20px">
-      우리은행 계좌가 있으신 부모 고객님은 <br />본인 인증을 통해 가입하실 수
-      있습니다.
+    <p style="margin-top: 20px">
+      {{ $store.state.username }}님의 자녀분 환영합니다!
     </p>
+
     <div class="inputField">
-      <div class="input_title"><span>휴대폰 본인 인증</span></div>
+      <div class="input_title"><span>아이디</span></div>
       <div
         style="
           display: flex;
@@ -15,31 +14,50 @@
           margin-bottom: 30px;
         "
       >
-        <input placeholder="휴대폰 번호 입력" v-model="phoneNumber" />
-        <v-btn @click="requestPhoneAuth" plain>인증 요청</v-btn>
+        <input
+          placeholder="사용하실 아이디를 입력해주세요"
+          v-model="phoneNumber"
+        />
       </div>
-      <p
-        v-show="viewCerti"
-        style="font-size: 12px; text-align: left; margin-rigth: auto"
-      >
-        입력하신 휴대폰 번호로 전송한 인증 번호를 입력해주세요
-      </p>
-
+      <div class="input_title"><span>패스워드</span></div>
       <div
-        v-show="viewCerti"
-        style="display: flex; flex-direction: row; height: 50px"
+        style="
+          display: flex;
+          flex-direction: row;
+          height: 50px;
+          margin-bottom: 30px;
+        "
       >
-        <input placeholder="인증 번호 입력" v-model="certiNum" />
+        <input placeholder="패스워드를 입력해 주세요" v-model="phoneNumber" />
+      </div>
+      <div class="input_title"><span>패스워드 확인</span></div>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          height: 50px;
+          margin-bottom: 30px;
+        "
+      >
+        <input
+          placeholder="패스워드를 다시 입력해 주세요"
+          v-model="phoneNumber"
+        />
       </div>
     </div>
-
-    <button
-      v-show="viewCerti"
-      class="ok-btn"
-      @click="phoneCerti({ phoneNumber, certiNum })"
-    >
-      인증
-    </button>
+    <button class="ok-btn" @click="complete">회원가입</button>
+    <v-progress-circular
+      v-show="showLoading"
+      indeterminate
+      size="50"
+      style="
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      "
+      color="primary"
+    ></v-progress-circular>
   </section>
 </template>
 
@@ -52,6 +70,7 @@ export default {
       phoneNumber: "",
       certiNum: "",
       viewCerti: false,
+      showLoading: false,
     };
   },
   methods: {
@@ -60,6 +79,12 @@ export default {
       this.viewCerti = true;
       this.phoneAuth(this.phoneNumber);
       this.certiNum = "";
+    },
+    complete() {
+      this.showLoading = true;
+      setTimeout(() => {
+        this.$router.push({ name: "ChildSignupWaiting" });
+      }, 2500);
     },
   },
 };

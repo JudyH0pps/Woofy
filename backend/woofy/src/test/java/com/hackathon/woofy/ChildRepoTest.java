@@ -66,7 +66,6 @@ public class ChildRepoTest {
 		
 		Mission m = new Mission();
 		m.setTitle("�̰� �غ�!");
-		m.setContent("�̰�!");
 		m.setChild(child2);
 //		m.setParent(parent);
 		

@@ -35,6 +35,18 @@
         <button class="OK_button" @click="OK()">확인</button>
       </div>
     </v-item-group>
+    <v-progress-circular
+      v-show="showLoading"
+      indeterminate
+      size="50"
+      style="
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      "
+      color="primary"
+    ></v-progress-circular>
   </section>
 </template>
 
@@ -46,6 +58,7 @@ export default {
       beforeAccountInput: true,
       selectedBank: "",
       money: "",
+      showLoading: false,
       keys: [1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0, "del"],
     };
   },
@@ -106,7 +119,12 @@ export default {
         this.beforeAccountInput = false;
         this.keys[9] = "00";
       } else {
-        return;
+        this.showLoading = true;
+        this.$store.commit("setChildMoney", 10000);
+        this.$store.commit("addChildPayment");
+        setTimeout(() => {
+          this.$router.push({ name: "ChildHome" });
+        }, 2500);
       }
     },
   },

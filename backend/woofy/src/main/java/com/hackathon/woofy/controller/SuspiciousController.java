@@ -11,6 +11,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ import com.hackathon.woofy.service.SuspiciousService;
 
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/suspicious")
@@ -47,7 +49,7 @@ public class SuspiciousController {
 	 * @param suspiciousRequest
 	 * @return
 	 */
-	@Secured("ROLE_PARENT")
+	@Secured({"ROLE_PARENT"})
 	@PostMapping(value = "", produces = "application/json; charset=utf8")
 	public Object add(@RequestBody SuspiciousRequest suspiciousRequest) {
 		final BasicResponse basicResponse = new BasicResponse();

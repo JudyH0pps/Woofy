@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +37,7 @@ import com.hackathon.woofy.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/child")
@@ -175,27 +178,29 @@ public class ChildController {
 		return "DEBUG";
 	}
 
-	// 미완성 **************************
+	/**
+	 * 자식 삭제
+	 * @param parentUserName
+	 * @return
+	 */
+	@Secured({"ROLE_PARENT"})
 	@DeleteMapping(value = "/{child_id}", produces = "application/json; charset=utf8")
-	public Object deleteChildInfo(@PathVariable(value="child_id") Long child_id) {
-		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		
+	public Object deleteParentInfo(@PathVariable(value="child_id") Long child_id) {
 		final BasicResponse basicResponse = new BasicResponse();
+		
+		Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
+		Parent targetRequestedParent = parentService.findByUsername(authUser.getName());
 
 		try {
-			Map<String, Object> map = new HashMap<>();
-			
-			Child c = childService.findById(child_id);
 			childService.deleteChild(child_id);
 			basicResponse.status = "success";
-
 		} catch (Exception e) {
 			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
-	}	
+	}
 
 	@Secured("ROLE_PARENT")
 	@PutMapping(value = "/{childUsername}/spendlimit", produces = "application/json; charset=utf8")

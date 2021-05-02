@@ -6,19 +6,20 @@ import ChildHome from "@/components/ChildHome.vue";
 import ChildRemittance from "@/components/ChildRemittance.vue";
 import ChildMissionRequest from "@/components/ChildMissionRequest.vue";
 import ChildBankSelection from "@/components/ChildBankSelection.vue";
+import ParentAddChild from "@/components/ParentAddChild";
 import { authRouters } from "@/router/auth";
-import CreateMission from "@/views/CreateMission.vue"
-import WaitingMission from "@/components/WaitingMissions.vue"
+import CreateMission from "@/views/CreateMission.vue";
+import WaitingMission from "@/components/WaitingMissions.vue";
 import Casher from "@/views/Casher.vue";
 import ConfirmMission from "@/views/ConfirmMission.vue"
 
 Vue.use(VueRouter);
 
 const authCheck = () => (to, from, next) => {
-    // if (1 == 1) {
-    //     next("/");
-    // }
-    next("/login");
+  // if (1 == 1) {
+  //     next("/");
+  // }
+  next("/login");
 };
 
 const routes = [
@@ -78,13 +79,19 @@ const routes = [
         name: "ConfirmMission",
         component: ConfirmMission
     },
-    ...authRouters,
+    
+  {
+    path: "/ParentAddChild",
+    name: "ParentAddChild",
+    component: ParentAddChild,
+  },
+  ...authRouters,
 ];
 
 const router = new VueRouter({
-    mode: "history",
-    base: process.env.BASE_URL,
-    routes,
+  mode: "history",
+  base: process.env.BASE_URL,
+  routes,
 });
 
 export default router;

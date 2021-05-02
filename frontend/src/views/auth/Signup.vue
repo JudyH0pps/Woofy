@@ -73,7 +73,7 @@ export default {
   align-items: center;
   height: 100%;
   width: 100%;
-  padding: 50px;
+  padding: 15% 5%;
 }
 
 .parentSignup,
@@ -82,8 +82,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 230px;
-  width: 230px;
+  height: 200px;
+  width: 200px;
   border: 2px solid;
   margin: 15px;
   border-radius: 15px;

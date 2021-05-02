@@ -13,99 +13,15 @@
     </div>
     <p style="text-align: center">결제내역</p>
     <div class="paymentDetail">
-      <div class="payment">
+      <div
+        class="payment"
+        v-for="(item, i) in $store.state.childPayment"
+        :key="i"
+      >
         <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
+          <v-list-item-title> {{ item.location }} </v-list-item-title>
           <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
-          >
-        </v-list-item-content>
-      </div>
-      <div class="payment">
-        <v-list-item-content>
-          <v-list-item-title> 파리바게트 </v-list-item-title>
-          <v-list-item-subtitle style="text-align: right"
-            >5,000원</v-list-item-subtitle
+            >{{ item.price }}원</v-list-item-subtitle
           >
         </v-list-item-content>
       </div>

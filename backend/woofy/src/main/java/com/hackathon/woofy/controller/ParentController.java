@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +40,7 @@ import com.hackathon.woofy.service.UserService;
 import com.hackathon.woofy.util.SmsFunc;
 import com.hackathon.woofy.util.WooriFunc;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/api/v1/parent")
 public class ParentController {
@@ -179,55 +182,72 @@ public class ParentController {
 		return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/{parentUsername}", produces = "application/json; charset=utf8")
-	public String modifyParentInfo(@PathVariable(value="parentUsername") String parentUserName, @RequestBody Map<String, Object> jsonRequest) {
-		// JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		Map<String, Object> parentObject = (Map<String, Object>) jsonRequest.get("dataBody");
-		System.out.println(parentObject);
-		
-		return "DEBUG";
-	}
-
-	@DeleteMapping(value = "/{parentUsername}")
-	public String deleteParentInfo(@PathVariable(value="parentUsername") String parentUserName) {
-		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		System.out.println(parentUserName);
-		
-		return "DEBUG";
-	}
-		
-	@GetMapping(value = "/{parentUsername}/child")
-	public String getParentChildList(@PathVariable(value="parentUsername") String parentUserName) {
-		//	JsonObject dataBody = JsonParser.parseString(jsonRequest.toString()).getAsJsonObject();
-		System.out.println(parentUserName);
-		
-		return "DEBUG";
-	}
-
-	/*
-	@GetMapping("/{username}/child")
-	public Object findChildByParent(@PathVariable(name = "username") String username) {
-		
+	/**
+	 * 부모
+	 * 자식의 username을 통해 한도를 조정한다.
+	 * @param userRequest
+	 * @return
+	 */
+	@Secured({"ROLE_PARENT"})
+	@PutMapping(value = "/changeLimit", produces = "application/json; charset=utf8")
+	public Object changeLimit(@RequestBody UserRequest userRequest) {
 		final BasicResponse basicResponse = new BasicResponse();
+
+		Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
+		Parent targetRequestedParent = parentService.findByUsername(authUser.getName());
 		
 		try {
-			Map<String, Object> map = new HashMap<>();
+			Child child = childService.findByUsername(userRequest.getUsername());
+			
+			// 자신의 자식인지 판별을 해야하는데 일단 패스
+			
+			child.setSpendLimit(userRequest.getSpendLimit());
+			childService.saveChild(child);
 
-			Parent parent = parentService.findParent(username);
-			List<Child> result = childService.findChild(parent.getId());
-			
-			map.put("parent", result);
-			basicResponse.dataBody = map;
-			basicResponse.data = "success";
-			basicResponse.status = true;
-			
-		} catch(Exception e) {
-			basicResponse.data = "error";
-			basicResponse.status = false;
+			if (child == null) {
+				basicResponse.status = "none";
+			} else {
+				basicResponse.status = "success";
+			}
+
+		} catch (Exception e) {
+			basicResponse.status = "error";
 			e.printStackTrace();
 		} finally {
 			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
 		}
 	}
-	*/
+
+		
+	@Secured({"ROLE_PARENT"})
+	@GetMapping(value = "/childs", produces = "application/json; charset=utf8")
+	public Object getParentChildList() {
+		final BasicResponse basicResponse = new BasicResponse();
+
+		Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
+		Parent targetRequestedParent = parentService.findByUsername(authUser.getName());
+		
+		try {
+			Map<String, Object> map = new HashMap<>();
+
+			List<Child> childs = childService.findByParent(targetRequestedParent);
+
+			if (childs == null) {
+				basicResponse.status = "none";
+			} else {
+
+				map.put("child", childs);
+				basicResponse.dataBody = map;
+				basicResponse.status = "success";
+			}
+
+		} catch (Exception e) {
+			basicResponse.status = "error";
+			e.printStackTrace();
+		} finally {
+			return new ResponseEntity<>(basicResponse, HttpStatus.OK);
+		}
+
+	}
+
 }

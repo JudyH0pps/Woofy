@@ -20,4 +20,12 @@ public class UserRequest {
 	
 	private Parent parent;
 	private Child child;
+	@Override
+	public String toString() {
+		return "UserRequest [username=" + username + ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", birthDay=" + birthDay + ", phoneNumber=" + phoneNumber + ", email="
+				+ email + ", spendLimit=" + spendLimit + ", parent=" + parent + ", child=" + child + "]";
+	}
+	
+	
 }
