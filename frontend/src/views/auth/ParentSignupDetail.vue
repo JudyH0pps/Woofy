@@ -18,11 +18,7 @@
           margin-bottom: 30px;
         "
       >
-        <input
-          placeholder="사용하실 아이디를 입력해주세요"
-          type="password"
-          v-model="phoneNumber"
-        />
+        <input placeholder="사용하실 아이디를 입력해주세요" v-model="id" />
       </div>
       <div class="input_title"><span>패스워드</span></div>
       <div
@@ -36,7 +32,7 @@
         <input
           type="password"
           placeholder="패스워드를 입력해 주세요"
-          v-model="phoneNumber"
+          v-model="password1"
         />
       </div>
       <div class="input_title"><span>패스워드 확인</span></div>
@@ -51,6 +47,7 @@
         <input
           placeholder="패스워드를 다시 입력해 주세요"
           v-model="phoneNumber"
+          type="password"
         />
       </div>
     </div>
@@ -80,6 +77,9 @@ export default {
       certiNum: "",
       viewCerti: false,
       showLoading: false,
+      id: "",
+      password1: "",
+      password2: "",
     };
   },
   methods: {

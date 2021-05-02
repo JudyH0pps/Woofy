@@ -13,6 +13,7 @@
           placeholder="아이디를 입력해주세요."
           id="id"
           autofocus
+          autocomplete="off"
           v-model="username"
         />
       </div>
