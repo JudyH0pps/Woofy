@@ -13,7 +13,7 @@
         {{ user }} 님의 잔액
       </div>
       <div class="userMoney">
-        <span style="font-size: 39px"> {{ money }} </span>원
+        <span style="font-size: 39px"> {{ $store.state.childMoney }} </span>원
       </div>
       <v-progress-linear
         color="light-blue"

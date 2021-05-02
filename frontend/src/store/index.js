@@ -13,6 +13,44 @@ export default new Vuex.Store({
     username: "김시영",
     isParent: null,
     waitingMissions: [],
+    childMoney: 14000,
+    childPayment: [
+      {
+        location: "OOpc방",
+        price: 5000,
+        time: "2021-03-21 16:03:54",
+      },
+      {
+        location: "김밥천국",
+        price: 4500,
+        time: "2021-03-21 18:44:07",
+      },
+      {
+        location: "OOpc방",
+        price: 5000,
+        time: "2021-03-21 16:03:54",
+      },
+      {
+        location: "김밥천국",
+        price: 4500,
+        time: "2021-03-21 18:44:07",
+      },
+      {
+        location: "OOpc방",
+        price: 5000,
+        time: "2021-03-21 16:03:54",
+      },
+      {
+        location: "김밥천국",
+        price: 4500,
+        time: "2021-03-21 18:44:07",
+      },
+      {
+        location: "김밥천국",
+        price: 4500,
+        time: "2021-03-21 18:44:07",
+      },
+    ],
   },
   mutations: {
     setParent(state, isParent) {
@@ -20,6 +58,20 @@ export default new Vuex.Store({
     },
     setWaitingMissions(state, value) {
       state.waitingMissions = value;
+    },
+    setChildMoney(state, money) {
+      state.childMoney = money;
+    },
+    addChildPayment(state) {
+      let origin = state.childPayment;
+      let newOne = [
+        {
+          location: "우리은행 송금",
+          price: 4000,
+          time: "",
+        },
+      ];
+      state.childPayment = newOne.concat(origin);
     },
   },
   actions: {
