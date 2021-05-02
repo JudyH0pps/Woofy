@@ -21,3 +21,16 @@ export default {
   }),
 };
 </script>
+
+<style>
+.OK_button {
+  margin: 50px 0;
+  background-color: #3c3eca;
+  width: 100%;
+  height: 60px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+</style>
