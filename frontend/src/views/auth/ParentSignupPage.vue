@@ -8,24 +8,24 @@
     <div class="inputField">
       <div class="input_title"><span>휴대폰 본인 인증</span></div>
       <div style="display: flex; flex-direction: row; height: 50px">
-        <input placeholder="" />
-        <v-btn plain>인증 요청</v-btn>
+        <input v-model="phoneNumber" />
+        <v-btn @click="phoneAuth(phoneNumber)" plain>인증 요청</v-btn>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      phoneNumber: "",
+    };
   },
   methods: {
-    phoneAuth() {
-      axios.post();
-    },
+    ...mapActions(["phoneAuth"]),
   },
 };
 </script>
@@ -56,6 +56,7 @@ section {
     height: 50px;
     width: 100%;
     margin: 0 auto;
+    padding: 10px;
   }
   button {
     height: 100% !important;
