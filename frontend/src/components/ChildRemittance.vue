@@ -1,5 +1,5 @@
 <template>
-  <section class="Remittance">
+  <section class="content">
     <div v-if="beforeAccountInput" class="accountInput">
       <div class="inputField">
         <p>{{ selectedBank }}</p>
@@ -144,11 +144,11 @@ section {
 }
 .accountInput,
 .moneyInput {
-  height: 40%;
+  height: 20%;
 }
 .inputField {
   width: 100%;
-  padding: 100px 20px;
+  padding: 100px 20px 0px 20px;
   input {
     height: 60px;
     width: 100%;
