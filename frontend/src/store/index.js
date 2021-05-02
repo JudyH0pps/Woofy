@@ -35,7 +35,7 @@ export default new Vuex.Store({
             router.push({ name: "ParentHome" });
           } else if (data.dataBody.role === "ROLE_CHILD") {
             commit("setParent", false);
-            router.push({ name: "childHome" });
+            router.push({ name: "ChildHome" });
           }
         });
     },
