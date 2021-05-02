@@ -1,7 +1,7 @@
 <template>
   <div class="nav">
-    <div @click.stop="drawer = !drawer" class="hamburger">
-      <!-- <v-icon size="4vh" color="#5b9ad5">mdi-menu</v-icon> -->
+    <div @click.stop="goBackward()" class="hamburger">
+      <v-icon size="4vh" color="gray">mdi-arrow-left</v-icon>
     </div>
     <div @click="moveTo('Root')">
       <span class="logo"><span style="font-style: oblique">WOORI</span> i</span>
@@ -42,6 +42,9 @@ export default {
   methods: {
     moveTo(componentName) {
       this.$router.push({ name: componentName });
+    },
+    goBackward() {
+      window.history.back();
     },
   },
 };
