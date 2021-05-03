@@ -13,6 +13,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,7 @@ import com.hackathon.woofy.service.UserService;
 import com.hackathon.woofy.util.SmsFunc;
 import com.hackathon.woofy.util.WooriFunc;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/api/v1/parent")
 public class ParentController {
@@ -146,7 +148,7 @@ public class ParentController {
 		redisService.setHashSetTimeLimit("ChildSignupRequestParentTable", targetRequestCode, 900);
 
 		String targetMessage1 = 
-				"WooFY(가제) 자녀 계정을 가입하시려면 이 링크를 통해 진행해주세요. (";
+				"Woori i 자녀 계정 가입은 이 링크를 통해 진행해주세요. (";
 		
 		String targetMessage2 = frontPageURL + targetRequestCode + ")";
 		smsFunc.sendMessage(targetPhoneNumber, targetMessage1 + targetMessage2);

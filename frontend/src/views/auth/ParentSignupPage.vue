@@ -7,24 +7,59 @@
     </p>
     <div class="inputField">
       <div class="input_title"><span>휴대폰 본인 인증</span></div>
-      <div style="display: flex; flex-direction: row; height: 50px">
-        <input placeholder="" />
-        <v-btn plain>인증 요청</v-btn>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          height: 50px;
+          margin-bottom: 30px;
+        "
+      >
+        <input placeholder="휴대폰 번호 입력" v-model="phoneNumber" />
+        <v-btn @click="requestPhoneAuth" plain>인증 요청</v-btn>
+      </div>
+      <p
+        v-show="viewCerti"
+        style="font-size: 12px; text-align: left; margin-rigth: auto"
+      >
+        입력하신 휴대폰 번호로 전송한 인증 번호를 입력해주세요
+      </p>
+
+      <div
+        v-show="viewCerti"
+        style="display: flex; flex-direction: row; height: 50px"
+      >
+        <input placeholder="인증 번호 입력" v-model="certiNum" />
       </div>
     </div>
+
+    <button
+      v-show="viewCerti"
+      class="ok-btn"
+      @click="phoneCerti({ phoneNumber, certiNum })"
+    >
+      인증
+    </button>
   </section>
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      phoneNumber: "",
+      certiNum: "",
+      viewCerti: false,
+    };
   },
   methods: {
-    phoneAuth() {
-      axios.post();
+    ...mapActions(["phoneAuth", "phoneCerti"]),
+    requestPhoneAuth() {
+      this.viewCerti = true;
+      this.phoneAuth(this.phoneNumber);
+      this.certiNum = "";
     },
   },
 };
@@ -43,7 +78,6 @@ section {
 }
 .inputField {
   width: 100%;
-  height: 100px;
   padding: 0 20px;
   text-align: center;
   margin: 40px 0;
@@ -56,6 +90,7 @@ section {
     height: 50px;
     width: 100%;
     margin: 0 auto;
+    padding: 10px;
   }
   button {
     height: 100% !important;
@@ -68,5 +103,14 @@ section {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.ok-btn {
+  background-color: #3c3eca;
+  width: 90%;
+  height: 50px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  border: none;
 }
 </style>

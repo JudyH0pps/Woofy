@@ -1,26 +1,9 @@
 <template>
   <section>
-    <h1 style="margin: 20px">자녀 회원 가입</h1>
-    <p style="margin: 20px">
-      부모님에게 전달받은 코드를 입력해주세요. <br />
-      QR코드 스캔으로 회원가입을 진행할 수도 있습니다.
-    </p>
-    <div class="inputField">
-      <div class="input_title"><span>가입 코드 인증</span></div>
-      <div
-        style="
-          display: flex;
-          flex-direction: row;
-          height: 50px;
-          margin-bottom: 30px;
-        "
-      >
-        <input placeholder="가입 코드 입력" v-model="certiNum" />
-      </div>
-    </div>
-
-    <button @click="$router.push({ name: 'ChildSignupDetail' })" class="ok-btn">
-      인증
+    <p>회원가입 요청을 보냈습니다!</p>
+    <p>부모님이 승인하시면 회원가입이 완료됩니다.</p>
+    <button class="ok-btn" @click="$router.push({ name: 'Root' })">
+      로그인페이지로 이동
     </button>
   </section>
 </template>
@@ -28,10 +11,7 @@
 <script>
 export default {
   data() {
-    return {
-      certiNum: "MG-",
-      viewCerti: false,
-    };
+    return {};
   },
   methods: {},
 };
@@ -47,6 +27,7 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 .inputField {
   width: 100%;

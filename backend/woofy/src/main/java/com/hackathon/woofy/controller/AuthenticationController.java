@@ -19,6 +19,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ import com.hackathon.woofy.util.WooriFunc;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -94,7 +96,7 @@ public class AuthenticationController {
 		String CRTF_UNQ_NO = (String) targetDataBody.get("CRTF_UNQ_NO");		
 		String SMS_CRTF_NO = RandomStringUtils.randomNumeric(6); // Woori API를 통해 SMS가 전송되어야 하나, 테스트베드에서는 해당 기능이 제한적으로 제공되므로 프로젝트를 위해 임의의 SMS 넘버를 생성하기로 함.
 		String HP_NO = (String)cellCretiRequestBody.get("HP_NO");
-		String targetMessage = "WooFi(가제) SMS 인증번호는 [" + SMS_CRTF_NO + "] 입니다.";
+		String targetMessage = "Woori i SMS 인증번호는 [" + SMS_CRTF_NO + "] 입니다.";
 		
 		redisService.insertHashTableContent("CellCertiTable", SMS_CRTF_NO, CRTF_UNQ_NO);
 		redisService.setHashSetTimeLimit("CellCertiTable", SMS_CRTF_NO, 180);

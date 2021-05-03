@@ -1,28 +1,8 @@
-# Woori i
-
-![image-20210503110222351](README.assets/image-20210503110222351.png)
+# Woori i API Spring Boot API Server
 
 
 
-## 기술 스택
-
-```
-- Vue.js
-- HTML5
-- CSS3
-- JavaScript
-- Spring boot
-- Spring Security
-- Maria DB
-- JPA Hibernate
-- AWS EC2, RDB
-- KeyDB (≒ redis)
-- Nginx
-```
-
-
-
-## Spring Boot API Server 빌드 가이드(Ubuntu 기준)
+## 빌드 가이드(Ubuntu 기준)
 
 ```
 0. sudo apt-get install openjdk-11-jdk openjdk-11-jre build-essential nasm autotools-dev autoconf libjemalloc-dev tcl tcl-dev uuid-dev libcurl4-openssl-dev nginx
@@ -65,25 +45,6 @@ sudo echo -e "export CLASS_PATH=$JAVA_HOME/lib:$CLASS_PATH \n" >> /etc/profile
 
 
 
-## Frontend 빌드 가이드
-```
-1. sudo apt-get install npm
-
-2. cd ~
-
-3. git clone https://github.com/JudyH0pps/Woofy (혹은 이 문서의 소스코드 폴더로 이동)
-
-4. cd ./Woofy/frontend
-
-5. npm install
-
-6. (개발 서버 구동 시) npm run serve
-
-7. (빌드) npm run build
-```
-
-
-
 ## Keys.java
 
 ```java
@@ -107,7 +68,7 @@ public class Keys {
 
 ## application-db.properties
 
-​```properties
+```properties
 spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
 spring.datasource.url=jdbc:{db_url}/woofydb?serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
 spring.datasource.username=(secret username)
@@ -120,7 +81,7 @@ spring.redis.port=6379
 
 ## /etc/nginx/site-enabled/default
 
-​```default
+```default
 upstream backend {
         server localhost:8080;
 }

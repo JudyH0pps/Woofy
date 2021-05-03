@@ -13,6 +13,8 @@
           placeholder="아이디를 입력해주세요."
           id="id"
           autofocus
+          autocomplete="off"
+          v-model="username"
         />
       </div>
       <br />
@@ -26,11 +28,11 @@
       </div>
     </article>
     <div class="login_btn">
-      <button class="login_button" @click="parentLogin()">LOG IN</button>
+      <button class="login_button" @click="login()">로그인</button>
     </div>
-    <button class="login_button" @click="childLogin()">자녀페이지</button>
+    <!-- <button class="login_button" @click="login()">자녀페이지</button> -->
     <div class="login_signup-btn">
-      <button class="login_signup-button" @click="signup()">SIGN UP</button>
+      <button class="login_signup-button" @click="signup()">회원가입</button>
     </div>
   </section>
 </template>
@@ -40,7 +42,7 @@
 export default {
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
     };
   },
@@ -55,6 +57,13 @@ export default {
     },
     signup() {
       this.$router.push({ name: "Signup" });
+    },
+    login() {
+      let databody = {
+        username: this.username,
+        password: this.password,
+      };
+      this.$store.dispatch("login", databody);
     },
   },
 };
